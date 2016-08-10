@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load static from staticfiles %}
+
+{% block title %}
+	Osef
+{% endblock title %}
+
+{% block content %}
+	<div class="wellcome">
+		<h1 class="wellcome__title">Bienvenido a Osef</h1>
+		<a class="wellcome__btn_facebook" href="{% url 'social:begin' 'facebook' %}">Ingresa con Facebook</a>
+	</div>
+{% endblock content %}

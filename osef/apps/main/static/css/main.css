@@ -1,0 +1,118 @@
+body, h1, h2, h3, h4, li, ul, ol, img, p {
+  margin: 0;
+  padding: 0; }
+
+.my-container {
+  max-width: 1100px;
+  margin: 0 auto; }
+
+.no-margin-bottom {
+  margin-bottom: 0; }
+
+/* HOME PAGE */
+.wellcome {
+  width: 28em;
+  height: 28em;
+  background: #ECEFF1;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+  padding-top: 10em; }
+
+.wellcome__title {
+  font-size: 1.4em;
+  color: #212121;
+  padding-bottom: 2em; }
+
+.wellcome__btn_facebook {
+  background: #3B5998;
+  color: #ffffff;
+  font-size: 1em;
+  border-radius: 3px;
+  padding: .8em 3em; }
+
+/* END HOME PAGE */
+/* DASHBOARD */
+.header {
+  color: #ffffff;
+  background: #0277BD;
+  padding: 1.1em; }
+
+.main_info__data {
+  margin: 2em 0; }
+
+.profile {
+  justify-content: flex-end; }
+  .profile img {
+    margin-right: .8em; }
+
+.image-profile {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%; }
+
+.main_info {
+  background: #ECEFF1;
+  padding: 1em; }
+
+.card-info {
+  padding: 1.8em;
+  margin: .7em 0; }
+
+.card-info h4 {
+  font-size: 1.4em;
+  color: rgba(255, 255, 255, 0.54); }
+
+.card-info__money {
+  color: #ffffff;
+  font-size: 1.4em;
+  margin-top: .7em; }
+
+.card1 {
+  background: #2095F2; }
+
+.card2 {
+  background: #4BAE4F; }
+
+.card3 {
+  background: #9b26af; }
+
+.card4 {
+  background: #00bbd3; }
+
+.card5 {
+  background: #ccdb38; }
+
+.card6 {
+  background: #009587; }
+
+.card7 {
+  background: #02a8f3; }
+
+.panel {
+  background: #ffffff; }
+
+.panel__header {
+  font-weight: bold;
+  padding: 1em 2em;
+  color: rgba(0, 0, 0, 0.57);
+  border-bottom: 1px solid #f0f0f0; }
+
+.panel__body {
+  padding: 1em 2em; }
+
+/* END DASHBOARD */
+/* ALMANCEN */
+.panel__header__money {
+  font-size: 1.6em;
+  font-weight: 300; }
+
+.table__titles {
+  font-weight: bold;
+  font-size: 1em; }
+
+/*# sourceMappingURL=main.css.map */

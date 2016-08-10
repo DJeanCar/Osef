@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Dashboard
+{% endblock title %}
+
+{% block content %}
+	<header class="header">
+		<div class="my-container">
+			<div class="valign-wrapper row no-margin-bottom">
+				<div class="col s8 valign">
+					<span class="header__title">Dashboard</span>
+				</div>
+				<div class="col s4 profile valign-wrapper">
+					<img class="image-profile valign" src="{{ user.url_photo }}">
+					<span class="valign">{{ user.get_full_name }}</span>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="main_info">
+		<div class="my-container">
+			<div class="row main_info__data">
+				<div class="col s3">
+					<div class="card-info card-panel card1">
+						<h4>Capital USD</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="col s3">
+					<div class="card-info card-panel card2">
+						<h4>Capital MXN</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div> 
+				</div>
+				<div class="col s3">
+					<div class="card-info card-panel card3">
+						<h4>Gastos USD</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="col s3">
+					<div class="card-info card-panel card4">
+						<h4>Gastos MXN</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="col s3">
+					<div class="card-info card-panel card5">
+						<h4>Saldo Embarques</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="col s3">
+					<div class="card-info card-panel card6">
+						<h4>Embarques c/saldo</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="col s3">
+					<div class="card-info card-panel card7">
+						<h4>Almacenes</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					<div class="panel">
+						<div class="panel__header">
+							Gastos
+						</div>
+						<div class="panel__body">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. At deleniti non natus magnam saepe ipsam nisi expedita facilis tempora fuga architecto, laboriosam ut eveniet aut possimus illum dicta ullam mollitia?
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis distinctio vel debitis placeat dignissimos voluptatem hic, sed deleniti molestiae tenetur aperiam porro dolores vero ex odit eius adipisci consequuntur libero!
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia quisquam voluptate, culpa odio, assumenda cupiditate alias quibusdam. Vero modi hic, commodi placeat sequi veniam deserunt molestiae iure, tenetur rem nemo.
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam magnam dignissimos adipisci vitae sint repellendus mollitia dolore, amet doloribus. Recusandae quae cumque omnis hic odit tempora blanditiis, facere eum laudantium.
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					<div class="panel">
+						<div class="panel__header">
+							Saldo por embarque
+						</div>
+						<div class="panel__body">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. At deleniti non natus magnam saepe ipsam nisi expedita facilis tempora fuga architecto, laboriosam ut eveniet aut possimus illum dicta ullam mollitia?
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis distinctio vel debitis placeat dignissimos voluptatem hic, sed deleniti molestiae tenetur aperiam porro dolores vero ex odit eius adipisci consequuntur libero!
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia quisquam voluptate, culpa odio, assumenda cupiditate alias quibusdam. Vero modi hic, commodi placeat sequi veniam deserunt molestiae iure, tenetur rem nemo.
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam magnam dignissimos adipisci vitae sint repellendus mollitia dolore, amet doloribus. Recusandae quae cumque omnis hic odit tempora blanditiis, facere eum laudantium.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock content %}

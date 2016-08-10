@@ -1,0 +1,143 @@
+@import './_typography.scss';
+@import './_color.scss';
+
+body, h1, h2, h3, h4, li, ul, ol, img, p {
+	margin: 0;
+	padding: 0;
+}
+
+.my-container {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+.no-margin-bottom {
+	margin-bottom: 0;
+}
+
+/* HOME PAGE */
+.wellcome {
+	width: 28em;
+	height: 28em;
+	background: $background;
+	position: absolute;
+	right: 0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	text-align: center;
+	padding-top: 10em;
+}
+
+.wellcome__title {
+	font-size: $size_big;
+	color: $color_text;
+	padding-bottom: 2em;
+}
+
+.wellcome__btn_facebook {
+	background: $color_facebook;
+	color: $white;
+	font-size: $size-middle;
+	border-radius: 3px;
+	padding: .8em 3em;
+}
+/* END HOME PAGE */
+
+/* DASHBOARD */
+.header {
+	color: $white;
+	background: $header;
+	padding: 1.1em;
+}
+
+.main_info__data {
+	margin: 2em 0;
+}
+
+.profile {
+	justify-content: flex-end;
+	img {
+		margin-right: .8em;
+	}
+}
+
+.image-profile {
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+}
+
+.main_info {
+	background: $background;
+	padding: 1em;
+}
+
+.card-info {
+	padding: 1.8em;
+	margin: .7em 0;
+}
+
+.card-info {
+	h4 {
+		font-size: $size_big;
+		color: rgba($white, .54);
+	}
+}
+
+.card-info__money {
+	color: $white;
+	font-size: $size-big;
+	margin-top: .7em;
+}
+
+.card1 {
+	background: $bg_card1;
+}
+.card2 {
+	background: $bg_card2;
+}
+.card3 {
+	background: $bg_card3;
+}
+.card4 {
+	background: $bg_card4;
+}
+.card5 {
+	background: $bg_card5;
+}
+.card6 {
+	background: $bg_card6;
+}
+.card7 {
+	background: $bg_card7;
+}
+
+.panel {
+	background: $white;
+}
+
+.panel__header {
+	font-weight: bold;
+	padding: 1em 2em;
+	color: rgba($black, .57);
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.panel__body {
+	padding: 1em 2em;
+}
+/* END DASHBOARD */
+
+/* ALMANCEN */
+
+.panel__header__money {
+	font-size: $size-huge;
+	font-weight: 300;
+}
+
+.table__titles {
+	font-weight: bold;
+	font-size: $size-middle;
+}

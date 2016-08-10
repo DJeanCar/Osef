@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Almacén
+{% endblock title %}
+
+{% block content %}
+	<header class="header">
+		<div class="my-container">
+			<div class="valign-wrapper row no-margin-bottom">
+				<div class="col s8 valign">
+					<span class="header__title">Dashboard</span>
+				</div>
+				<div class="col s4 profile valign-wrapper">
+					<img class="image-profile valign" src="{{ user.url_photo }}">
+					<span class="valign">{{ user.get_full_name }}</span>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="main_info">
+		<div class="my-container">
+			<div class="row main_info__data">
+				<div class="col s4">
+					<div class="card-info card-panel card1">
+						<h4>Capital USD</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="col s4">
+					<div class="card-info card-panel card2">
+						<h4>Capital MXN</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div> 
+				</div>
+				<div class="col s4">
+					<div class="card-info card-panel card3">
+						<h4>Gastos USD</h4>
+						<div class="card-info__money">
+							<span>$</span>
+							<span>126,423.00</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					<div class="panel">
+						<div class="panel__header">
+							<div class="row no-margin-bottom valign-wrapper">
+								<div class="col s8 valign-wrapper">
+									<div class="panel__header__title valign">Saldo almacén</div>
+								</div>
+								<div class="col s4 valign-wrapper">
+									<span class="panel__header__money valign">Saldo actual: $266,423.00</span>
+								</div>
+							</div>
+						</div>
+						<div class="panel__body">
+							<div class="row">
+								<div class="col s12">
+									<div class="panel__body__description">
+										Embarque #2 Durazno Fecha: 24/Jul/2016 Importe del Embarque: $50,000.00
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col s12">
+									<div class="panel__body__table">
+										<div class="row table__titles">
+											<div class="col s2">Nº</div>
+											<div class="col s2">Movimiento</div>
+											<div class="col s2">Fecha</div>
+											<div class="col s2">Descripción</div>
+											<div class="col s2">Cantidad</div>
+											<div class="col s2">Comprobante</div>
+										</div>
+										<div class="row">
+											<div class="col s2">1</div>
+											<div class="col s2">Abono</div>
+											<div class="col s2">24/Jul/2016</div>
+											<div class="col s2">Pago de Pallet completo</div>
+											<div class="col s2">21,0000</div>
+											<div class="col s2">pago.pdf</div>
+										</div>
+										<div class="row">
+											<div class="col s2">2</div>
+											<div class="col s2">Abono</div>
+											<div class="col s2">24/Jul/2016</div>
+											<div class="col s2">Pago de Pallet completo</div>
+											<div class="col s2">21,0000</div>
+											<div class="col s2">pago.pdf</div>
+										</div>
+										<div class="row">
+											<div class="col s2">3</div>
+											<div class="col s2">Abono</div>
+											<div class="col s2">24/Jul/2016</div>
+											<div class="col s2">Pago de Pallet completo</div>
+											<div class="col s2">21,0000</div>
+											<div class="col s2">pago.pdf</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel__body">
+							<div class="row">
+								<div class="col s12">
+									<div class="panel__body__description">
+										Embarque #2 Durazno Fecha: 24/Jul/2016 Importe del Embarque: $50,000.00
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col s12">
+									<div class="panel__body__table">
+										<div class="row table__titles">
+											<div class="col s2">Nº</div>
+											<div class="col s2">Movimiento</div>
+											<div class="col s2">Fecha</div>
+											<div class="col s2">Descripción</div>
+											<div class="col s2">Cantidad</div>
+											<div class="col s2">Comprobante</div>
+										</div>
+										<div class="row">
+											<div class="col s2">1</div>
+											<div class="col s2">Abono</div>
+											<div class="col s2">24/Jul/2016</div>
+											<div class="col s2">Pago de Pallet completo</div>
+											<div class="col s2">21,0000</div>
+											<div class="col s2">pago.pdf</div>
+										</div>
+										<div class="row">
+											<div class="col s2">2</div>
+											<div class="col s2">Abono</div>
+											<div class="col s2">24/Jul/2016</div>
+											<div class="col s2">Pago de Pallet completo</div>
+											<div class="col s2">21,0000</div>
+											<div class="col s2">pago.pdf</div>
+										</div>
+										<div class="row">
+											<div class="col s2">3</div>
+											<div class="col s2">Abono</div>
+											<div class="col s2">24/Jul/2016</div>
+											<div class="col s2">Pago de Pallet completo</div>
+											<div class="col s2">21,0000</div>
+											<div class="col s2">pago.pdf</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+						<a class="btn-floating btn-large waves-effect waves-light red">
+							<i class="large material-icons">add</i>
+						</a>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock content %}
