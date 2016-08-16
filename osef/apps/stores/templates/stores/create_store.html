@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% load static from staticfiles %}
+
+{% block title %}
+	Crear Almancén
+{% endblock title %}
+
+{% block content %}
+	<header class="header">
+		<div class="my-container">
+			<div class="valign-wrapper row no-margin-bottom">
+				<div class="col s8 valign">
+					<span class="header__title">Dashboard</span>
+				</div>
+				<div class="col s4 profile valign-wrapper">
+					<img class="image-profile valign" src="{{ user.url_photo }}">
+					<span class="valign">{{ user.get_full_name }}</span>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="main_info">
+		<div class="my-container">
+			<div class="row main_info__data form-width">
+				<form method="POST">
+					{% csrf_token %}
+					<div class="input-field col s12">
+						<h4>Crear Movimiento</h4>
+						<!-- <select id="mov" name="kind_mov">
+							<option value="" disabled selected>Tipo de movimiento</option>
+							<option value="cargo">Cargo</option>
+							<option value="abono">Abono</option>
+						</select> -->
+						{{ form.kind_mov }}
+						<div id="div-kind-mov" class="hidden">
+							{{ form.kind_charge }}
+						</div>
+						<div id="div-shipment" class="hidden">
+							{{ form.shipment }}
+						</div>
+						<div id="div-rest-input" class="hidden">
+							<select id="kind-charge">
+							</select>
+						</div>
+						<div id="common-fields" class="hidden">
+							{{ form.description }}
+							{{ form.amount }}
+						</div>
+						<button type="submit" class="waves-effect waves-light btn">Crear</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+{% endblock content %}
+
+{% block scripts %}
+	<script src="{% static 'js/create_store.js' %}"></script>
+{% endblock scripts %}

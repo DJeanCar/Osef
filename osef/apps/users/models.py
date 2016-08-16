@@ -51,11 +51,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 		if self.pk is not None:
 			orig = User.objects.get(pk=self.pk)
 			if orig.has_permission != self.has_permission and not orig.has_permission:
-				send_mail(
-					'Subject here',
-					'Here is the message.',
-					'sistemaosef@gmail.com',
-					[orig.email],
-					fail_silently=True,
-				)		
+				print("Send Email")
+				# send_mail(
+				# 	'Subject here',
+				# 	'Here is the message.',
+				# 	'mjeanc.104@gmail.com',
+				# 	['jean_carlos104@hotmail.com'],
+				# )
 		super(User, self).save(*args, **kw)

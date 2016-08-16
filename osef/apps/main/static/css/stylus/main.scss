@@ -15,6 +15,10 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	margin-bottom: 0;
 }
 
+.hidden {
+	display: none;
+}
+
 /* HOME PAGE */
 .wellcome {
 	width: 28em;
@@ -140,4 +144,12 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 .table__titles {
 	font-weight: bold;
 	font-size: $size-middle;
+}
+
+/* END ALMACEN */
+
+/* CREAR MOVIMIENTO */
+.form-width {
+	margin: 0 auto;
+	max-width: 500px;
 }
