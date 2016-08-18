@@ -8,5 +8,5 @@ from .models import Charge
 class GetCargesAjax(View):
 
 	def get(self, request, *args, **kwargs):
-		charges = Charge.objects.filter(kind=request.GET['kind_charge'])
+		charges = Charge.objects.filter(kind__name=request.GET['kind_charge'])
 		return JsonResponse(serializers.serialize('json', charges), safe=False)

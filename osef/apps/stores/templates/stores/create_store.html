@@ -34,19 +34,24 @@
 							<option value="abono">Abono</option>
 						</select> -->
 						{{ form.kind_mov }}
+						{{ form.kind_mov.errors }}
 						<div id="div-kind-mov" class="hidden">
 							{{ form.kind_charge }}
+							{{ form.kind_charge.errors }}
 						</div>
 						<div id="div-shipment" class="hidden">
 							{{ form.shipment }}
+							{{ form.shipment.errors }}
 						</div>
 						<div id="div-rest-input" class="hidden">
-							<select id="kind-charge">
-							</select>
+							{{ form.charge }}
+							{{ form.charge.errors }}
 						</div>
 						<div id="common-fields" class="hidden">
 							{{ form.description }}
+							{{ form.description.errors }}
 							{{ form.amount }}
+							{{ form.amount.errors }}
 						</div>
 						<button type="submit" class="waves-effect waves-light btn">Crear</button>
 					</div>
@@ -58,4 +63,30 @@
 
 {% block scripts %}
 	<script src="{% static 'js/create_store.js' %}"></script>
+	<script>
+		$( document ).ready(function() {
+			if ($('#mov').val().toLowerCase() == 'abono') {
+				create_store.abonoSelected();
+			}
+			if ($('#mov').val().toLowerCase() == 'cargo') {
+				$('#div-kind-mov').show();
+			}
+			if ($('#kind-mov').val().toLowerCase() == 'directo') {
+				console.log("directo");
+				create_store.abonoSelected();
+				$('#div-kind-mov').show();
+				$('#div-shipment').show();
+				$('#div-rest-input').show();
+				create_store.get_kind_charges_ajax($('#kind-mov').val());
+			}
+			if ($('#kind-mov').val().toLowerCase() == 'indirecto') {
+				console.log("indirecto");
+				create_store.abonoSelected();
+				$('#div-kind-mov').show();
+				$('#div-shipment').hide();
+				$('#div-rest-input').show();
+				create_store.get_kind_charges_ajax($('#kind-mov').val());
+			}
+		});
+	</script>
 {% endblock scripts %}

@@ -14,19 +14,23 @@ var create_store = (function (){
 	$kind_charge.on('contentChanged', optionsChanged);
 
 	function movSelected() {
-		if ($select_mov.val() === 'cargo') {
+		if ($select_mov.val().toLowerCase() === 'cargo') {
 			$div_kind_mov.show();
 		} 
-		if ($select_mov.val() === 'abono') {
-			$div_kind_mov.hide();
-			$div_rest_input.hide();
-			$common_fields.show();
-			$div_shipment.show();
+		if ($select_mov.val().toLowerCase() === 'abono') {
+			abonoSelected();
 		}
 	}
 
+	function abonoSelected() {
+		$div_kind_mov.hide();
+		$div_rest_input.hide();
+		$common_fields.show();
+		$div_shipment.show();
+	}
+
 	function kindMovSelect() {
-		if ($select_kind_mov.val() === 'directo') {
+		if ($select_kind_mov.val().toLowerCase() === 'directo') {
 			$div_shipment.show();
 		} else {
 			$div_shipment.hide();
@@ -57,5 +61,9 @@ var create_store = (function (){
 		});
 	}
 
-}())
+	return {
+		abonoSelected: abonoSelected,
+		get_kind_charges_ajax: get_kind_charges_ajax
+	}
 
+}())

@@ -8,6 +8,13 @@ class Shipment(models.Model):
 	def __str__(self):
 		return self.name
 
+class KindCharge(models.Model):
+
+	name = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.name
+
 class Charge(models.Model):
 
 	CHARGES = (
@@ -16,7 +23,7 @@ class Charge(models.Model):
 		)
 
 	name = models.CharField(max_length=50)
-	kind = models.CharField(max_length=50, choices=CHARGES)
+	kind = models.ForeignKey(KindCharge)
 
 	def __str__(self):
 		return self.name

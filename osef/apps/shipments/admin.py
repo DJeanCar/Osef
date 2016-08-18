@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shipment, Charge
+from .models import Shipment, Charge, KindCharge
 
 @admin.register(Shipment)
 class ShipmentAdmin(admin.ModelAdmin):
@@ -9,3 +9,6 @@ class ShipmentAdmin(admin.ModelAdmin):
 class ChargeAdmin(admin.ModelAdmin):
 	pass
 	
+@admin.register(KindCharge)
+class KindChargeAdmin(admin.ModelAdmin):
+	pass
