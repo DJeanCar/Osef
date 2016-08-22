@@ -5,83 +5,106 @@
 {% endblock title %}
 
 {% block content %}
-	<header class="header">
-		<div class="my-container">
-			<div class="valign-wrapper row no-margin-bottom">
-				<div class="col s8 valign">
-					<span class="header__title">Dashboard</span>
-				</div>
-				<div class="col s4 profile valign-wrapper">
-					<img class="image-profile valign" src="{{ user.url_photo }}">
-					<span class="valign">{{ user.get_full_name }}</span>
-				</div>
-			</div>
-		</div>
-	</header>
+	{% include "components/header.html" %}
 
 	<section class="main_info">
 		<div class="my-container">
 			<div class="row main_info__data">
 				<div class="col s3">
-					<div class="card-info card-panel card1">
+					<div class="card-info card1">
 						<h4>Capital USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
 							<span>126,423.00</span>
 						</div>
 					</div>
+					<div class="card_panel__update">
+						<div class="valign-wrapper card-info__updated card1_dark">
+							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+						</div>
+					</div>
 				</div>
 				<div class="col s3">
-					<div class="card-info card-panel card2">
+					<div class="card-info card2">
 						<h4>Capital MXN</h4>
 						<div class="card-info__money">
 							<span>$</span>
 							<span>126,423.00</span>
 						</div>
-					</div> 
+					</div>
+					<div class="card_panel__update card2_dark">
+						<div class="valign-wrapper card-info__updated">
+							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+						</div>
+					</div>
 				</div>
 				<div class="col s3">
-					<div class="card-info card-panel card3">
+					<div class="card-info card3">
 						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
 							<span>126,423.00</span>
 						</div>
 					</div>
+					<div class="card_panel__update card3_dark">
+						<div class="valign-wrapper card-info__updated">
+							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+						</div>
+					</div>
 				</div>
 				<div class="col s3">
-					<div class="card-info card-panel card4">
-						<h4>Gastos MXN</h4>
+					<div class="card-info card4">
+						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
 							<span>126,423.00</span>
 						</div>
 					</div>
+					<div class="card_panel__update card4_dark">
+						<div class="valign-wrapper card-info__updated">
+							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+						</div>
+					</div>
 				</div>
 				<div class="col s3">
-					<div class="card-info card-panel card5">
-						<h4>Saldo Embarques</h4>
+					<div class="card-info card5">
+						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
 							<span>126,423.00</span>
 						</div>
 					</div>
+					<div class="card_panel__update card5_dark">
+						<div class="valign-wrapper card-info__updated">
+							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+						</div>
+					</div>
 				</div>
 				<div class="col s3">
-					<div class="card-info card-panel card6">
-						<h4>Embarques c/saldo</h4>
+					<div class="card-info card6">
+						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
 							<span>126,423.00</span>
 						</div>
 					</div>
+					<div class="card_panel__update card6_dark">
+						<div class="valign-wrapper card-info__updated">
+							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+						</div>
+					</div>
 				</div>
 				<div class="col s3">
-					<div class="card-info card-panel card7">
-						<h4>Almacenes</h4>
+					<div class="card-info card7">
+						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
 							<span>126,423.00</span>
+						</div>
+					</div>
+					<div class="card_panel__update card7_dark">
+						<div class="valign-wrapper card-info__updated">
+							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
 						</div>
 					</div>
 				</div>

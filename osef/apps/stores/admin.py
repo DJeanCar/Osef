@@ -7,4 +7,5 @@ class KindMovementAdmin(admin.ModelAdmin):
 
 @admin.register(Movement)
 class MovementAdmin(admin.ModelAdmin):
-	pass
+	
+	list_display = ('kind_mov', 'charge', 'kind_charge', 'shipment', 'description', 'amount')

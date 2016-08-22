@@ -28,11 +28,8 @@
 					{% csrf_token %}
 					<div class="input-field col s12">
 						<h4>Crear Movimiento</h4>
-						<!-- <select id="mov" name="kind_mov">
-							<option value="" disabled selected>Tipo de movimiento</option>
-							<option value="cargo">Cargo</option>
-							<option value="abono">Abono</option>
-						</select> -->
+					</div>
+					<div class="input-field col s12">
 						{{ form.kind_mov }}
 						{{ form.kind_mov.errors }}
 						<div id="div-kind-mov" class="hidden">
@@ -53,6 +50,8 @@
 							{{ form.amount }}
 							{{ form.amount.errors }}
 						</div>
+					</div>
+					<div class="input-field col s12">
 						<button type="submit" class="waves-effect waves-light btn">Crear</button>
 					</div>
 				</form>
@@ -72,7 +71,6 @@
 				$('#div-kind-mov').show();
 			}
 			if ($('#kind-mov').val().toLowerCase() == 'directo') {
-				console.log("directo");
 				create_store.abonoSelected();
 				$('#div-kind-mov').show();
 				$('#div-shipment').show();
@@ -80,7 +78,6 @@
 				create_store.get_kind_charges_ajax($('#kind-mov').val());
 			}
 			if ($('#kind-mov').val().toLowerCase() == 'indirecto') {
-				console.log("indirecto");
 				create_store.abonoSelected();
 				$('#div-kind-mov').show();
 				$('#div-shipment').hide();
@@ -88,5 +85,9 @@
 				create_store.get_kind_charges_ajax($('#kind-mov').val());
 			}
 		});
+		var is_saved = "{{ is_saved }}";
+		if (is_saved) {
+			Materialize.toast('Se creo el movimiento con éxito', 4000, 'rounded');
+		}
 	</script>
 {% endblock scripts %}

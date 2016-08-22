@@ -12,6 +12,42 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 .hidden {
   display: none; }
 
+.bold {
+  font-weight: bold; }
+
+.errorlist {
+  color: #ef5350; }
+
+.header__title {
+  font-size: 1.2em; }
+
+/* GET EMAIL PAGE */
+.wellcome__email {
+  width: 28em;
+  height: 28em;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center; }
+
+.wellcome__personal_info img {
+  width: 5em;
+  height: 5em;
+  border-radius: 50%; }
+.wellcome__personal_info .wellcome__personal_info__name {
+  margin: .5em;
+  font-size: 1.4em; }
+
+.subtitle {
+  margin-bottom: 2em; }
+
+.wellcome_email_btn {
+  margin-top: 1em; }
+
+/* END GET EMAIL PAGE */
 /* HOME PAGE */
 .wellcome {
   width: 28em;
@@ -48,6 +84,15 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 .main_info__data {
   margin: 2em 0; }
 
+.card_panel__update {
+  margin: 0;
+  background: #0e89eb;
+  padding: .4em 2em; }
+
+.card-info__updated h5 {
+  font-size: 0.8em;
+  color: #ffffff; }
+
 .profile {
   justify-content: flex-end; }
   .profile img {
@@ -64,7 +109,8 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 
 .card-info {
   padding: 1.8em;
-  margin: .7em 0; }
+  margin-top: .7em;
+  margin-bottom: 0; }
 
 .card-info h4 {
   font-size: 1.4em;
@@ -78,23 +124,44 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 .card1 {
   background: #2095F2; }
 
+.card1_dark {
+  background: #0e89eb; }
+
 .card2 {
   background: #4BAE4F; }
+
+.card2_dark {
+  background: #439c47; }
 
 .card3 {
   background: #9b26af; }
 
+.card3_dark {
+  background: #88219a; }
+
 .card4 {
   background: #00bbd3; }
+
+.card4_dark {
+  background: #00a4ba; }
 
 .card5 {
   background: #ccdb38; }
 
+.card5_dark {
+  background: #c3d326; }
+
 .card6 {
   background: #009587; }
 
+.card6_dark {
+  background: #007c70; }
+
 .card7 {
   background: #02a8f3; }
+
+.card7_dark {
+  background: #0297da; }
 
 .panel {
   background: #ffffff; }

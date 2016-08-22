@@ -1,0 +1,13 @@
+<header class="header">
+	<div class="my-container">
+		<div class="valign-wrapper row no-margin-bottom">
+			<div class="col s8 valign">
+				<span class="header__title">Dashboard</span>
+			</div>
+			<div class="col s4 profile valign-wrapper">
+				<a href="{% url 'users:profile' %}"><img class="image-profile valign" src="{{ user.url_photo }}"></a>
+				<span class="valign">{{ user.get_full_name }}</span>
+			</div>
+		</div>
+	</div>
+</header>

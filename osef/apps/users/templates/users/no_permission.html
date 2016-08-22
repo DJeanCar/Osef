@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-	NO TIENES PERMISOS
+	<div class="wellcome__email">
+		<h2 class="wellcome__title center-align bold">Bienvenido a Osef</h2>
+		<div class="wellcome__personal_info">
+			<img src="{{ user.url_photo }}" />
+			<p class="wellcome__personal_info__name">{{ user.get_full_name }},</p>
+		</div>
+		<p class="subtitle center-align">Aún no tienes acceso a la aplicación, el administrador te dará los accesos correspondientes y te enviaremos un correo a <b>{{ user.email }}</b> cuando tu cuenta haya sido activada.</p>
+	</div>
 {% endblock content %}

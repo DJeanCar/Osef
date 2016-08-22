@@ -45,7 +45,8 @@ class CreateMovForm(forms.Form):
 		}))
 	amount = forms.CharField(required=False, widget=forms.TextInput(attrs={
 			'placeholder' : 'Cantidad',
-			'type' : 'number'
+			'type' : 'number',
+			'class' : 'validate'
 		}))
 
 	def clean(self):

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+	<div class="wellcome__email">
+		<h2 class="wellcome__title center-align bold">Bienvenido a Osef</h2>
+		<div class="wellcome__personal_info">
+			<img src="{{ url_photo }}" />
+			<p class="wellcome__personal_info__name">{{ fullname }},</p>
+		</div>
+		<p class="subtitle center-align">necesitamos su correo electronico para poder continuar con la creación de su cuenta</p>
+		<form method="POST">
+			{% csrf_token %}
+			{{ form.email }}
+			{{ form.email.errors }}
+			<button type="submit" class="waves-effect waves-light btn wellcome_email_btn">Continuar</button>
+		</form>
+	</div>
+{% endblock content %}

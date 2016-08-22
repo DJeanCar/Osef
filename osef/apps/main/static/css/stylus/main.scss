@@ -19,6 +19,51 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	display: none;
 }
 
+.bold {
+	font-weight: bold;
+}
+.errorlist {
+	color: #ef5350;
+}
+
+.header__title {
+	font-size: 1.2em;
+}
+
+/* GET EMAIL PAGE */
+.wellcome__email {
+	width: 28em;
+	height: 28em;
+	position: absolute;
+	right: 0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	text-align: center;
+}
+
+.wellcome__personal_info {
+	img {
+		width: 5em;
+		height: 5em;
+		border-radius: 50%;
+	}
+
+	.wellcome__personal_info__name {
+		margin: .5em;
+		font-size: $size-big;
+	}
+}
+
+.subtitle {
+	margin-bottom: 2em;
+}
+.wellcome_email_btn {
+	margin-top: 1em;
+}
+/* END GET EMAIL PAGE */
+
 /* HOME PAGE */
 .wellcome {
 	width: 28em;
@@ -60,6 +105,19 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	margin: 2em 0;
 }
 
+.card_panel__update {
+	margin: 0;
+	background: $bg_card1_dark;
+	padding: .4em 2em;
+}
+
+.card-info__updated {
+	h5 {
+		font-size: $size-small;
+		color: $white;
+	}
+}
+
 .profile {
 	justify-content: flex-end;
 	img {
@@ -80,7 +138,8 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 
 .card-info {
 	padding: 1.8em;
-	margin: .7em 0;
+	margin-top: .7em;
+	margin-bottom: 0;
 }
 
 .card-info {
@@ -99,23 +158,44 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 .card1 {
 	background: $bg_card1;
 }
+.card1_dark {
+	background: $bg_card1_dark;
+}
 .card2 {
 	background: $bg_card2;
+}
+.card2_dark {
+	background: $bg_card2_dark;
 }
 .card3 {
 	background: $bg_card3;
 }
+.card3_dark {
+	background: $bg_card3_dark;
+}
 .card4 {
 	background: $bg_card4;
+}
+.card4_dark {
+	background: $bg_card4_dark;
 }
 .card5 {
 	background: $bg_card5;
 }
+.card5_dark {
+	background: $bg_card5_dark;
+}
 .card6 {
 	background: $bg_card6;
 }
+.card6_dark {
+	background: $bg_card6_dark;
+}
 .card7 {
 	background: $bg_card7;
+}
+.card7_dark {
+	background: $bg_card7_dark;
 }
 
 .panel {
