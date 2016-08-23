@@ -8,4 +8,4 @@ class KindMovementAdmin(admin.ModelAdmin):
 @admin.register(Movement)
 class MovementAdmin(admin.ModelAdmin):
 	
-	list_display = ('kind_mov', 'charge', 'kind_charge', 'shipment', 'description', 'amount')
+	list_display = ('kind_mov', 'charge', 'kind_charge', 'shipment', 'description', 'amount', 'created_at', 'updated_at')
