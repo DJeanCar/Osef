@@ -20,6 +20,12 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 
 .header__title {
   font-size: 1.2em; }
+  .header__title a {
+    color: #ffffff; }
+
+.circle {
+  padding: .5em;
+  background: #ECEFF1; }
 
 /* GET EMAIL PAGE */
 .wellcome__email {
@@ -95,13 +101,14 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 
 .profile {
   justify-content: flex-end; }
-  .profile img {
-    margin-right: .8em; }
+  .profile .profile__nofiticacion {
+    width: 1.5em; }
 
 .image-profile {
   width: 2em;
   height: 2em;
-  border-radius: 50%; }
+  border-radius: 50%;
+  margin: 0 .7em; }
 
 .main_info {
   background: #ECEFF1;

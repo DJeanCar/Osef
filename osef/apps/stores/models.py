@@ -17,6 +17,7 @@ class Movement(TimeStamp):
 	shipment = models.ForeignKey(Shipment, null=True, blank=True)
 	description = models.TextField()
 	amount = models.IntegerField()
+	approved = models.BooleanField(default=False)
 
 	def __str__(self):
 		return '%s - %s' % (self.kind_mov, self.shipment)

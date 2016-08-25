@@ -1,11 +1,21 @@
+{% load static from staticfiles %}
 <header class="header">
 	<div class="my-container">
 		<div class="valign-wrapper row no-margin-bottom">
 			<div class="col s8 valign">
-				<span class="header__title">Dashboard</span>
+				{% if user.kind == "socio" %}
+					<span class="header__title"><a href="{% url 'users:dashboard' %}">Dashboard</a></span>
+				{% else %}
+					<span class="header__title"><a href="{% url 'stores:dashboard' %}">Dashboard</a></span>
+				{% endif %}
 			</div>
 			<div class="col s4 profile valign-wrapper">
-				<a href="{% url 'users:profile' %}"><img class="image-profile valign" src="{{ user.url_photo }}"></a>
+				<img class="profile__nofiticacion" src="{% static 'img/notification.png' %}">
+				{% if user.url_photo %}
+					<a href="{% url 'users:profile' %}"><img class="image-profile valign" src="{{ user.url_photo }}"></a>
+				{% else %}
+					<a href="{% url 'users:profile' %}"><span class="image-profile circle">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</span></a>
+				{% endif %}
 				<span class="valign">{{ user.get_full_name }}</span>
 			</div>
 		</div>

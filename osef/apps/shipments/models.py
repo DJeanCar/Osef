@@ -6,7 +6,7 @@ class Shipment(models.Model):
 	amount = models.BigIntegerField()
 
 	def __str__(self):
-		return self.name
+		return "%s - %s USD" % (self.name, self.amount)
 
 class KindCharge(models.Model):
 

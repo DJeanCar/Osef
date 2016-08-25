@@ -13,7 +13,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 	def dispatch(self, request, *args, **kwargs):
 		if request.user.has_permission:
-			return super(DashboardView, self).dispatch(request, *args, **kwargs)
+			if request.user.kind == "socio":
+				return super(DashboardView, self).dispatch(request, *args, **kwargs)
+			else:
+				return redirect(reverse('stores:dashboard'))
 		else:
 			return redirect(reverse('users:no_permission'))
 

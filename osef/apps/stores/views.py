@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView, FormView
@@ -10,6 +11,15 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 
 	template_name = 'stores/dashboard.html'
 	login_url = '/'
+
+	def dispatch(self, request, *args, **kwargs):
+		if request.user.has_permission:
+			if request.user.kind == "almacen":
+				return super(StoreDashboard, self).dispatch(request, *args, **kwargs)
+			else:
+				return redirect(reverse('users:dashboard'))
+		else:
+			return redirect(reverse('users:no_permission'))
 	
 class CreateStore(FormView):
 

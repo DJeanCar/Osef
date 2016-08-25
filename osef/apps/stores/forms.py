@@ -49,10 +49,12 @@ class CreateMovForm(forms.Form):
 			'class' : 'validate'
 		}))
 
+	def validateAmount(self):
+		if self.cleaned_data['shipment'].amount < int(self.cleaned_data['amount']):
+			self.add_error('amount', 'El embarque no tiene suficiente salgo')
+
 	def clean(self):
 		data = self.cleaned_data
-		print(self.cleaned_data)
-		print(data.get('charge'))
 		if not data['kind_mov']:
 			self.add_error('kind_mov', 'Este campo es obligatorio')
 		else:
@@ -76,11 +78,15 @@ class CreateMovForm(forms.Form):
 							self.add_error('amount', 'Este campo es obligatorio')
 						if not data.get('charge'):
 							self.add_error('charge', 'Este campo es obligatorio')
+					self.validateAmount()
 			if self.data['kind_mov'].lower() == 'abono':
 				if not data['shipment']:
 					self.add_error('shipment', 'Este campo es obligatorio')
-				if not data['description']:
+				elif not data['description']:
 					self.add_error('description', 'Este campo es obligatorio')
-				if not data['amount']:
+				elif not data['amount']:
 					self.add_error('amount', 'Este campo es obligatorio')
+				else:
+					self.validateAmount()
+
 

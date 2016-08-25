@@ -28,6 +28,14 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 
 .header__title {
 	font-size: 1.2em;
+	a {
+		color: $white;
+	}
+}
+
+.circle {
+	padding: .5em;
+	background: $background;
 }
 
 /* GET EMAIL PAGE */
@@ -120,8 +128,8 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 
 .profile {
 	justify-content: flex-end;
-	img {
-		margin-right: .8em;
+	.profile__nofiticacion {
+		width: 1.5em;
 	}
 }
 
@@ -129,6 +137,7 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	width: 2em;
 	height: 2em;
 	border-radius: 50%;
+	margin: 0 .7em;
 }
 
 .main_info {

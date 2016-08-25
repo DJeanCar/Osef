@@ -26,12 +26,18 @@ class UserManager(BaseUserManager, models.Manager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
+	_TYPE = (
+		('socio', 'Socio'),
+		('almacen', 'Almancén'),
+	)
+
 	username = models.CharField(unique=True, max_length=50)
 	email = models.EmailField()
 	first_name = models.CharField(max_length=100)
 	last_name = models.CharField(max_length=100)
-	url_photo = models.URLField()
+	url_photo = models.URLField(null=True, blank=True)
 	has_permission = models.BooleanField(default=False)
+	kind = models.CharField(max_length=15, choices=_TYPE, null=True, blank=True)
 
 	is_active = models.BooleanField(default=True)
 	is_staff = models.BooleanField(default=False)
