@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 
 class UserManager(BaseUserManager, models.Manager):
 
@@ -57,11 +57,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 		if self.pk is not None:
 			orig = User.objects.get(pk=self.pk)
 			if orig.has_permission != self.has_permission and not orig.has_permission:
-				print("Send Email")
-				# send_mail(
-				# 	'Subject here',
-				# 	'Here is the message.',
-				# 	'mjeanc.104@gmail.com',
-				# 	['jean_carlos104@hotmail.com'],
-				# )
+				html_content = 'El administrador te a dado permisos de acceso a Osef, puedes ingresar en <a href="http://localhost:8000">dominio.com</a>'
+				msg = EmailMultiAlternatives(
+					'Tu cuenta en Osef a sido activada',
+					html_content,
+					'Osef <mjeanc.104@gmail.com>',
+					[orig.email],
+				)
+				msg.attach_alternative(html_content, 'text/html')
+				msg.send()
 		super(User, self).save(*args, **kw)

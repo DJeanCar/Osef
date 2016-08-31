@@ -1,6 +1,7 @@
 from django.db import models
 from apps.shipments.models import Shipment, Charge, KindCharge
 from apps.main.models import TimeStamp
+from apps.users.models import User
 
 class KindMovement(models.Model):
 
@@ -11,6 +12,7 @@ class KindMovement(models.Model):
 
 class Movement(TimeStamp):
 
+	store = models.ForeignKey(User)
 	kind_mov = models.ForeignKey(KindMovement)
 	kind_charge = models.ForeignKey(KindCharge, null=True, blank=True)
 	charge = models.ForeignKey(Charge, null=True, blank=True)

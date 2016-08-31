@@ -109,16 +109,9 @@ SOCIAL_AUTH_PIPELINE = (
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'sistemaosef@gmail.com'
-EMAIL_HOST_PASSWORD = 'Sistema_01'
+EMAIL_HOST_USER = 'mjeanc.104@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+# EMAIL_HOST_USER = 'sistemaosef@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Sistema_01'
 EMAIL_PORT = 587
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# # EMAIL_HOST_USER = 'sistemaosef@gmail.com'
-# EMAIL_HOST_USER = 'mjeanc.104@gmail.com'
-# # EMAIL_HOST_PASSWORD = 'Sistema_01'
-# EMAIL_HOST_PASSWORD = 'miralaps'
-# EMAIL_USE_TLS = True

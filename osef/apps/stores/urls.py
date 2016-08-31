@@ -1,7 +1,8 @@
 from django.conf.urls import url
-from .views import StoreDashboard, CreateStore
+from .views import StoreDashboard, CreateStore, StoreExportDashboard
 
 urlpatterns = [
 	url(r'^almacen/$', StoreDashboard.as_view(), name='dashboard'),
+	url(r'^almacen/exportar/$', StoreExportDashboard.as_view(), name='dashboard_export'),
 	url(r'^almacen/agregar-movimiento/$', CreateStore.as_view(), name='create_store'),
 ]

@@ -43,6 +43,20 @@
 			<div class="row">
 				<div class="col s12">
 					<div class="panel">
+						<div class="panel__header panel__filter grey lighten-5">
+							<div class="row no-margin-bottom valign-wrapper panel__filter__weigth">
+								<div class="col s8 valign-wrapper">
+									<div class="panel__header__title valign">Filtros</div>
+								</div>
+								<div class="col s4 valign-wrapper">
+									<div class="input-field col s12">
+										<form method="GET">
+											<input id="search_mov" name="search" placeholder="Buscar" type="text" />
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="panel__header">
 							<div class="row no-margin-bottom valign-wrapper">
 								<div class="col s8 valign-wrapper">
@@ -53,107 +67,80 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel__body">
-							<div class="row">
-								<div class="col s12">
-									<div class="panel__body__description">
-										Embarque #2 Durazno Fecha: 24/Jul/2016 Importe del Embarque: $50,000.00
+						{% for shipment, movements in sorted_movements %}
+							<div class="panel__body">
+								<div class="row">
+									<div class="col s12">
+										<div class="panel__body__description">
+											Embarque: {{ shipment.name }} Fecha: 24/Jul/2016 Importe del Embarque: ${{ shipment.amount }}
+										</div>
 									</div>
 								</div>
-							</div>
 
-							<div class="row">
-								<div class="col s12">
-									<div class="panel__body__table">
-										<div class="row table__titles">
-											<div class="col s2">Nº</div>
-											<div class="col s2">Movimiento</div>
-											<div class="col s2">Fecha</div>
-											<div class="col s2">Descripción</div>
-											<div class="col s2">Cantidad</div>
-											<div class="col s2">Comprobante</div>
-										</div>
-										<div class="row">
-											<div class="col s2">1</div>
-											<div class="col s2">Abono</div>
-											<div class="col s2">24/Jul/2016</div>
-											<div class="col s2">Pago de Pallet completo</div>
-											<div class="col s2">21,0000</div>
-											<div class="col s2">pago.pdf</div>
-										</div>
-										<div class="row">
-											<div class="col s2">2</div>
-											<div class="col s2">Abono</div>
-											<div class="col s2">24/Jul/2016</div>
-											<div class="col s2">Pago de Pallet completo</div>
-											<div class="col s2">21,0000</div>
-											<div class="col s2">pago.pdf</div>
-										</div>
-										<div class="row">
-											<div class="col s2">3</div>
-											<div class="col s2">Abono</div>
-											<div class="col s2">24/Jul/2016</div>
-											<div class="col s2">Pago de Pallet completo</div>
-											<div class="col s2">21,0000</div>
-											<div class="col s2">pago.pdf</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="panel__body">
-							<div class="row">
-								<div class="col s12">
-									<div class="panel__body__description">
-										Embarque #2 Durazno Fecha: 24/Jul/2016 Importe del Embarque: $50,000.00
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col s12">
-									<div class="panel__body__table">
-										<div class="row table__titles">
-											<div class="col s2">Nº</div>
-											<div class="col s2">Movimiento</div>
-											<div class="col s2">Fecha</div>
-											<div class="col s2">Descripción</div>
-											<div class="col s2">Cantidad</div>
-											<div class="col s2">Comprobante</div>
-										</div>
-										<div class="row">
-											<div class="col s2">1</div>
-											<div class="col s2">Abono</div>
-											<div class="col s2">24/Jul/2016</div>
-											<div class="col s2">Pago de Pallet completo</div>
-											<div class="col s2">21,0000</div>
-											<div class="col s2">pago.pdf</div>
-										</div>
-										<div class="row">
-											<div class="col s2">2</div>
-											<div class="col s2">Abono</div>
-											<div class="col s2">24/Jul/2016</div>
-											<div class="col s2">Pago de Pallet completo</div>
-											<div class="col s2">21,0000</div>
-											<div class="col s2">pago.pdf</div>
-										</div>
-										<div class="row">
-											<div class="col s2">3</div>
-											<div class="col s2">Abono</div>
-											<div class="col s2">24/Jul/2016</div>
-											<div class="col s2">Pago de Pallet completo</div>
-											<div class="col s2">21,0000</div>
-											<div class="col s2">pago.pdf</div>
+								<div class="row">
+									<div class="col s12">
+										<div class="panel__body__table">
+											<div class="row table__titles">
+												<div class="col s2">Nº</div>
+												<div class="col s2">Movimiento</div>
+												<div class="col s2">Fecha</div>
+												<div class="col s2">Descripción</div>
+												<div class="col s2">Cantidad</div>
+												<div class="col s2">Comprobante</div>
+											</div>
+											{% for movement in movements %}
+												<div class="row">
+													<div class="col s2">{{ forloop.counter }}</div>
+													<div class="col s2">{{ movement.kind_mov.name}}</div>
+													<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
+													<div class="col s2">{{ movement.description }}</div>
+													<div class="col s2">{{ movement.amount }}</div>
+													<div class="col s2"><button class="btn-comprobante waves-effect waves-light btn-large">Seleccionar</button></div>
+												</div>
+											{% endfor %}
+											<div class="row">
+												<div class="col s2"></div>
+												<div class="col s2"></div>
+												<div class="col s2"></div>
+												<div class="col s2"><b>Total Abonos</b></div>
+												<div class="col s2">{{ shipment.total_abono }}</div>
+												<div class="col s2"></div>
+											</div>
+											<div class="row">
+												<div class="col s2"></div>
+												<div class="col s2"></div>
+												<div class="col s2"></div>
+												<div class="col s2"><b>Total Cargos</b></div>
+												<div class="col s2">{{ shipment.total_charge }}</div>
+												<div class="col s2"></div>
+											</div>
+											<div class="row">
+												<div class="col s2"></div>
+												<div class="col s2"></div>
+												<div class="col s2"></div>
+												<div class="col s2"><b>Saldo</b></div>
+												<div class="col s2">{{ shipment.total }}</div>
+												<div class="col s2"></div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						{% endfor %}
 					</div>
 					<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-						<a href="{% url 'stores:create_store' %}" class="btn-floating btn-large waves-effect waves-light red">
-							<i class="large material-icons">add</i>
+						<a class="btn-floating btn-large red">
+							<i class="large material-icons">mode_edit</i>
 						</a>
+						<ul>
+							<li>
+								<a class="btn-floating green" href="{% url 'stores:dashboard_export' %}" target="_blank"><i class="material-icons">publish</i>
+								</a>
+							</li>
+							<li>
+								<a class="btn-floating blue" href="{% url 'stores:create_store' %}"><i class="material-icons">add</i></a>
+							</li>
+						</ul>
 					</div>
 					</div>
 				</div>

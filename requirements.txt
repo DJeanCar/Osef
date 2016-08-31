@@ -1,5 +1,7 @@
 defusedxml==0.4.1
+diff-match-patch==20121119
 Django==1.10
+django-import-export==0.4.5
 oauthlib==1.1.2
 psycopg2==2.6.2
 PyJWT==1.4.1
@@ -11,5 +13,6 @@ requests-oauthlib==0.6.2
 sendgrid==2.2.1
 six==1.10.0
 smtpapi==0.3.1
+tablib==0.11.2
 Unipath==1.1
 wheel==0.24.0

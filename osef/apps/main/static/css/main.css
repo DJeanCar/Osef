@@ -27,6 +27,19 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
   padding: .5em;
   background: #ECEFF1; }
 
+.btn-comprobante {
+  font-size: 0.8em;
+  height: 3em;
+  line-height: 0;
+  padding: 0 1rem;
+  text-transform: none; }
+
+.panel__filter {
+  border: none; }
+
+.panel__filter__weigth {
+  font-weight: 300; }
+
 /* GET EMAIL PAGE */
 .wellcome__email {
   width: 28em;
