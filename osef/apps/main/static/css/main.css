@@ -23,6 +23,9 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
   .header__title a {
     color: #ffffff; }
 
+.header__option li a {
+  color: #000000; }
+
 .circle {
   padding: .5em;
   background: #ECEFF1; }
@@ -116,6 +119,8 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
   justify-content: flex-end; }
   .profile .profile__nofiticacion {
     width: 1.5em; }
+  .profile a {
+    color: white; }
 
 .image-profile {
   width: 2em;

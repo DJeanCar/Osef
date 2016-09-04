@@ -14,39 +14,35 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 
 	template_name = 'stores/dashboard.html'
 	login_url = '/'
+	saldo_deudor = 0
+	gastos = 0
 
-	def _get_sorted_shipments(self, movements):
-		shipments = set([movement.shipment for movement in movements])
-		sort_movements = []
+	def _get_movements_by_shipment(self, shipments):
+		movements_by_shipment = []
 		for shipment in shipments:
 			abono = 0
 			charge = 0
-			movements_by_shipment = []
+			movements = Movement.objects.filter(shipment = shipment)
+			movements_by_shipment.append(movements)
 			for movement in movements:
-				if movement.shipment == shipment:
-					movements_by_shipment.append(movement)
-					if movement.kind_mov.name.lower() == 'cargo':
-						charge += movement.amount
-					if movement.kind_mov.name.lower() == 'abono':
-						abono += movement.amount
-			# print(abono)
-			sort_movements.append(movements_by_shipment)
+				if movement.kind_mov.name.lower() == 'cargo':
+					charge += movement.amount
+				if movement.kind_mov.name.lower() == 'abono':
+					abono += movement.amount
 			setattr(shipment, 'total_abono', abono)
 			setattr(shipment, 'total_charge', charge)
 			setattr(shipment, 'total', charge + abono)
-		return zip(shipments, sort_movements)
+			self.saldo_deudor = self.saldo_deudor + charge + abono
+			self.gastos = self.gastos + charge
+		return zip(shipments, movements_by_shipment)
 
 	def get_context_data(self, **kwargs):
 		context = super(StoreDashboard, self).get_context_data(**kwargs)
-		movements = Movement.objects.filter(store = self.request.user)
-		if self.request.GET.get('search'):
-			# Search movements
-			movements = movements.filter(shipment__name__icontains = self.request.GET.get('search'))
-			sorted_movements = self._get_sorted_shipments(movements)
-		else:
-			# All movements
-			sorted_movements = self._get_sorted_shipments(movements)
-		context['sorted_movements'] = sorted_movements
+		shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0)
+		shipments_with_movements = self._get_movements_by_shipment(shipments)
+		context['sorted_movements'] = list(shipments_with_movements)
+		context['saldo_deudor'] = self.saldo_deudor
+		context['gastos'] = self.gastos
 		return context
 
 	def dispatch(self, request, *args, **kwargs):
@@ -95,3 +91,12 @@ class CreateStore(FormView):
 		)
 		self.request.session['is_saved'] = True
 		return super(CreateStore, self).form_valid(form)
+
+	def get_form(self, form_class=None):
+		"""
+		Returns an instance of the form to be used in this view.
+		"""
+		if form_class is None:
+			form_class = self.get_form_class()
+		return form_class(self.request.user, **self.get_form_kwargs())
+

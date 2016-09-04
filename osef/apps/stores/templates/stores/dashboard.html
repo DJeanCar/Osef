@@ -12,15 +12,16 @@
 			<div class="row main_info__data">
 				<div class="col s6">
 					<div class="card-info card1">
-						<h4>Capital USD</h4>
+						<h4>Saldo deudor USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>126,423.00</span>
+							<span>{{ saldo_deudor }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update">
 						<div class="valign-wrapper card-info__updated card1_dark">
 							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<!-- Ultimo movimiento cualquiera -->
 						</div>
 					</div>
 				</div>
@@ -29,12 +30,13 @@
 						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>126,423.00</span>
+							<span>{{ gastos }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update card3_dark">
 						<div class="valign-wrapper card-info__updated">
 							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<!-- Ultimo movimiento solo cargos -->
 						</div>
 					</div>
 				</div>
@@ -54,16 +56,6 @@
 											<input id="search_mov" name="search" placeholder="Buscar" type="text" />
 										</form>
 									</div>
-								</div>
-							</div>
-						</div>
-						<div class="panel__header">
-							<div class="row no-margin-bottom valign-wrapper">
-								<div class="col s8 valign-wrapper">
-									<div class="panel__header__title valign">Saldo almacén</div>
-								</div>
-								<div class="col s4 valign-wrapper">
-									<span class="panel__header__money valign">Saldo actual: $266,423.00</span>
 								</div>
 							</div>
 						</div>

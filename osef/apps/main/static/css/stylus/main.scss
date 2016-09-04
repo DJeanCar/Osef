@@ -33,6 +33,14 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	}
 }
 
+.header__option {
+	li {
+		a {
+			color: $black;
+		}
+	}
+}
+
 .circle {
 	padding: .5em;
 	background: $background;
@@ -146,6 +154,9 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	justify-content: flex-end;
 	.profile__nofiticacion {
 		width: 1.5em;
+	}
+	a {
+		color: white;
 	}
 }
 

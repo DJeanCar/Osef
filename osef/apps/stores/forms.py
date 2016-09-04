@@ -4,6 +4,16 @@ from apps.stores.models import KindMovement, Movement
 
 class CreateMovForm(forms.Form):
 
+	def __init__(self, user, *args, **kwargs):
+		self.user = user
+		print(self.user)
+		super(CreateMovForm, self).__init__(*args, **kwargs)
+		self.fields['shipment'] = forms.ModelChoiceField(
+			required = False,
+			queryset = Shipment.objects.filter(store = self.user, amount__gt = 0),
+			empty_label="Selecciona un embarque"
+		)
+
 	_KIND_CHARGE = (
 		('', 'Tipo de cargo'),
 		('directo', 'Directo'),
@@ -34,11 +44,6 @@ class CreateMovForm(forms.Form):
 			widget=forms.Select(attrs={
 			'id' : 'kind-charge'
 		}))
-	shipment = forms.ModelChoiceField(
-			required = False,
-			queryset = Shipment.objects.filter(amount__gt = 0),
-			empty_label="Selecciona un embarque"
-		)
 	description = forms.CharField(required=False, widget=forms.Textarea(attrs={
 			'placeholder' : 'Descripción',
 			'class' : 'materialize-textarea'
@@ -50,8 +55,11 @@ class CreateMovForm(forms.Form):
 		}))
 
 	def validateAmount(self):
-		if self.cleaned_data['shipment'].amount < int(self.cleaned_data['amount']):
-			self.add_error('amount', 'El embarque no tiene suficiente salgo')
+		if not self.cleaned_data['amount'].isdigit():
+			self.add_error('amount', 'Este campo solo puede contener números')
+		else:
+			if self.cleaned_data['shipment'].amount < int(self.cleaned_data['amount']):
+				self.add_error('amount', 'El embarque no tiene suficiente saldo')
 
 	def clean(self):
 		data = self.cleaned_data

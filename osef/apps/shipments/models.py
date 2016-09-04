@@ -1,7 +1,9 @@
 from django.db import models
+from apps.users.models import User
 
 class Shipment(models.Model):
 
+	store = models.ForeignKey(User, verbose_name='Almancén')
 	name = models.CharField(max_length=50)
 	amount = models.BigIntegerField()
 
