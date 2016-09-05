@@ -10,7 +10,7 @@
 	<section class="main_info">
 		<div class="my-container">
 			<div class="row main_info__data">
-				<div class="col s6">
+				<div class="col s12 m6 l6">
 					<div class="card-info card1">
 						<h4>Saldo deudor USD</h4>
 						<div class="card-info__money">
@@ -25,7 +25,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col s6">
+				<div class="col s12 m6 l6">
 					<div class="card-info card3">
 						<h4>Gastos USD</h4>
 						<div class="card-info__money">
@@ -47,10 +47,10 @@
 					<div class="panel">
 						<div class="panel__header panel__filter grey lighten-5">
 							<div class="row no-margin-bottom valign-wrapper panel__filter__weigth">
-								<div class="col s8 valign-wrapper">
+								<div class="col s4 m4 l8 valign-wrapper">
 									<div class="panel__header__title valign">Filtros</div>
 								</div>
-								<div class="col s4 valign-wrapper">
+								<div class="col s8 m8 l4 valign-wrapper">
 									<div class="input-field col s12">
 										<form method="GET">
 											<input id="search_mov" name="search" placeholder="Buscar" type="text" />
@@ -73,44 +73,44 @@
 									<div class="col s12">
 										<div class="panel__body__table">
 											<div class="row table__titles">
-												<div class="col s2">Nº</div>
+												<div class="col s1">Nº</div>
 												<div class="col s2">Movimiento</div>
 												<div class="col s2">Fecha</div>
-												<div class="col s2">Descripción</div>
+												<div class="col s3">Descripción</div>
 												<div class="col s2">Cantidad</div>
 												<div class="col s2">Comprobante</div>
 											</div>
 											{% for movement in movements %}
 												<div class="row">
-													<div class="col s2">{{ forloop.counter }}</div>
+													<div class="col s1">{{ forloop.counter }}</div>
 													<div class="col s2">{{ movement.kind_mov.name}}</div>
 													<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
-													<div class="col s2">{{ movement.description }}</div>
+													<div class="col s3">{{ movement.description }}</div>
 													<div class="col s2">{{ movement.amount }}</div>
 													<div class="col s2"><button class="btn-comprobante waves-effect waves-light btn-large">Seleccionar</button></div>
 												</div>
 											{% endfor %}
 											<div class="row">
+												<div class="col s1"></div>
 												<div class="col s2"></div>
 												<div class="col s2"></div>
-												<div class="col s2"></div>
-												<div class="col s2"><b>Total Abonos</b></div>
+											 	<div class="col s3"><b>Total Abonos</b></div>
 												<div class="col s2">{{ shipment.total_abono }}</div>
 												<div class="col s2"></div>
 											</div>
 											<div class="row">
+												<div class="col s1"></div>
 												<div class="col s2"></div>
 												<div class="col s2"></div>
-												<div class="col s2"></div>
-												<div class="col s2"><b>Total Cargos</b></div>
+												<div class="col s3"><b>Total Cargos</b></div>
 												<div class="col s2">{{ shipment.total_charge }}</div>
 												<div class="col s2"></div>
 											</div>
 											<div class="row">
+												<div class="col s1"></div>
 												<div class="col s2"></div>
 												<div class="col s2"></div>
-												<div class="col s2"></div>
-												<div class="col s2"><b>Saldo</b></div>
+												<div class="col s3"><b>Saldo</b></div>
 												<div class="col s2">{{ shipment.total }}</div>
 												<div class="col s2"></div>
 											</div>
@@ -126,11 +126,11 @@
 						</a>
 						<ul>
 							<li>
-								<a class="btn-floating green" href="{% url 'stores:dashboard_export' %}" target="_blank"><i class="material-icons">publish</i>
+								<a class="btn-floating green {% if not has_shipments %}disabled{% endif %}" href="{% if not has_shipments %}#{% else %}{% url 'stores:dashboard_export' %}{% endif %}" target='{% if has_shipments %}_blank{% endif %}' ><i class="material-icons">publish</i>
 								</a>
 							</li>
 							<li>
-								<a class="btn-floating blue" href="{% url 'stores:create_store' %}"><i class="material-icons">add</i></a>
+								<a class="btn-floating blue {% if not has_shipments %}disabled{% endif %}" href="{% if not has_shipments %}#{% else %}{% url 'stores:create_store' %}{% endif %}"><i class="material-icons">add</i></a>
 							</li>
 						</ul>
 					</div>

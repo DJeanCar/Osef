@@ -16,6 +16,7 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 	login_url = '/'
 	saldo_deudor = 0
 	gastos = 0
+	has_shipments = False
 
 	def _get_movements_by_shipment(self, shipments):
 		movements_by_shipment = []
@@ -43,6 +44,7 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 		context['sorted_movements'] = list(shipments_with_movements)
 		context['saldo_deudor'] = self.saldo_deudor
 		context['gastos'] = self.gastos
+		context['has_shipments'] = True if shipments.count() > 0 else False
 		return context
 
 	def dispatch(self, request, *args, **kwargs):
@@ -73,7 +75,6 @@ class CreateStore(FormView):
 
 	def get_context_data(self, **kwargs):
 		context = super(CreateStore, self).get_context_data(**kwargs)
-		context['shipments'] = Shipment.objects.filter(amount__gt = 0)
 		if self.request.session.get('is_saved'):
 			context['is_saved'] = True
 			self.request.session['is_saved'] = False
@@ -99,4 +100,14 @@ class CreateStore(FormView):
 		if form_class is None:
 			form_class = self.get_form_class()
 		return form_class(self.request.user, **self.get_form_kwargs())
+
+	def dispatch(self, request, *args, **kwargs):
+		if self.request.user.is_authenticated():
+			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0)
+			if shipments.count() > 0:
+				return super(CreateStore, self).dispatch(request, *args, **kwargs)
+			else:
+				return redirect(reverse('stores:dashboard'))
+		else:
+			return redirect(reverse('main:home'))
 

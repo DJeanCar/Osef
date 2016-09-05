@@ -154,6 +154,9 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	justify-content: flex-end;
 	.profile__nofiticacion {
 		width: 1.5em;
+		@media screen and (max-width: 460px) {
+			display: none;
+		}
 	}
 	a {
 		color: white;
