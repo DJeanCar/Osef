@@ -6,7 +6,6 @@ class CreateMovForm(forms.Form):
 
 	def __init__(self, user, *args, **kwargs):
 		self.user = user
-		print(self.user)
 		super(CreateMovForm, self).__init__(*args, **kwargs)
 		self.fields['shipment'] = forms.ModelChoiceField(
 			required = False,
@@ -58,7 +57,7 @@ class CreateMovForm(forms.Form):
 		if not self.cleaned_data['amount'].isdigit():
 			self.add_error('amount', 'Este campo solo puede contener números')
 		else:
-			if self.cleaned_data['shipment'].amount < int(self.cleaned_data['amount']):
+			if self.cleaned_data['shipment'].saldo < int(self.cleaned_data['amount']):
 				self.add_error('amount', 'El embarque no tiene suficiente saldo')
 
 	def clean(self):

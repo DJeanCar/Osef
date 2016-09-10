@@ -6,6 +6,10 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	padding: 0;
 }
 
+a {
+	color: $color_text;
+}
+
 .my-container {
 	max-width: 1100px;
 	margin: 0 auto;
@@ -272,3 +276,77 @@ body, h1, h2, h3, h4, li, ul, ol, img, p {
 	margin: 0 auto;
 	max-width: 500px;
 }
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+    font-size: $size-middle;
+    font-weight: 700;
+    color: white;
+    background-color: $header;
+    display: inline-block;
+    padding: .3em 1em;
+
+
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #0896EA;
+}
+
+.inputfile + label {
+  cursor: pointer; /* "hand" cursor */
+}
+
+
+.changeFile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.changeFile + label {
+    font-size: $size-small;
+    font-weight: 300;
+    color: $color_text;
+    display: inline-block;
+    padding: .3em 1em;
+}
+
+.changeFile:focus + label,
+.changeFile + label:hover {
+    font-weight: 400;
+}
+
+.changeFile + label {
+  cursor: pointer; /* "hand" cursor */
+}
+
+.movement__image_link {
+	color: white;
+	background: #4caf50;
+	padding: .5em 1em;
+	cursor: pointer
+}
+.movement__image_link:hover {
+	background-color: #66bb6a;
+}
+
+.recently_saved {
+			font-size: $size-middle;
+	    font-weight: 300;
+	    color: $color_text;
+	    display: inline-block;
+	    padding: .3em 1em;
+	}

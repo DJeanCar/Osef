@@ -13,6 +13,7 @@ DJANGO_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+    'django.contrib.humanize',
 ]
 
 LOCAL_APPS = [
@@ -48,6 +49,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.media',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -115,3 +117,4 @@ EMAIL_HOST_PASSWORD = ''
 # EMAIL_HOST_PASSWORD = 'Sistema_01'
 EMAIL_PORT = 587
 
+MEDIA_ROOT = BASE_DIR.child('media')

@@ -1,6 +1,6 @@
 import csv
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
@@ -32,8 +32,7 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 					abono += movement.amount
 			setattr(shipment, 'total_abono', abono)
 			setattr(shipment, 'total_charge', charge)
-			setattr(shipment, 'total', charge + abono)
-			self.saldo_deudor = self.saldo_deudor + charge + abono
+			self.saldo_deudor = shipment.saldo # suma montos embarques
 			self.gastos = self.gastos + charge
 		return zip(shipments, movements_by_shipment)
 
@@ -45,6 +44,8 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 		context['saldo_deudor'] = self.saldo_deudor
 		context['gastos'] = self.gastos
 		context['has_shipments'] = True if shipments.count() > 0 else False
+		context['last_movement'] = Movement.objects.filter(store=self.request.user, approved=True).last()
+		context['last_charge'] = Movement.objects.filter(store=self.request.user, kind_mov__name__iexact='cargo', approved=True).last()
 		return context
 
 	def dispatch(self, request, *args, **kwargs):
@@ -110,4 +111,16 @@ class CreateStore(FormView):
 				return redirect(reverse('stores:dashboard'))
 		else:
 			return redirect(reverse('main:home'))
+
+
+class AddImageMovement(View):
+
+	def post(self, request, *args, **kwargs):
+		movement = get_object_or_404(Movement, id=kwargs['id'])
+		movement.image = request.FILES['image']
+		movement.save()
+		print(dir(movement.image))
+		print(movement.image.url)
+		return JsonResponse({'success' : True, 'image_url': movement.image.url})
+
 

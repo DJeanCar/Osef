@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load humanize %}
 {% block title %}
 	Almacén
 {% endblock title %}
@@ -20,7 +21,13 @@
 					</div>
 					<div class="card_panel__update">
 						<div class="valign-wrapper card-info__updated card1_dark">
-							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<h5 class="valign">Último movimiento: 
+								{% if not last_movement %}
+									Aún no tenemos movimientos
+								{% else %}
+									{{ last_movement.created_at|naturaltime }}
+								{% endif %}
+							</h5>
 							<!-- Ultimo movimiento cualquiera -->
 						</div>
 					</div>
@@ -35,7 +42,13 @@
 					</div>
 					<div class="card_panel__update card3_dark">
 						<div class="valign-wrapper card-info__updated">
-							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<h5 class="valign">Último movimiento:
+							{% if not last_charge %}
+								Aún no tenemos movimientos
+							{% else %}
+								{{ last_charge.created_at|naturaltime }}
+							{% endif %}
+							</h5>
 							<!-- Ultimo movimiento solo cargos -->
 						</div>
 					</div>
@@ -87,7 +100,17 @@
 													<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
 													<div class="col s3">{{ movement.description }}</div>
 													<div class="col s2">{{ movement.amount }}</div>
-													<div class="col s2"><button class="btn-comprobante waves-effect waves-light btn-large">Seleccionar</button></div>
+													<div class="col s2">
+														{% csrf_token %}
+														{% if movement.image %}
+															<a href="{{ movement.image.url }}" class="movement__image_link">Ver</a>
+															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
+															<label for="changed">Cambiar</label>
+														{% else %}
+															<input type="file" name="file" id="file" class="inputfile" data-id="{{ movement.id }}" />
+															<label for="file" id="label_file">Select Imagen</label>
+														{% endif %}
+													</div>
 												</div>
 											{% endfor %}
 											<div class="row">
@@ -111,7 +134,7 @@
 												<div class="col s2"></div>
 												<div class="col s2"></div>
 												<div class="col s3"><b>Saldo</b></div>
-												<div class="col s2">{{ shipment.total }}</div>
+												<div class="col s2">{{ shipment.saldo }}</div>
 												<div class="col s2"></div>
 											</div>
 										</div>
@@ -140,3 +163,60 @@
 		</div>
 	</section>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+	// using jQuery
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie !== '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	}
+	var csrftoken = getCookie('csrftoken');
+
+	function csrfSafeMethod(method) {
+	    // these HTTP methods do not require CSRF protection
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	$.ajaxSetup({
+	    beforeSend: function(xhr, settings) {
+	        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+	            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+	        }
+	    }
+	});
+
+	var formdata = new FormData(); 
+	$('.inputfile').on('change', function() {
+		var file = this.files[0];
+		var id = this.dataset.id;
+		if (formdata) {
+			formdata.append("image", file);
+			$.ajax({
+				url: '/movimiento/agregar-imagen/' + id + '/',
+				type: "POST",
+				data: formdata,
+				processData: false,
+        contentType: false,
+        success: function (data) {
+        	console.log(data.image_url);
+        	$('#file').remove();
+        	Materialize.toast('Se guardó el comprobante', 3000, 'rounded');
+        	$('#label_file').html('<a href='+ data.image_url +' class="recently_saved">Guardado</a>');
+        }
+			});
+		}
+	});
+</script>
+{% endblock %}
+
