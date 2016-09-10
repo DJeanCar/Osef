@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *.pyc
 
+#media
+media/*
+media
 
 # OSX Finder turds
 .DS_Store
