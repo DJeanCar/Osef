@@ -79,11 +79,16 @@ class Account(models.Model):
 		('Dólares', 'Dólares'),
 		('Pesos mexicanos', 'Pesos mexicanos'),
 	)
+	_CURRENCY = (
+		('usd', 'USD'),
+		('mxn', 'MXN'),
+	)
 
-	currency = models.CharField(max_length=15, choices=_TYPE)
+	name = models.CharField(max_length=50, choices=_TYPE)
+	currency = models.CharField(max_length=15, choices=_CURRENCY)
 	amount = models.BigIntegerField()
 
 	def __str__(self):
-		return self.currency
+		return self.name
 
 

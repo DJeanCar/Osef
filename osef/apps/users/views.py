@@ -13,9 +13,33 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 	template_name = 'users/dashboard.html'
 	login_url = '/'
 
+	def _get_sum_movements(self):
+		retiro_dolar = 0
+		retiro_pesos = 0
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro')
+		for movement in movements:
+			if movement.account.currency == 'usd':
+				retiro_dolar += movement.amount
+			if movement.account.currency == 'mxn':
+				retiro_pesos += movement.amount
+		return [retiro_dolar, retiro_pesos]
+
+	def _get_sum_shipments(self):
+		total_dolar = 0
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'embarque')
+		for movement in movements:
+			total_dolar += movement.amount
+		return total_dolar
+
 	def get_context_data(self, **kwargs):
 		context = super(DashboardView, self).get_context_data(**kwargs)
-		context['initial'] = Account.objects.all()
+		[pesos, dolar] = Account.objects.all()
+		[retiro_dolar, retiro_pesos] = self._get_sum_movements();
+		context['dolar'] = Account.objects.get(currency__iexact='usd')
+		context['pesos'] = Account.objects.get(currency__iexact='mxn')
+		context['retiro_dolar'] = retiro_dolar
+		context['retiro_pesos'] = retiro_pesos
+		context['embarque_total'] = self._get_sum_shipments()
 		return context
 
 	def dispatch(self, request, *args, **kwargs):
@@ -98,13 +122,23 @@ class CreateMovementView(FormView):
 
 	def form_valid(self, form):
 		if form.cleaned_data['kind_mov'].name.lower() == 'embarque':
+			account = Account.objects.get(currency__iexact='usd')
 			Shipment.objects.create(
 					store = form.cleaned_data['store'],
 					name = form.cleaned_data['name'],
 					amount = form.cleaned_data['amount_shipment']
 				)
+			SocioMovement.objects.create(
+				socio = self.request.user,
+				shipment = form.cleaned_data.get('shipment'),
+				kind_mov = form.cleaned_data.get('kind_mov'),
+				amount = form.cleaned_data.get('amount_shipment'),
+			)
+			account.amount -= int(form.cleaned_data.get('amount_shipment'))
+			account.save()
 			self.request.session['is_saved_shipment'] = True
 		if form.cleaned_data['kind_mov'].name.lower() == 'retiro':
+			account = form.cleaned_data.get('account')
 			SocioMovement.objects.create(
 				socio = self.request.user,
 			  account = form.cleaned_data.get('account'),
@@ -116,8 +150,11 @@ class CreateMovementView(FormView):
 				amount = form.cleaned_data.get('amount'),
 				image = form.cleaned_data.get('image'),
 			)
+			account.amount -= int(form.cleaned_data.get('amount'))
+			account.save()
 			self.request.session['is_saved'] = True
 		if form.cleaned_data['kind_mov'].name.lower() == 'abono':
+			account = form.cleaned_data.get('account')
 			SocioMovement.objects.create(
 				socio = self.request.user,
 			  account = form.cleaned_data.get('account'),
@@ -127,8 +164,11 @@ class CreateMovementView(FormView):
 				amount = form.cleaned_data.get('amount'),
 				image = form.cleaned_data.get('image'),
 			)
+			account.amount += int(form.cleaned_data.get('amount'))
+			account.save()
 			self.request.session['is_saved'] = True
 		if form.cleaned_data['kind_mov'].name.lower() == 'cargo':
+			account = form.cleaned_data.get('account')
 			SocioMovement.objects.create(
 				socio = self.request.user,
 			  account = form.cleaned_data.get('account'),
@@ -140,7 +180,22 @@ class CreateMovementView(FormView):
 				amount = form.cleaned_data.get('amount'),
 				image = form.cleaned_data.get('image'),
 			)
+			account.amount -= int(form.cleaned_data.get('amount'))
+			account.save()
 			self.request.session['is_saved'] = True
 		return super(CreateMovementView, self).form_valid(form)
 
+'''
 
+EMBARQUE SE LE RESTA A LA CUENTA PRINCIPAL EN DOLARES
+RETIRO: RESTA A LAS CUENTAS DOLARES O PESOS
+CARGO: RESTA A LAS CUENTAS DOLARES O PESOS
+ABONO: INCREMENTA LA CUENTA PRINCIPAL DOLARES O PESOS
+
+
+CAJA DE RETIROS:
+IR SUMANDO EN CADA RETIRO
+
+CAJA DE EMBARQUE
+IR SUMANDO CON CADA EMBARQUE QUE SE CREE
+'''
