@@ -113,31 +113,111 @@
 			<div class="row">
 				<div class="col s12">
 					<div class="panel">
-						<div class="panel__header">
-							Gastos
+						<div class="panel__header panel__filter grey lighten-5">
+							<div class="row no-margin-bottom valign-wrapper panel__filter__weigth">
+								<div class="col s4 m4 l8 valign-wrapper">
+									<div class="panel__header__title valign">Filtros</div>
+								</div>
+								<div class="col s8 m8 l4 valign-wrapper">
+									<div class="input-field col s12">
+										<form method="GET">
+											<input id="search_mov" name="search" placeholder="Buscar" type="text" />
+										</form>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="panel__body">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. At deleniti non natus magnam saepe ipsam nisi expedita facilis tempora fuga architecto, laboriosam ut eveniet aut possimus illum dicta ullam mollitia?
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis distinctio vel debitis placeat dignissimos voluptatem hic, sed deleniti molestiae tenetur aperiam porro dolores vero ex odit eius adipisci consequuntur libero!
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia quisquam voluptate, culpa odio, assumenda cupiditate alias quibusdam. Vero modi hic, commodi placeat sequi veniam deserunt molestiae iure, tenetur rem nemo.
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam magnam dignissimos adipisci vitae sint repellendus mollitia dolore, amet doloribus. Recusandae quae cumque omnis hic odit tempora blanditiis, facere eum laudantium.
-						</div>
-					</div>
-				</div>
-			</div>
+						{% if no_shipments %}
+							<div class="panel__body">
+								<div class="row">
+									<div class="col s12">
+										<div class="panel__body__description">
+											No se encontraron embarques
+										</div>
+									</div>
+								</div>
+							</div>
+						{% else %}
+							{% for shipment, movements in sorted_movements %}
+								<div class="panel__body">
+									<div class="row">
+										<div class="col s12">
+											<div class="panel__body__description">
+												Embarque: {{ shipment.name }} Fecha: 24/Jul/2016 Importe del Embarque: ${{ shipment.amount }}
+											</div>
+										</div>
+									</div>
 
-			<div class="row">
-				<div class="col s12">
-					<div class="panel">
-						<div class="panel__header">
-							Saldo por embarque
-						</div>
-						<div class="panel__body">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. At deleniti non natus magnam saepe ipsam nisi expedita facilis tempora fuga architecto, laboriosam ut eveniet aut possimus illum dicta ullam mollitia?
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis distinctio vel debitis placeat dignissimos voluptatem hic, sed deleniti molestiae tenetur aperiam porro dolores vero ex odit eius adipisci consequuntur libero!
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia quisquam voluptate, culpa odio, assumenda cupiditate alias quibusdam. Vero modi hic, commodi placeat sequi veniam deserunt molestiae iure, tenetur rem nemo.
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam magnam dignissimos adipisci vitae sint repellendus mollitia dolore, amet doloribus. Recusandae quae cumque omnis hic odit tempora blanditiis, facere eum laudantium.
-						</div>
+									<div class="row">
+										<div class="col s12">
+											<div class="panel__body__table">
+												<div class="row table__titles">
+													<div class="col s1">Nº</div>
+													<div class="col s2">Movimiento</div>
+													<div class="col s2">Fecha</div>
+													<div class="col s3">Descripción</div>
+													<div class="col s2">Cantidad</div>
+													<div class="col s2">Comprobante</div>
+												</div>
+												{% for movement in movements %}
+													<div class="row">
+														<div class="col s1">{{ forloop.counter }}</div>
+														<div class="col s2">{{ movement.kind_mov.name}}</div>
+														<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
+														<div class="col s3">{{ movement.description }}</div>
+														<div class="col s2">{{ movement.amount }}</div>
+														<div class="col s2">
+															<a href="{{ movement.image.url }}" class="movement__image_link" id="photo_link">Ver</a>
+															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
+															<label for="changed">Cambiar</label>
+														</div>
+													</div>
+												{% endfor %}
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+												 	<div class="col s3"><b>Total Abonos</b></div>
+													<div class="col s2">{{ shipment.total_abono }}</div>
+													<div class="col s2"></div>
+												</div>
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+													<div class="col s3"><b>Total Cargos</b></div>
+													<div class="col s2">{{ shipment.total_charge }}</div>
+													<div class="col s2"></div>
+												</div>
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+													<div class="col s3"><b>Saldo</b></div>
+													<div class="col s2">{{ shipment.saldo }}</div>
+													<div class="col s2"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						{% endif %}
+					</div>
+					<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+						<a class="btn-floating btn-large red">
+							<i class="large material-icons">mode_edit</i>
+						</a>
+						<ul>
+							<li>
+								<a class="btn-floating green" href="#"><i class="material-icons">publish</i>
+								</a>
+							</li>
+							<li>
+								<a class="btn-floating blue" href="{% url 'users:create_movement' %}"><i class="material-icons">add</i></a>
+							</li>
+						</ul>
+					</div>
 					</div>
 				</div>
 			</div>

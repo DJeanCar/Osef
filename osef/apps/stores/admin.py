@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from import_export import resources, fields
 
-from .models import KindMovement, Movement
+from .models import KindMovement, Movement, SocioMovement
 
 class MovementResource(resources.ModelResource):
 
@@ -37,10 +37,20 @@ class MovementResource(resources.ModelResource):
 
 @admin.register(KindMovement)
 class KindMovementAdmin(admin.ModelAdmin):
-	pass
+	
+	list_display = ('name', 'store', )
+	list_editable = ('store', )
 
 @admin.register(Movement)
 class MovementAdmin(admin.ModelAdmin):
+	
+	list_display = ('kind_mov', 'charge', 'kind_charge', 
+		'shipment', 'description', 'amount', 'created_at', 
+		'updated_at', 'approved')
+	list_editable = ('approved',)
+
+@admin.register(SocioMovement)
+class SocioMovementAdmin(admin.ModelAdmin):
 	
 	list_display = ('kind_mov', 'charge', 'kind_charge', 
 		'shipment', 'description', 'amount', 'created_at', 

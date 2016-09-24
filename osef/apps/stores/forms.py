@@ -21,7 +21,7 @@ class CreateMovForm(forms.Form):
 
 	kind_mov = forms.ModelChoiceField(
 			required=False, 
-			queryset=KindMovement.objects.all(),
+			queryset=KindMovement.objects.filter(store = True),
 			empty_label="Tipo de movimiento",
 			to_field_name="name",
 			widget=forms.Select(attrs={

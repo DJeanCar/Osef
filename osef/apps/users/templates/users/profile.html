@@ -9,7 +9,7 @@
           {% if user.photo %}
             <img class="responsive-img circle profile__image" src="{{ MEDIA_URL }}{{ user.photo }}">
           {% else %} 
-            <img class="responsive-img circle profile__image" src="https://graph.facebook.com/266966606828880/picture?type=large">
+            <img class="responsive-img circle profile__image" src="{{ user.url_photo }}">
           {% endif %}
           <p class="profile__data__name">{{ user.first_name }}</p>
           <p>{{ user.last_name }}</p>

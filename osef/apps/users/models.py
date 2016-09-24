@@ -71,3 +71,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 				msg.attach_alternative(html_content, 'text/html')
 				msg.send()
 		super(User, self).save(*args, **kw)
+
+
+class Account(models.Model):
+
+	_TYPE = (
+		('Dólares', 'Dólares'),
+		('Pesos mexicanos', 'Pesos mexicanos'),
+	)
+
+	currency = models.CharField(max_length=15, choices=_TYPE)
+	amount = models.BigIntegerField()
+
+	def __str__(self):
+		return self.currency
+
+

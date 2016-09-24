@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% load static from staticfiles %}
+
+{% block title %}
+  Crear Movimiento
+{% endblock title %}
+
+{% block content %}
+  {% include "components/header.html" %}
+
+  <section class="main_info">
+    <div class="my-container">
+      <div class="row main_info__data form-width">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="input-field col s12">
+            <h4>Crear Movimiento</h4>
+          </div>
+          <div class="input-field col s12">
+            {{ form.kind_mov }}
+            {{ form.kind_mov.errors }}
+            <div id="div-kind-abono" class="hidden">
+              {{ form.kind_abono }}
+              {{ form.kind_abono.errors }}
+            </div>
+            <div id="div-socio" class="hidden">
+              {{ form.socio }}
+              {{ form.socio.errors }}
+            </div>
+            <div id="div-kind-mov" class="hidden">
+              {{ form.kind_charge }}
+              {{ form.kind_charge.errors }}
+            </div>
+            <div id="div-shipment" class="hidden">
+              {{ form.shipment }}
+              {{ form.shipment.errors }}
+            </div>
+            <div id="div-rest-input" class="hidden">
+              {{ form.charge }}
+              {{ form.charge.errors }}
+            </div>
+            <div id="common-fields" class="hidden">
+              {{ form.account }}
+              {{ form.account.errors }}
+              {{ form.description }}
+              {{ form.description.errors }}
+              {{ form.amount }}
+              {{ form.amount.errors }}
+              {{ form.image }}
+              {{ form.image.errors }}
+            </div>
+            <div id="div-create-shipment" class="hidden">
+              {{ form.store }}
+              {{ form.store.errors }}
+              {{ form.name }}
+              {{ form.name.errors }}
+              {{ form.amount_shipment }}
+              {{ form.amount_shipment.errors }}
+            </div>
+          </div>
+          <div class="input-field col s12">
+            <button type="submit" class="waves-effect waves-light btn">Crear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{% static 'js/create_store.js' %}"></script>
+  <script>
+    $( document ).ready(function() {
+      if ($('#mov').val().toLowerCase() == 'abono') {
+        create_store.abonoSelected();
+      }
+      if ($('#mov').val().toLowerCase() == 'retiro') {
+        create_store.retiroSelected();
+      }
+      if ($('#mov').val().toLowerCase() == 'cargo') {
+        $('#div-kind-mov').show();
+        $('#div-kind-abono').hide();
+      }
+      if ($('#mov').val().toLowerCase() == 'embarque') {
+        create_store.embarqueSelected();
+      }
+      if ($('#kind-mov').val().toLowerCase() == 'directo') {
+        create_store.abonoSelected();
+        $('#div-kind-mov').show();
+        $('#div-shipment').show();
+        $('#div-rest-input').show();
+        $('#div-kind-abono').hide();
+        create_store.get_kind_charges_ajax($('#kind-mov').val());
+      }
+      if ($('#kind-mov').val().toLowerCase() == 'indirecto') {
+        create_store.abonoSelected();
+        $('#div-kind-mov').show();
+        $('#div-shipment').hide();
+        $('#div-rest-input').show();
+        $('#div-kind-abono').hide();
+        create_store.get_kind_charges_ajax($('#kind-mov').val());
+      }
+    });
+    var is_saved_shipment = "{{ is_saved_shipment }}";
+    if (is_saved_shipment) {
+      Materialize.toast('Se creo el embarque con éxito', 4000, 'rounded');
+    }
+    var is_saved = "{{ is_saved }}";
+    if (is_saved) {
+      Materialize.toast('Se creo el movimiento con éxito', 4000, 'rounded');
+    }
+  </script>
+{% endblock scripts %}

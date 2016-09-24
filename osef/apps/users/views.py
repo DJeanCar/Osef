@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from .forms import EmailForm
+from apps.shipments.models import Shipment
+from apps.stores.models import SocioMovement
+from .models import Account
+from .forms import EmailForm, CreateMovForm
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 
@@ -72,4 +74,68 @@ class GetEmailView(FormView):
 def LogOut(request):
 	logout(request)
 	return redirect(reverse('main:home'))
+
+class CreateMovementView(FormView):
+
+	template_name = 'users/create_movements.html'
+	form_class = CreateMovForm
+	success_url = reverse_lazy('users:create_movement')
+
+	def get_context_data(self, **kwargs):
+		context = super(CreateMovementView, self).get_context_data(**kwargs)
+		if self.request.session.get('is_saved_shipment'):
+			context['is_saved_shipment'] = True
+			self.request.session['is_saved_shipment'] = False
+		if self.request.session.get('is_saved'):
+			context['is_saved'] = True
+			self.request.session['is_saved'] = False
+		return context
+
+	def form_valid(self, form):
+		if form.cleaned_data['kind_mov'].name.lower() == 'embarque':
+			Shipment.objects.create(
+					store = form.cleaned_data['store'],
+					name = form.cleaned_data['name'],
+					amount = form.cleaned_data['amount_shipment']
+				)
+			self.request.session['is_saved_shipment'] = True
+		if form.cleaned_data['kind_mov'].name.lower() == 'retiro':
+			SocioMovement.objects.create(
+				socio = self.request.user,
+			  account = form.cleaned_data.get('account'),
+				retiro = form.cleaned_data.get('socio'),
+				kind_mov = form.cleaned_data.get('kind_mov'),
+				kind_charge = form.cleaned_data.get('kind_charge'),
+				charge = form.cleaned_data['charge'],
+				description = form.cleaned_data.get('description'),
+				amount = form.cleaned_data.get('amount'),
+				image = form.cleaned_data.get('image'),
+			)
+			self.request.session['is_saved'] = True
+		if form.cleaned_data['kind_mov'].name.lower() == 'abono':
+			SocioMovement.objects.create(
+				socio = self.request.user,
+			  account = form.cleaned_data.get('account'),
+				kind_mov = form.cleaned_data.get('kind_mov'),
+				kind_abono = form.cleaned_data.get('kind_abono'),
+				description = form.cleaned_data.get('description'),
+				amount = form.cleaned_data.get('amount'),
+				image = form.cleaned_data.get('image'),
+			)
+			self.request.session['is_saved'] = True
+		if form.cleaned_data['kind_mov'].name.lower() == 'cargo':
+			SocioMovement.objects.create(
+				socio = self.request.user,
+			  account = form.cleaned_data.get('account'),
+				kind_mov = form.cleaned_data.get('kind_mov'),
+				shipment = form.cleaned_data.get('shipment'),
+				kind_charge = form.cleaned_data.get('kind_charge'),
+				charge = form.cleaned_data['charge'],
+				description = form.cleaned_data.get('description'),
+				amount = form.cleaned_data.get('amount'),
+				image = form.cleaned_data.get('image'),
+			)
+			self.request.session['is_saved'] = True
+		return super(CreateMovementView, self).form_valid(form)
+
 

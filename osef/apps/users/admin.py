@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User, Account
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
@@ -32,3 +32,8 @@ class UserAdmin(UserAdmin):
 							'user_permissions',
 				)}),
 		)
+
+@admin.register(Account)
+class AccountAdmin(admin.ModelAdmin):
+
+	list_display = ('currency', 'amount', )
