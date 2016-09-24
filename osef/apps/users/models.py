@@ -36,6 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	first_name = models.CharField(max_length=100)
 	last_name = models.CharField(max_length=100)
 	url_photo = models.URLField(null=True, blank=True)
+	photo = models.ImageField(upload_to = 'users', null=True, blank=True)
 	has_permission = models.BooleanField(default=False)
 	kind = models.CharField(max_length=15, choices=_TYPE, null=True, blank=True)
 

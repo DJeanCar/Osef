@@ -43,6 +43,9 @@ class CreateMovForm(forms.Form):
 			widget=forms.Select(attrs={
 			'id' : 'kind-charge'
 		}))
+	image = forms.ImageField(
+			required=False,
+		)
 	description = forms.CharField(required=False, widget=forms.Textarea(attrs={
 			'placeholder' : 'Descripción',
 			'class' : 'materialize-textarea'

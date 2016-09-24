@@ -38,8 +38,13 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(StoreDashboard, self).get_context_data(**kwargs)
-		shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0)
+		if self.request.GET.get('search'):
+			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, name__icontains = self.request.GET.get('search'))
+		else:
+			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0)
 		shipments_with_movements = self._get_movements_by_shipment(shipments)
+		if shipments.count() == 0:
+			context['no_shipments'] = True
 		context['sorted_movements'] = list(shipments_with_movements)
 		context['saldo_deudor'] = self.saldo_deudor
 		context['gastos'] = self.gastos
@@ -89,7 +94,8 @@ class CreateStore(FormView):
 			charge = form.cleaned_data['charge'],
 			shipment = form.cleaned_data.get('shipment'),
 			description = form.cleaned_data.get('description'),
-			amount = form.cleaned_data.get('amount')
+			amount = form.cleaned_data.get('amount'),
+			image = form.cleaned_data.get('image')
 		)
 		self.request.session['is_saved'] = True
 		return super(CreateStore, self).form_valid(form)

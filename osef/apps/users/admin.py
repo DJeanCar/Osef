@@ -19,6 +19,7 @@ class UserAdmin(UserAdmin):
 							'last_name',
 							'email',
 							'url_photo',
+							'photo',
 							'has_permission',
 							'kind',
 					)}),

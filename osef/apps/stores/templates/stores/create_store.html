@@ -12,7 +12,7 @@
 	<section class="main_info">
 		<div class="my-container">
 			<div class="row main_info__data form-width">
-				<form method="POST">
+				<form method="POST" enctype="multipart/form-data">
 					{% csrf_token %}
 					<div class="input-field col s12">
 						<h4>Crear Movimiento</h4>
@@ -37,6 +37,8 @@
 							{{ form.description.errors }}
 							{{ form.amount }}
 							{{ form.amount.errors }}
+							{{ form.image }}
+							{{ form.image.errors }}
 						</div>
 					</div>
 					<div class="input-field col s12">

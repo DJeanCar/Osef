@@ -1,5 +1,54 @@
 {% extends "base.html" %}
-
 {% block content %}
-	<h2>Perfil de usuario</h2>
+  {% include "components/header_profile.html" %}
+
+  <div class="container">
+    <div class="row">
+      <div class="col s12 m6 l4">
+        <div class="profile__data">
+          {% if user.photo %}
+            <img class="responsive-img circle profile__image" src="{{ MEDIA_URL }}{{ user.photo }}">
+          {% else %} 
+            <img class="responsive-img circle profile__image" src="https://graph.facebook.com/266966606828880/picture?type=large">
+          {% endif %}
+          <p class="profile__data__name">{{ user.first_name }}</p>
+          <p>{{ user.last_name }}</p>
+          <p class="profile__data__kind">{{ user.kind|upper }}</p>
+        </div>
+      </div>
+      <div class="col s12 m6 l8">
+        <div class="profile__form">
+          <p>Editar perfil</p>
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+              <label for="first_name" class="form__label">Nombres</label>
+              <input type="text" class="form__input" name="first_name" value="{{ user.first_name }}">
+            </div>
+            <div>
+              <label for="last_name" class="form__label">Apellidos</label>
+              <input type="text" class="form__input" name="last_name" value="{{ user.last_name }}">
+            </div>
+            <div class="form__photo">
+              <label for="last_name" class="form__label">Foto</label>
+              <input type="file" class="form__input" name="photo">
+            </div>
+            <div>
+              <button type="submit" class="waves-effect waves-light btn">Actualizar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock content %}
+
+{% block scripts %}
+  <script>
+    var is_saved = "{{ success }}"
+    if (is_saved) {
+      Materialize.toast('Se actualizo su perfil con éxito', 4000, 'rounded');
+    }
+  </script>
+{% endblock scripts %}

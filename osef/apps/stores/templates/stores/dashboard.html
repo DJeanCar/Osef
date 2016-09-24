@@ -72,76 +72,82 @@
 								</div>
 							</div>
 						</div>
-						{% for shipment, movements in sorted_movements %}
+						{% if no_shipments %}
 							<div class="panel__body">
 								<div class="row">
 									<div class="col s12">
 										<div class="panel__body__description">
-											Embarque: {{ shipment.name }} Fecha: 24/Jul/2016 Importe del Embarque: ${{ shipment.amount }}
-										</div>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col s12">
-										<div class="panel__body__table">
-											<div class="row table__titles">
-												<div class="col s1">Nº</div>
-												<div class="col s2">Movimiento</div>
-												<div class="col s2">Fecha</div>
-												<div class="col s3">Descripción</div>
-												<div class="col s2">Cantidad</div>
-												<div class="col s2">Comprobante</div>
-											</div>
-											{% for movement in movements %}
-												<div class="row">
-													<div class="col s1">{{ forloop.counter }}</div>
-													<div class="col s2">{{ movement.kind_mov.name}}</div>
-													<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
-													<div class="col s3">{{ movement.description }}</div>
-													<div class="col s2">{{ movement.amount }}</div>
-													<div class="col s2">
-														{% csrf_token %}
-														{% if movement.image %}
-															<a href="{{ movement.image.url }}" class="movement__image_link">Ver</a>
-															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
-															<label for="changed">Cambiar</label>
-														{% else %}
-															<input type="file" name="file" id="file" class="inputfile" data-id="{{ movement.id }}" />
-															<label for="file" id="label_file">Select Imagen</label>
-														{% endif %}
-													</div>
-												</div>
-											{% endfor %}
-											<div class="row">
-												<div class="col s1"></div>
-												<div class="col s2"></div>
-												<div class="col s2"></div>
-											 	<div class="col s3"><b>Total Abonos</b></div>
-												<div class="col s2">{{ shipment.total_abono }}</div>
-												<div class="col s2"></div>
-											</div>
-											<div class="row">
-												<div class="col s1"></div>
-												<div class="col s2"></div>
-												<div class="col s2"></div>
-												<div class="col s3"><b>Total Cargos</b></div>
-												<div class="col s2">{{ shipment.total_charge }}</div>
-												<div class="col s2"></div>
-											</div>
-											<div class="row">
-												<div class="col s1"></div>
-												<div class="col s2"></div>
-												<div class="col s2"></div>
-												<div class="col s3"><b>Saldo</b></div>
-												<div class="col s2">{{ shipment.saldo }}</div>
-												<div class="col s2"></div>
-											</div>
+											No se encontraron embarques
 										</div>
 									</div>
 								</div>
 							</div>
-						{% endfor %}
+						{% else %}
+							{% for shipment, movements in sorted_movements %}
+								<div class="panel__body">
+									<div class="row">
+										<div class="col s12">
+											<div class="panel__body__description">
+												Embarque: {{ shipment.name }} Fecha: 24/Jul/2016 Importe del Embarque: ${{ shipment.amount }}
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col s12">
+											<div class="panel__body__table">
+												<div class="row table__titles">
+													<div class="col s1">Nº</div>
+													<div class="col s2">Movimiento</div>
+													<div class="col s2">Fecha</div>
+													<div class="col s3">Descripción</div>
+													<div class="col s2">Cantidad</div>
+													<div class="col s2">Comprobante</div>
+												</div>
+												{% for movement in movements %}
+													<div class="row">
+														<div class="col s1">{{ forloop.counter }}</div>
+														<div class="col s2">{{ movement.kind_mov.name}}</div>
+														<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
+														<div class="col s3">{{ movement.description }}</div>
+														<div class="col s2">{{ movement.amount }}</div>
+														<div class="col s2">
+															<a href="{{ movement.image.url }}" class="movement__image_link" id="photo_link">Ver</a>
+															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
+															<label for="changed">Cambiar</label>
+														</div>
+													</div>
+												{% endfor %}
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+												 	<div class="col s3"><b>Total Abonos</b></div>
+													<div class="col s2">{{ shipment.total_abono }}</div>
+													<div class="col s2"></div>
+												</div>
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+													<div class="col s3"><b>Total Cargos</b></div>
+													<div class="col s2">{{ shipment.total_charge }}</div>
+													<div class="col s2"></div>
+												</div>
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+													<div class="col s3"><b>Saldo</b></div>
+													<div class="col s2">{{ shipment.saldo }}</div>
+													<div class="col s2"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						{% endif %}
 					</div>
 					<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
 						<a class="btn-floating btn-large red">
@@ -197,7 +203,7 @@
 	});
 
 	var formdata = new FormData(); 
-	$('.inputfile').on('change', function() {
+	$('.changeFile').on('change', function() {
 		var file = this.files[0];
 		var id = this.dataset.id;
 		if (formdata) {
@@ -209,10 +215,9 @@
 				processData: false,
         contentType: false,
         success: function (data) {
-        	console.log(data.image_url);
         	$('#file').remove();
+    			$('#photo_link').attr("href", data.image_url);
         	Materialize.toast('Se guardó el comprobante', 3000, 'rounded');
-        	$('#label_file').html('<a href='+ data.image_url +' class="recently_saved">Guardado</a>');
         }
 			});
 		}

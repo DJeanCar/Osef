@@ -25,6 +25,14 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = "users/profile.html"
     login_url = '/'
 
+    def post(self, request, *args, **kwargs):
+    	request.user.first_name = request.POST['first_name']
+    	request.user.last_name = request.POST['last_name']
+    	if request.FILES.get('photo'):
+    		request.user.photo = request.FILES['photo']
+    	request.user.save()
+    	return render(request, 'users/profile.html', { 'success' : True })
+
 class NoPermissionView(LoginRequiredMixin, TemplateView):
 
 	template_name = 'users/no_permission.html'
