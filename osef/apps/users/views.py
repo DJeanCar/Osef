@@ -13,6 +13,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 	template_name = 'users/dashboard.html'
 	login_url = '/'
 
+	def get_context_data(self, **kwargs):
+		context = super(DashboardView, self).get_context_data(**kwargs)
+		context['initial'] = Account.objects.all()
+		return context
+
 	def dispatch(self, request, *args, **kwargs):
 		if request.user.has_permission:
 			if request.user.kind == "socio":
