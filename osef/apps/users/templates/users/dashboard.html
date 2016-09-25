@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load humanize %}
 {% block title %}
 	Dashboard
 {% endblock title %}
@@ -20,7 +20,14 @@
 					</div>
 					<div class="card_panel__update">
 						<div class="valign-wrapper card-info__updated card1_dark">
-							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<h5 class="valign">Último movimiento: 
+								{% if not last_movement_dolar %}
+									Aún no tenemos movimientos
+								{% else %}
+									{{ last_movement_dolar.created_at|naturaltime }}
+								{% endif %}
+							</h5>
+
 						</div>
 					</div>
 				</div>
@@ -34,7 +41,13 @@
 					</div>
 					<div class="card_panel__update card2_dark">
 						<div class="valign-wrapper card-info__updated">
-							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<h5 class="valign">Último movimiento: 
+								{% if not last_movement_pesos %}
+									Aún no tenemos movimientos
+								{% else %}
+									{{ last_movement_pesos.created_at|naturaltime }}
+								{% endif %}
+							</h5>
 						</div>
 					</div>
 				</div>
@@ -48,7 +61,13 @@
 					</div>
 					<div class="card_panel__update card3_dark">
 						<div class="valign-wrapper card-info__updated">
-							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<h5 class="valign">Último movimiento: 
+								{% if not last_retiro_dolar %}
+									Aún no tenemos movimientos
+								{% else %}
+									{{ last_retiro_dolar.created_at|naturaltime }}
+								{% endif %}
+							</h5>
 						</div>
 					</div>
 				</div>
@@ -62,7 +81,13 @@
 					</div>
 					<div class="card_panel__update card4_dark">
 						<div class="valign-wrapper card-info__updated">
-							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<h5 class="valign">Último movimiento: 
+								{% if not last_retiro_pesos %}
+									Aún no tenemos movimientos
+								{% else %}
+									{{ last_retiro_pesos.created_at|naturaltime }}
+								{% endif %}
+							</h5>
 						</div>
 					</div>
 				</div>
@@ -76,7 +101,13 @@
 					</div>
 					<div class="card_panel__update card5_dark">
 						<div class="valign-wrapper card-info__updated">
-							<h5 class="valign">Último movimiento: 20/07/2016 10:30 AM</h5>
+							<h5 class="valign">Último movimiento:
+								{% if not last_embarque %}
+									Aún no tenemos movimientos
+								{% else %}
+									{{ last_embarque.created_at|naturaltime }}
+								{% endif %}
+							</h5>
 						</div>
 					</div>
 				</div>
@@ -85,37 +116,22 @@
 			<div class="row">
 				<div class="col s12">
 					<div class="panel">
-						<div class="panel__header panel__filter grey lighten-5">
-							<div class="row no-margin-bottom valign-wrapper panel__filter__weigth">
-								<div class="col s4 m4 l8 valign-wrapper">
-									<div class="panel__header__title valign">Filtros</div>
-								</div>
-								<div class="col s8 m8 l4 valign-wrapper">
-									<div class="input-field col s12">
-										<form method="GET">
-											<input id="search_mov" name="search" placeholder="Buscar" type="text" />
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-						{% if no_shipments %}
+						{% if no_movements %}
 							<div class="panel__body">
 								<div class="row">
 									<div class="col s12">
 										<div class="panel__body__description">
-											No se encontraron embarques
+											No se encontraron movimientos
 										</div>
 									</div>
 								</div>
 							</div>
 						{% else %}
-							{% for shipment, movements in sorted_movements %}
 								<div class="panel__body">
 									<div class="row">
 										<div class="col s12">
 											<div class="panel__body__description">
-												Embarque: {{ shipment.name }} Fecha: 24/Jul/2016 Importe del Embarque: ${{ shipment.amount }}
+												Movimientos en Dolares
 											</div>
 										</div>
 									</div>
@@ -131,7 +147,7 @@
 													<div class="col s2">Cantidad</div>
 													<div class="col s2">Comprobante</div>
 												</div>
-												{% for movement in movements %}
+												{% for movement in dolar_movements %}
 													<div class="row">
 														<div class="col s1">{{ forloop.counter }}</div>
 														<div class="col s2">{{ movement.kind_mov.name}}</div>
@@ -139,7 +155,7 @@
 														<div class="col s3">{{ movement.description }}</div>
 														<div class="col s2">{{ movement.amount }}</div>
 														<div class="col s2">
-															<a href="{{ movement.image.url }}" class="movement__image_link" id="photo_link">Ver</a>
+															<a href="{{ MEDIA_URL }}{{ movement.image }}" class="movement__image_link" id="photo_link">Ver</a>
 															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
 															<label for="changed">Cambiar</label>
 														</div>
@@ -173,7 +189,69 @@
 										</div>
 									</div>
 								</div>
-							{% endfor %}
+
+								<div class="panel__body">
+									<div class="row">
+										<div class="col s12">
+											<div class="panel__body__description">
+												Movimientos en Pesos
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col s12">
+											<div class="panel__body__table">
+												<div class="row table__titles">
+													<div class="col s1">Nº</div>
+													<div class="col s2">Movimiento</div>
+													<div class="col s2">Fecha</div>
+													<div class="col s3">Descripción</div>
+													<div class="col s2">Cantidad</div>
+													<div class="col s2">Comprobante</div>
+												</div>
+												{% for movement in pesos_movements %}
+													<div class="row">
+														<div class="col s1">{{ forloop.counter }}</div>
+														<div class="col s2">{{ movement.kind_mov.name}}</div>
+														<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
+														<div class="col s3">{{ movement.description }}</div>
+														<div class="col s2">{{ movement.amount }}</div>
+														<div class="col s2">
+															<a href="{{ MEDIA_URL }}{{ movement.image }}" class="movement__image_link" id="photo_link">Ver</a>
+															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
+															<label for="changed">Cambiar</label>
+														</div>
+													</div>
+												{% endfor %}
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+												 	<div class="col s3"><b>Total Abonos</b></div>
+													<div class="col s2">{{ shipment.total_abono }}</div>
+													<div class="col s2"></div>
+												</div>
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+													<div class="col s3"><b>Total Cargos</b></div>
+													<div class="col s2">{{ shipment.total_charge }}</div>
+													<div class="col s2"></div>
+												</div>
+												<div class="row">
+													<div class="col s1"></div>
+													<div class="col s2"></div>
+													<div class="col s2"></div>
+													<div class="col s3"><b>Saldo</b></div>
+													<div class="col s2">{{ shipment.saldo }}</div>
+													<div class="col s2"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 						{% endif %}
 					</div>
 					<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -181,10 +259,10 @@
 							<i class="large material-icons">mode_edit</i>
 						</a>
 						<ul>
-							<li>
+							<!--<li>
 								<a class="btn-floating green" href="#"><i class="material-icons">publish</i>
 								</a>
-							</li>
+							</li>-->
 							<li>
 								<a class="btn-floating blue" href="{% url 'users:create_movement' %}"><i class="material-icons">add</i></a>
 							</li>

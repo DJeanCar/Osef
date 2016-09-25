@@ -40,6 +40,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 		context['retiro_dolar'] = retiro_dolar
 		context['retiro_pesos'] = retiro_pesos
 		context['embarque_total'] = self._get_sum_shipments()
+		context['no_movements'] = True if SocioMovement.objects.count() == 0 else False
+		context['dolar_movements'] = SocioMovement.objects.filter(account__currency__iexact='usd')
+		context['pesos_movements'] = SocioMovement.objects.filter(account__currency__iexact='mxn')
+		context['last_movement_dolar'] = SocioMovement.objects.filter(account__currency__iexact='usd').last()
+		context['last_movement_pesos'] = SocioMovement.objects.filter(account__currency__iexact='mxn').last()
+		context['last_retiro_dolar'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='usd').last()
+		context['last_retiro_pesos'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='mxn').last()
+		context['last_embarque'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'embarque').last()
 		return context
 
 	def dispatch(self, request, *args, **kwargs):
