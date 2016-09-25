@@ -30,7 +30,7 @@ class Movement(TimeStamp):
 	def save(self, *args, **kw):
 		if self.pk is not None:
 			orig = Movement.objects.get(pk=self.pk)
-			if orig.approved != self.approved and not orig.approved:
+			if orig.approved != self.approved and not orig.approved and orig.shipment:
 				shipment = Shipment.objects.get(id=orig.shipment.id)
 				shipment.saldo -= orig.amount
 				shipment.save()
