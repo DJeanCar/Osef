@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView, FormView, View
 from apps.shipments.models import Shipment
-from .models import Movement
+from .models import Movement, SocioMovement
 from .forms import CreateMovForm
 from .admin import MovementResource
 
@@ -122,11 +122,9 @@ class CreateStore(FormView):
 class AddImageMovement(View):
 
 	def post(self, request, *args, **kwargs):
-		movement = get_object_or_404(Movement, id=kwargs['id'])
+		movement = get_object_or_404(SocioMovement, id=kwargs['id'])
 		movement.image = request.FILES['image']
 		movement.save()
-		print(dir(movement.image))
-		print(movement.image.url)
 		return JsonResponse({'success' : True, 'image_url': movement.image.url})
 
 

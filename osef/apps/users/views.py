@@ -31,6 +31,49 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 			total_dolar += movement.amount
 		return total_dolar
 
+	def _get_total_abonos_dolar(self):
+		total_abono_dolar = 0;
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'abono', account__currency__iexact='usd')
+		for movement in movements:
+			total_abono_dolar += movement.amount
+		return total_abono_dolar
+
+	def _get_total_abonos_pesos(self):
+		total_abono_pesos = 0;
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'abono', account__currency__iexact='mxn')
+		for movement in movements:
+			total_abono_pesos += movement.amount
+		return total_abono_pesos
+
+	def _get_total_cargos_dolar(self):
+		total_cargos_dolar = 0
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'cargo', account__currency__iexact='usd')
+		for movement in movements:
+			total_cargos_dolar += movement.amount
+		return total_cargos_dolar
+
+	def _get_total_cargos_pesos(self):
+		total_cargos_pesos = 0
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'cargo', account__currency__iexact='mxn')
+		for movement in movements:
+			total_cargos_pesos += movement.amount
+		return total_cargos_pesos
+
+	def _get_total_retiro_dolar(self):
+		total_retiro_dolar = 0
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='usd')
+		for movement in movements:
+			total_retiro_dolar += movement.amount
+		return total_retiro_dolar
+
+	def _get_total_retiro_pesos(self):
+		total_retiro_pesos = 0
+		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='mxn')
+		for movement in movements:
+			total_retiro_pesos += movement.amount
+		return total_retiro_pesos
+
+
 	def get_context_data(self, **kwargs):
 		context = super(DashboardView, self).get_context_data(**kwargs)
 		[pesos, dolar] = Account.objects.all()
@@ -41,13 +84,19 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 		context['retiro_pesos'] = retiro_pesos
 		context['embarque_total'] = self._get_sum_shipments()
 		context['no_movements'] = True if SocioMovement.objects.count() == 0 else False
-		context['dolar_movements'] = SocioMovement.objects.filter(account__currency__iexact='usd')
-		context['pesos_movements'] = SocioMovement.objects.filter(account__currency__iexact='mxn')
+		context['dolar_movements'] = SocioMovement.objects.filter(account__currency__iexact='usd').order_by('created_at')
+		context['pesos_movements'] = SocioMovement.objects.filter(account__currency__iexact='mxn').order_by('created_at')
 		context['last_movement_dolar'] = SocioMovement.objects.filter(account__currency__iexact='usd').last()
 		context['last_movement_pesos'] = SocioMovement.objects.filter(account__currency__iexact='mxn').last()
 		context['last_retiro_dolar'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='usd').last()
 		context['last_retiro_pesos'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='mxn').last()
 		context['last_embarque'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'embarque').last()
+		context['total_abono_dolar'] = self._get_total_abonos_dolar()
+		context['total_abono_pesos'] = self._get_total_abonos_pesos()
+		context['total_cargos_dolar'] = self._get_total_cargos_dolar()
+		context['total_cargos_pesos'] = self._get_total_cargos_pesos()
+		context['total_retiro_dolar'] = self._get_total_retiro_dolar()
+		context['total_retiro_pesos'] = self._get_total_retiro_pesos()
 		return context
 
 	def dispatch(self, request, *args, **kwargs):
