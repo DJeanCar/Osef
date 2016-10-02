@@ -226,17 +226,45 @@ class CreateMovementView(FormView):
 			self.request.session['is_saved'] = True
 		if form.cleaned_data['kind_mov'].name.lower() == 'cargo':
 			account = form.cleaned_data.get('account')
+			shipment = form.cleaned_data.get('shipment')
 			SocioMovement.objects.create(
 				socio = self.request.user,
 			  account = form.cleaned_data.get('account'),
 				kind_mov = form.cleaned_data.get('kind_mov'),
-				shipment = form.cleaned_data.get('shipment'),
+				shipment = shipment,
 				kind_charge = form.cleaned_data.get('kind_charge'),
 				charge = form.cleaned_data['charge'],
 				description = form.cleaned_data.get('description'),
 				amount = form.cleaned_data.get('amount'),
+				type_change = form.cleaned_data.get('type_change'),
 				image = form.cleaned_data.get('image'),
 			)
+			if form.cleaned_data.get('account').currency == 'mxn':
+				dolar_amount = int(form.cleaned_data.get('amount')) / form.cleaned_data.get('type_change')
+				dolar_amount = "%.2f" % dolar_amount
+				if shipment:
+					# cargo directo
+					shipment.saldo += float(dolar_amount)
+					shipment.save()
+				else:
+					# cargo indirecto
+					shipments = Shipment.objects.filter(saldo__gt = 0)
+					amount_for_each_shipment = float(dolar_amount) / shipments.count()
+					for shipment in shipments:
+						shipment.saldo += amount_for_each_shipment
+						shipment.save()					
+			if form.cleaned_data.get('account').currency == 'usd':
+				if shipment:
+					# cargo directo
+					shipment.saldo += int(form.cleaned_data.get('amount'))
+					shipment.save()
+				else:
+					# cargo indirecto
+					shipments = Shipment.objects.filter(saldo__gt = 0)
+					amount_for_each_shipment = int(form.cleaned_data.get('amount')) / shipments.count()
+					for shipment in shipments:
+						shipment.saldo += amount_for_each_shipment
+						shipment.save()
 			account.amount -= int(form.cleaned_data.get('amount'))
 			account.save()
 			self.request.session['is_saved'] = True

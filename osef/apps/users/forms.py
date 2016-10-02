@@ -73,10 +73,18 @@ class CreateMovForm(forms.Form):
   image = forms.ImageField(
       required=False,
     )
+  type_change = forms.DecimalField(
+      required=False,
+      widget=forms.NumberInput(attrs={
+        'id' : 'type-change',
+        'placeholder': 'Tipo de cambio: 20.4'
+        })
+    )
   account = forms.ModelChoiceField(
       required=False, 
       queryset=Account.objects.all(),
       empty_label="Selecciona una Cuenta",
+      to_field_name="currency",
       widget=forms.Select(attrs={
         'id' : 'currency'
       }))
@@ -158,6 +166,10 @@ class CreateMovForm(forms.Form):
                 self.add_error('amount', 'Este campo solo puede contener números')
           if not data['account']:
             self.add_error('account', 'Este campo es obligatorio')
+          else:
+            if data["account"].currency == "mxn":
+              if not data['type_change']:
+                self.add_error('type_change', 'Este campo solo puede contener números')
       if self.data['kind_mov'].lower() == 'abono':
         if not data['kind_abono']:
           self.add_error('kind_abono', 'Este campo es obligatorio')
@@ -177,6 +189,10 @@ class CreateMovForm(forms.Form):
           self.add_error('name', 'Este campo es obligatorio')
         if not data['amount_shipment']:
           self.add_error('amount_shipment', 'Este campo es obligatorio')
+        else:
+          account = Account.objects.get(currency="usd")
+          if account.amount < int(data['amount_shipment']):
+            self.add_error('amount_shipment', 'No tiene saldo sufiencie en su cuenta')
       if self.data['kind_mov'].lower() == 'retiro':
         if not data['socio']:
           self.add_error('socio', 'Este campo es obligatorio')

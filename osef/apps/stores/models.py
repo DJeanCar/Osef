@@ -49,6 +49,7 @@ class SocioMovement(TimeStamp):
 	shipment = models.ForeignKey(Shipment, null=True, blank=True)
 	description = models.TextField()
 	amount = models.IntegerField()
+	type_change = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 	approved = models.BooleanField(default=False)
 	image = models.ImageField(upload_to='movements', null=True, blank=True)
 

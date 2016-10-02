@@ -11,7 +11,9 @@
       </div>
       <div class="col s9 m6 l4 profile valign-wrapper">
         <img class="profile__nofiticacion" src="{% static 'img/notification.png' %}">
-        {% if user.url_photo %}
+        {% if user.photo %}
+          <a href="{% url 'users:profile' %}"><img class="image-profile valign" src="{{ MEDIA_URL }}{{ user.photo }}"></a>
+        {% elif user.url_photo %}
           <a href="{% url 'users:profile' %}"><img class="image-profile valign" src="{{ user.url_photo }}"></a>
         {% else %}
           <a href="{% url 'users:profile' %}"><span class="image-profile circle">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</span></a>

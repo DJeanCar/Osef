@@ -40,9 +40,15 @@
               {{ form.charge }}
               {{ form.charge.errors }}
             </div>
-            <div id="common-fields" class="hidden">
+            <div id="div-account" class="hidden">
               {{ form.account }}
               {{ form.account.errors }}
+            </div>
+            <div id="div-type-change" class="hidden">
+              {{ form.type_change }}
+              {{ form.type_change.errors }}
+            </div>
+            <div id="common-fields" class="hidden">
               {{ form.description }}
               {{ form.description.errors }}
               {{ form.amount }}
@@ -81,7 +87,13 @@
       if ($('#mov').val().toLowerCase() == 'cargo') {
         $('#div-kind-mov').show();
         $('#div-kind-abono').hide();
+        create_store.currencyChange();
       }
+      // if ($('#currency').val() == 'mxn') {
+      //   console.log('tmr');
+      //   $('#div-type-change').show();
+      //   $('#div-type-change').removeClass('hidden');
+      // }
       if ($('#mov').val().toLowerCase() == 'embarque') {
         create_store.embarqueSelected();
       }
