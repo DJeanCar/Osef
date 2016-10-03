@@ -203,8 +203,11 @@ class CreateMovForm(forms.Form):
         if not data['amount']:
           self.add_error('amount', 'Este campo es obligatorio')
         else:
-          if not data['amount'].isdigit():
-            self.add_error('amount', 'Este campo solo puede contener números')
+          if int(data['account'].amount < int(data['amount'])):
+            self.add_error('amount', 'No tiene saldo sufiencie en su cuenta')
+          if data.get('amount'):
+            if not data.get('amount').isdigit():
+              self.add_error('amount', 'Este campo solo puede contener números')
 
 
 class UpdateImage(forms.Form):
