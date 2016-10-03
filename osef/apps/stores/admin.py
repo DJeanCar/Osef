@@ -26,7 +26,10 @@ class MovementResource(resources.ModelResource):
 			return '-'
 
 	def dehydrate_shipment(self, obj):
-		return obj.shipment.name
+		if obj.shipment:
+			return obj.shipment.name
+		else:
+			return None
 
 	def dehydrate_description(self, obj):
 		return obj.description

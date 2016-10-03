@@ -61,7 +61,7 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 				return redirect(reverse('users:dashboard'))
 		else:
 			return redirect(reverse('users:no_permission'))
-	
+
 
 class StoreExportDashboard(View):
 
