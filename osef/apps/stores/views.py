@@ -110,11 +110,14 @@ class CreateStore(FormView):
 
 	def dispatch(self, request, *args, **kwargs):
 		if self.request.user.is_authenticated():
-			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0)
-			if shipments.count() > 0:
-				return super(CreateStore, self).dispatch(request, *args, **kwargs)
+			if request.user.kind == "almacen":
+				shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0)
+				if shipments.count() > 0:
+					return super(CreateStore, self).dispatch(request, *args, **kwargs)
+				else:
+					return redirect(reverse('stores:dashboard'))
 			else:
-				return redirect(reverse('stores:dashboard'))
+				return redirect(reverse('main:home'))
 		else:
 			return redirect(reverse('main:home'))
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import logout
@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.shipments.models import Shipment
 from apps.stores.models import SocioMovement
 from .models import Account
-from .forms import EmailForm, CreateMovForm
+from .forms import EmailForm, CreateMovForm, UpdateImage
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 
@@ -270,17 +270,37 @@ class CreateMovementView(FormView):
 			self.request.session['is_saved'] = True
 		return super(CreateMovementView, self).form_valid(form)
 
-'''
+	def dispatch(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			if request.user.kind == "socio":
+				return super(CreateMovementView, self).dispatch(request, *args, **kwargs)
+			else:
+				return redirect(reverse('stores:dashboard'))
+		else:
+			return redirect(reverse('main:home'))
 
-EMBARQUE SE LE RESTA A LA CUENTA PRINCIPAL EN DOLARES
-RETIRO: RESTA A LAS CUENTAS DOLARES O PESOS
-CARGO: RESTA A LAS CUENTAS DOLARES O PESOS
-ABONO: INCREMENTA LA CUENTA PRINCIPAL DOLARES O PESOS
+
+class DetailMovementView(TemplateView):
+
+	template_name = 'users/socio_detail_movement.html'
+
+	def post(self, request, *args, **kwargs):
+		form = UpdateImage(request.POST, request.FILES)
+		movement = get_object_or_404(SocioMovement, pk = kwargs['id'])
+		if form.is_valid():
+			movement.image = request.FILES['image']
+			movement.save()
+			return render(request, 'users/socio_detail_movement.html', {"movement" : movement, "form" : UpdateImage()})
+		else:
+			return render(request, 'users/socio_detail_movement.html', {"error" : True, "movement" : movement, "form" : UpdateImage()});
 
 
-CAJA DE RETIROS:
-IR SUMANDO EN CADA RETIRO
+	def get_context_data(self, **kwargs):
+		context = super(DetailMovementView, self).get_context_data(**kwargs)
+		context['movement'] = get_object_or_404(SocioMovement, pk = kwargs['id'])
+		context['form'] = UpdateImage()
+		return context
 
-CAJA DE EMBARQUE
-IR SUMANDO CON CADA EMBARQUE QUE SE CREE
-'''
+
+
+

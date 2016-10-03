@@ -207,4 +207,9 @@ class CreateMovForm(forms.Form):
             self.add_error('amount', 'Este campo solo puede contener números')
 
 
+class UpdateImage(forms.Form):
+
+  image = forms.ImageField(
+      required=True,
+    )
 

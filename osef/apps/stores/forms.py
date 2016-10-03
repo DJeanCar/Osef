@@ -107,4 +107,3 @@ class CreateMovForm(forms.Form):
 				else:
 					self.validateAmount()
 
-

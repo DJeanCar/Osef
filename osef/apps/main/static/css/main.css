@@ -228,7 +228,7 @@ a {
   height: 0.1px;
   opacity: 0;
   overflow: hidden;
-  position: absolute;
+  position: relative;
   z-index: -1; }
 
 .inputfile + label {
@@ -321,5 +321,14 @@ a {
 
 .form__input {
   font-weight: 300; }
+
+.detail__middle h4 {
+  font-size: 1.5rem; }
+
+.movement {
+  margin: 1em 0; }
+
+.normalText {
+  text-transform: capitalize; }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "components/header.html" %}
+
+  <section class="main_info">
+    <div class="my-container">
+      <div class="row main_info__data form-width">
+          <div class="input-field col s12 detail__middle">
+            <h4>Movimiento creado por <b>{{ movement.socio.get_full_name }}</b></h4>
+          </div>
+          <div class="input-field col s12">
+            <div class="movement">
+              <span><b>Tipo de movimiento:</b></span>
+              <span>{{ movement.kind_mov.name }}</span>
+            </div>
+            {% if movement.kind_abono %}
+              <div class="movement">
+                <span><b>Tipo de abono: </b></span>
+                <span>{{ movement.kind_abono.name }}</span>
+              </div>
+            {% endif %}
+            {% if movement.kind_charge %}
+              <div class="movement">
+                <span><b>Tipo de cargo: </b></span>
+                <span>{{ movement.kind_charge.name }}</span>
+              </div>
+            {% endif %}
+            {% if movement.charge %}
+              <div class="movement">
+                <span><b>Cargo: </b></span>
+                <span>{{ movement.charge.name }}</span>
+              </div>
+            {% endif %}
+            {% if movement.shipment %}
+              <div class="movement">
+                <span><b>Embarque: </b></span>
+                <span>{{ movement.shipment.name }}</span>
+              </div>
+            {% endif %}
+            {% if movement.account %}
+              <div class="movement">
+                <span><b>Cuenta: </b></span>
+                <span>{{ movement.account.name }}</span>
+              </div>
+            {% endif %}
+            {% if movement.retiro %}
+              <div class="movement">
+                <span><b>Retiro de: </b></span>
+                <span>{{ movement.retiro.get_full_name }}</span>
+              </div>
+            {% endif %}
+            {% if movement.type_change %}
+              <div class="movement">
+                <span><b>Cuenta: </b></span>
+                <span>{{ movement.type_change }}</span>
+              </div>
+            {% endif %}
+            {% if movement.amount_shipment %}
+              <div class="movement">
+                <span><b>Monto: </b></span>
+                <span>{{ movement.amount_shipment }}</span>
+              </div>
+            {% endif %}
+            {% if movement.description %}
+              <div class="movement">
+                <span><b>Descripción: </b></span>
+                <span>{{ movement.description }}</span>
+              </div>
+            {% endif %}
+            {% if movement.amount %}
+              <div class="movement">
+                <span><b>Monto: </b></span>
+                <span>{{ movement.amount }}</span>
+              </div>
+            {% endif %}
+            <div class="movement">
+              <span><b>Fecha de creación: </b></span>
+              <span>{{ movement.created_at|date:"SHORT_DATE_FORMAT" }}</span>
+            </div>
+            {% if movement.image %}
+              <div class="movement">
+                <span><b>Factura: </b></span>
+                <a target="_blank" class="movement__image_link" href="{{ MEDIA_URL }}{{ movement.image }}">Ver Factura</a>
+              </div>
+            {% else %}
+              <div class="movement">
+                <span><b>Factura: </b></span>
+                <br>
+                <form method="POST" enctype='multipart/form-data'>
+                  {% csrf_token %}
+                  <div class="movement">
+                    {{ form.image }}
+                    {% if error %}
+                    <div>
+                      <span class="errorlist">Solo se pueden subir imágenes</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div>
+                    <button class="waves-effect waves-light btn normalText">Subir factura</button>
+                  </div>
+                </form>
+              </div>
+            {% endif %}
+            
+            <!-- <div id="div-create-shipment" class="hidden">
+              {{ form.store }}
+              {{ form.store.errors }}
+              {{ form.name }}
+              {{ form.name.errors }}
+              {{ form.amount_shipment }}
+              {{ form.amount_shipment.errors }}
+            </div>-->
+          </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

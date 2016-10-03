@@ -155,7 +155,7 @@
 														<div class="col s3">{{ movement.description }}</div>
 														<div class="col s2">{{ movement.amount }}</div>
 														<div class="col s2">
-															<a href="#" class="movement__image_link" id="photo_link">Ver detalle</a>
+															<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
 														</div>
 													</div>
 												{% endfor %}
@@ -216,7 +216,7 @@
 														<div class="col s3">{{ movement.description }}</div>
 														<div class="col s2">{{ movement.amount }}</div>
 														<div class="col s2">
-															<a href="#" class="movement__image_link" id="photo_link">Ver detalle</a>
+															<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
 														</div>
 													</div>
 												{% endfor %}
