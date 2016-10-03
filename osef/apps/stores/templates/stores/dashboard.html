@@ -99,19 +99,19 @@
 												<div class="row table__titles">
 													<div class="col s1">Nº</div>
 													<div class="col s2">Movimiento</div>
-													<div class="col s2">Fecha</div>
-													<div class="col s3">Descripción</div>
+													<div class="col s2 hidden_div">Fecha</div>
+													<div class="col s3 hidden_div">Descripción</div>
 													<div class="col s2">Cantidad</div>
-													<div class="col s2">Comprobante</div>
+													<div class="col s2 hidden_div">Comprobante</div>
 												</div>
 												{% for movement in movements %}
 													<div class="row">
 														<div class="col s1">{{ forloop.counter }}</div>
 														<div class="col s2">{{ movement.kind_mov.name}}</div>
-														<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
-														<div class="col s3">{{ movement.description }}</div>
+														<div class="col s2 hidden_div">{{ movement.created_at|date:"d/M/Y" }}</div>
+														<div class="col s3 hidden_div">{{ movement.description }}</div>
 														<div class="col s2">{{ movement.amount }}</div>
-														<div class="col s2">
+														<div class="col s2 hidden_div">
 															<a href="{{ movement.image.url }}" class="movement__image_link" id="photo_link">Ver</a>
 															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
 															<label for="changed">Cambiar</label>

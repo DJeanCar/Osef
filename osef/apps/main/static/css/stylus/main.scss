@@ -168,6 +168,12 @@ a {
 	}
 }
 
+.hidden_div {
+	@media screen and (max-width: 320px) {
+    display: none
+  }
+}
+
 .image-profile {
 	width: 2em;
 	height: 2em;
