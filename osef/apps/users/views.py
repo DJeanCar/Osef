@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import TemplateView, FormView
+from django.http import JsonResponse
+from django.views.generic import TemplateView, FormView, View
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.shipments.models import Shipment
 from apps.stores.models import SocioMovement
-from .models import Account
+from .models import Account, Notification
 from .forms import EmailForm, CreateMovForm, UpdateImage
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -144,7 +145,7 @@ class GetEmailView(FormView):
 		url = '/complete/%s/' % backend
 		self.request.session['has_access'] = False
 		return redirect(url)
- 
+
 	def get_context_data(self, **kwargs):
 		context = super(GetEmailView, self).get_context_data(**kwargs)
 		context['fullname'] = self.request.session.get('fullname')
@@ -185,7 +186,7 @@ class CreateMovementView(FormView):
 					name = form.cleaned_data['name'],
 					amount = form.cleaned_data['amount_shipment']
 				)
-			SocioMovement.objects.create(
+			movement = SocioMovement.objects.create(
 				socio = self.request.user,
 				shipment = form.cleaned_data.get('shipment'),
 				kind_mov = form.cleaned_data.get('kind_mov'),
@@ -193,6 +194,12 @@ class CreateMovementView(FormView):
 			)
 			account.amount -= int(form.cleaned_data.get('amount_shipment'))
 			account.save()
+			Notification.objects.create(
+				user = self.request.user,
+				sender = form.cleaned_data['store'],
+				socio_movement = movement,
+				description = 'Se le envio un embarque de ...',
+			)
 			self.request.session['is_saved_shipment'] = True
 		if form.cleaned_data['kind_mov'].name.lower() == 'retiro':
 			account = form.cleaned_data.get('account')
@@ -252,7 +259,7 @@ class CreateMovementView(FormView):
 					amount_for_each_shipment = float(dolar_amount) / shipments.count()
 					for shipment in shipments:
 						shipment.saldo += amount_for_each_shipment
-						shipment.save()					
+						shipment.save()
 			if form.cleaned_data.get('account').currency == 'usd':
 				if shipment:
 					# cargo directo
@@ -301,6 +308,35 @@ class DetailMovementView(TemplateView):
 		context['form'] = UpdateImage()
 		return context
 
+class NotificationView(TemplateView):
 
+	template_name = 'users/socios_notification.html'
 
+	def get_context_data(self, **kwargs):
+		context = super(NotificationView, self).get_context_data(**kwargs)
+		context['notification'] = get_object_or_404(Notification, id = kwargs['id'])
+		return context
 
+	def post(self, request, *args, **kwargs):
+		notification = get_object_or_404(Notification, id = kwargs['id'])
+		notification.store_movement.approved = True
+		notification.store_movement.save()
+		ctx = {'notification' : notification, 'is_saved': True}
+		return render(request, 'users/socios_notification.html', ctx)
+
+	def dispatch(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			if request.user.kind == "socio":
+				return super(NotificationView, self).dispatch(request, *args, **kwargs)
+			else:
+				return redirect(reverse('stores:dashboard'))
+		else:
+			return redirect(reverse('main:home'))
+
+class ViewedNotification(View):
+
+	def get(self, request, *args, **kwargs):
+		notification = get_object_or_404(Notification, id = kwargs['id'])
+		notification.viewed = True
+		notification.save()
+		return JsonResponse({ 'success' : True })

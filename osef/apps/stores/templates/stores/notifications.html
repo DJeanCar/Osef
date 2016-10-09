@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "components/header.html" %}
+
+  <section class="main_info">
+    <div class="my-container">
+      <div class="row main_info__data form-width">
+          <div class="input-field col s12 detail__middle">
+            <h4>Movimiento creado por <b>{{ notification.user.get_full_name }}</b></h4>
+          </div>
+          <div class="input-field col s12">
+            <div class="movement">
+              <span><b>Tipo de movimiento:</b></span>
+              <span>{{ notification.socio_movement.kind_mov.name }}</span>
+            </div>
+            {% if notification.socio_movement.kind_abono %}
+              <div class="movement">
+                <span><b>Tipo de abono: </b></span>
+                <span>{{ notification.socio_movement.kind_abono.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.kind_charge %}
+              <div class="movement">
+                <span><b>Tipo de cargo: </b></span>
+                <span>{{ notification.socio_movement.kind_charge.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.charge %}
+              <div class="movement">
+                <span><b>Cargo: </b></span>
+                <span>{{ notification.socio_movement.charge.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.shipment %}
+              <div class="movement">
+                <span><b>Embarque: </b></span>
+                <span>{{ notification.socio_movement.shipment.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.account %}
+              <div class="movement">
+                <span><b>Cuenta: </b></span>
+                <span>{{ notification.socio_movement.account.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.retiro %}
+              <div class="movement">
+                <span><b>Retiro de: </b></span>
+                <span>{{ notification.socio_movement.retiro.get_full_name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.type_change %}
+              <div class="movement">
+                <span><b>Cuenta: </b></span>
+                <span>{{ notification.socio_movement.type_change }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.amount_shipment %}
+              <div class="movement">
+                <span><b>Monto: </b></span>
+                <span>{{ notification.socio_movement.amount_shipment }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.description %}
+              <div class="movement">
+                <span><b>Descripción: </b></span>
+                <span>{{ notification.socio_movement.description }}</span>
+              </div>
+            {% endif %}
+            {% if notification.socio_movement.amount %}
+              <div class="movement">
+                <span><b>Monto: </b></span>
+                <span>{{ notification.socio_movement.amount }}</span>
+              </div>
+            {% endif %}
+            <div class="movement">
+              <span><b>Fecha de creación: </b></span>
+              <span>{{ notification.socio_movement.created_at|date:"SHORT_DATE_FORMAT" }}</span>
+            </div>
+            {% if notification.socio_movement.image %}
+              <div class="movement">
+                <span><b>Factura: </b></span>
+                <a target="_blank" class="movement__image_link" href="{{ MEDIA_URL }}{{ notification.socio_movement.image }}">Ver Factura</a>
+              </div>
+            {% endif %}
+            <br>
+            <hr>
+            {% for comment in comments %}
+              <div class="comments">
+                <p class="comments__content">
+                  {{ comment.content }}
+                </p>
+                <span class="user__left">{{ comment.user.get_full_name }}</span>
+                <span class="date__right">{{ comment.created_at|date:"SHORT_DATE_FORMAT" }}</span>
+              </div>
+            {% endfor %}
+            <div class="movement movement__form">
+              <form method="POST">
+                {% csrf_token %}
+                <textarea id="textarea1" placeholder="Escribe un comentario" name="content" class="materialize-textarea"></textarea>
+                <button type="submit" class="waves-effect waves-light btn-large">Aprobar movimiento</button>
+              </form>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+
+{% block scripts %}
+  <script>
+    var is_saved = "{{ is_saved }}";
+    if (is_saved) {
+      Materialize.toast('Movimiento aprobado', 4000, 'rounded');
+    }
+  </script>
+{% endblock scripts %}

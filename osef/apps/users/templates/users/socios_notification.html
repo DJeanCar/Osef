@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "components/header.html" %}
+
+  <section class="main_info">
+    <div class="my-container">
+      <div class="row main_info__data form-width">
+          <div class="input-field col s12 detail__middle">
+            <h4>Movimiento creado por <b>{{ notification.user.get_full_name }}</b></h4>
+          </div>
+          <div class="input-field col s12">
+            <div class="movement">
+              <span><b>Estado:</b></span>
+              {% if notification.store_movement.approved %}
+              <span>Aprobado</span>
+              {% else %}
+              <span>Pendiente</span>
+              {% endif %}
+            </div>
+            <div class="movement">
+              <span><b>Tipo de movimiento:</b></span>
+              <span>{{ notification.store_movement.kind_mov.name }}</span>
+            </div>
+            {% if notification.store_movement.kind_abono %}
+              <div class="movement">
+                <span><b>Tipo de abono: </b></span>
+                <span>{{ notification.store_movement.kind_abono.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.kind_charge %}
+              <div class="movement">
+                <span><b>Tipo de cargo: </b></span>
+                <span>{{ notification.store_movement.kind_charge.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.charge %}
+              <div class="movement">
+                <span><b>Cargo: </b></span>
+                <span>{{ notification.store_movement.charge.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.shipment %}
+              <div class="movement">
+                <span><b>Embarque: </b></span>
+                <span>{{ notification.store_movement.shipment.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.account %}
+              <div class="movement">
+                <span><b>Cuenta: </b></span>
+                <span>{{ notification.store_movement.account.name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.retiro %}
+              <div class="movement">
+                <span><b>Retiro de: </b></span>
+                <span>{{ notification.store_movement.retiro.get_full_name }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.type_change %}
+              <div class="movement">
+                <span><b>Cuenta: </b></span>
+                <span>{{ notification.store_movement.type_change }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.amount_shipment %}
+              <div class="movement">
+                <span><b>Monto: </b></span>
+                <span>{{ notification.store_movement.amount_shipment }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.description %}
+              <div class="movement">
+                <span><b>Descripción: </b></span>
+                <span>{{ notification.store_movement.description }}</span>
+              </div>
+            {% endif %}
+            {% if notification.store_movement.amount %}
+              <div class="movement">
+                <span><b>Monto: </b></span>
+                <span>{{ notification.store_movement.amount }}</span>
+              </div>
+            {% endif %}
+            <div class="movement">
+              <span><b>Fecha de creación: </b></span>
+              <span>{{ notification.store_movement.created_at|date:"SHORT_DATE_FORMAT" }}</span>
+            </div>
+            {% if notification.store_movement.image %}
+              <div class="movement">
+                <span><b>Factura: </b></span>
+                <a target="_blank" class="movement__image_link" href="{{ MEDIA_URL }}{{ notification.store_movement.image }}">Ver Factura</a>
+              </div>
+            {% endif %}
+            <br>
+            {% if not notification.store_movement.approved %}
+              <div class="movement">
+                <form method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="waves-effect waves-light btn-large">Aprobar movimiento</button>
+                </form>
+              </div>
+            {% endif %}
+
+          </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+
+{% block scripts %}
+  <script>
+    var is_saved = "{{ is_saved }}";
+    if (is_saved) {
+      Materialize.toast('Movimiento aprobado', 4000, 'rounded');
+    }
+  </script>
+{% endblock scripts %}

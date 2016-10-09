@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView, FormView, View
 from apps.shipments.models import Shipment
+from apps.users.models import User, Notification, Comment
 from .models import Movement, SocioMovement
 from .forms import CreateMovForm
 from .admin import MovementResource
@@ -87,7 +88,7 @@ class CreateStore(FormView):
 		return context
 
 	def form_valid(self, form):
-		Movement.objects.create(
+		movement = Movement.objects.create(
 			store = self.request.user,
 			kind_mov = form.cleaned_data.get('kind_mov'),
 			kind_charge = form.cleaned_data.get('kind_charge'),
@@ -98,6 +99,14 @@ class CreateStore(FormView):
 			image = form.cleaned_data.get('image')
 		)
 		self.request.session['is_saved'] = True
+		socios = User.objects.filter(kind = "socio")
+		for socio in socios:
+			Notification.objects.create(
+				user = self.request.user,
+				sender = socio,
+				store_movement = movement,
+				description = "Nuevo movimiento del almacen"
+			)
 		return super(CreateStore, self).form_valid(form)
 
 	def get_form(self, form_class=None):
@@ -131,3 +140,32 @@ class AddImageMovement(View):
 		return JsonResponse({'success' : True, 'image_url': movement.image.url})
 
 
+class NotificationView(TemplateView):
+
+	template_name = 'stores/notifications.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(NotificationView, self).get_context_data(**kwargs)
+		context['notification'] = get_object_or_404(Notification, id = kwargs['id'])
+		context['comments'] = Comment.objects.filter(notification = context['notification'])
+		return context
+
+	def post(self, request, *args, **kwargs):
+		notification = get_object_or_404(Notification, id = kwargs['id'])
+		Comment.objects.create(
+			user = request.user,
+			notification = notification,
+			content = request.POST['content']
+		)
+		comments = Comment.objects.filter(notification = notification)
+		ctx = {'notification' : notification, 'comments': comments}
+		return render(request, 'stores/notifications.html', ctx)
+
+	def dispatch(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			if request.user.kind == "almacen":
+				return super(NotificationView, self).dispatch(request, *args, **kwargs)
+			else:
+				return redirect(reverse('users:dashboard'))
+		else:
+			return redirect(reverse('main:home'))

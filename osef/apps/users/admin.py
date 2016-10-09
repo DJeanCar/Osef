@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Account
+from .models import User, Account, Notification, Comment
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
@@ -37,3 +37,11 @@ class UserAdmin(UserAdmin):
 class AccountAdmin(admin.ModelAdmin):
 
 	list_display = ('currency', 'amount', )
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+	list_display = ('user', 'description', 'sender')
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+	pass

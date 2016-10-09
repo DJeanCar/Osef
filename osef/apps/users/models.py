@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.mail import send_mail, EmailMultiAlternatives
+from apps.main.models import TimeStamp
 
 class UserManager(BaseUserManager, models.Manager):
 
@@ -92,3 +93,24 @@ class Account(models.Model):
 		return self.name
 
 
+from apps.stores.models import Movement, SocioMovement
+class Notification(TimeStamp):
+
+	user = models.ForeignKey(User)
+	sender = models.ForeignKey(User, related_name='sender')
+	store_movement = models.ForeignKey(Movement, null=True, blank=True)
+	socio_movement = models.ForeignKey(SocioMovement, null=True, blank=True)
+	description = models.CharField(max_length=100)
+	viewed = models.BooleanField(default=False)
+
+	def __str__(self):
+		return self.description
+
+class Comment(TimeStamp):
+
+	user = models.ForeignKey(User)
+	notification = models.ForeignKey(Notification)
+	content = models.CharField(max_length=100)
+
+	def __str__(self):
+		return self.content

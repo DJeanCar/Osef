@@ -335,4 +335,40 @@ a {
 .normalText {
   text-transform: capitalize; }
 
+/* NOTIFICATION */
+.my-dropdown {
+  min-width: 20em !important;
+  top: 4.2em !important; }
+  .my-dropdown li a {
+    font-size: 1em; }
+
+.notification {
+  margin-right: .5em;
+  width: 2.3em;
+  height: 2.3em;
+  border-radius: 50%;
+  background-color: #F44336;
+  line-height: 2.3em;
+  text-align: center; }
+
+.grey {
+  background-color: #c6c6c6 !important; }
+
+.user__left {
+  float: left;
+  opacity: .5; }
+
+.date__right {
+  float: right;
+  opacity: .5; }
+
+.comments__content {
+  margin-bottom: .5em; }
+
+.comments {
+  margin: 4em 0; }
+
+.movement__form {
+  margin-top: 4em; }
+
 /*# sourceMappingURL=main.css.map */
