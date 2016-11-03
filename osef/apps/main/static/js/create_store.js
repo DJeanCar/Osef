@@ -67,7 +67,7 @@ var create_store = (function (){
 		$div_rest_input.hide();
 		$common_fields.show();
 		$div_account.show();
-		$div_shipment.hide();
+		$div_shipment.show();
 		$div_socio.hide();
 		$div_create_shipment.hide();
 		$div_type_change.hide();

@@ -10,7 +10,7 @@
 	<section class="main_info">
 		<div class="my-container">
 			<div class="row main_info__data">
-				<div class="col s3">
+				<div class="col s12 m6 l3">
 					<div class="card-info card1">
 						<h4>Capital USD</h4>
 						<div class="card-info__money">
@@ -31,7 +31,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col s3">
+				<div class="col s12 m6 l3">
 					<div class="card-info card2">
 						<h4>Capital MXN</h4>
 						<div class="card-info__money">
@@ -51,7 +51,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col s3">
+				<div class="col s12 m6 l3">
 					<div class="card-info card3">
 						<h4>Retiros USD</h4>
 						<div class="card-info__money">
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col s3">
+				<div class="col s12 m6 l3">
 					<div class="card-info card4">
 						<h4>Retiros MXN</h4>
 						<div class="card-info__money">
@@ -91,7 +91,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col s3">
+				<div class="col s12 m6 l3">
 					<div class="card-info card5">
 						<h4>Embarques USD</h4>
 						<div class="card-info__money">
@@ -138,52 +138,57 @@
 
 									<div class="row">
 										<div class="col s12">
-											<div class="panel__body__table">
-												<div class="row table__titles">
-													<div class="col s1">Nº</div>
-													<div class="col s2">Movimiento</div>
-													<div class="col s2">Fecha</div>
-													<div class="col s3">Descripción</div>
-													<div class="col s2">Cantidad</div>
-													<div class="col s2">Detalle</div>
-												</div>
-												{% for movement in dolar_movements %}
-													<div class="row">
-														<div class="col s1">{{ forloop.counter }}</div>
-														<div class="col s2">{{ movement.kind_mov.name}}</div>
-														<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
-														<div class="col s3">{{ movement.description }}</div>
-														<div class="col s2">{{ movement.amount }}</div>
-														<div class="col s2">
-															<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
-														</div>
-													</div>
+											<table class="responsive-table">
+								        <thead>
+								          <tr>
+								              <th data-field="number">Nº</th>
+								              <th data-field="movement">Movimiento</th>
+								              <th data-field="date">Fecha</th>
+								              <th data-field="descripción">Descripción</th>
+								              <th data-field="amount">Cantidad</th>
+								              <th data-field="detail">Detalle</th>
+								          </tr>
+								        </thead>
+
+								        <tbody>
+									        {% for movement in dolar_movements %}
+									        	<tr>
+									            <td>{{ forloop.counter }}</td>
+									            <td>{{ movement.kind_mov.name}}</td>
+									            <td>{{ movement.created_at|date:"d/M/Y" }}</td>
+									            <td>{{ movement.description }}</td>
+									            <td>{{ movement.amount }}</td>
+									            <td>
+									            	<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
+									            </td>
+									          </tr>
 												{% endfor %}
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-												 	<div class="col s3"><b>Total Abonos</b></div>
-													<div class="col s2">{{ total_abono_dolar }}</div>
-													<div class="col s2"></div>
-												</div>
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-													<div class="col s3"><b>Total Cargos</b></div>
-													<div class="col s2">{{ total_cargos_dolar }}</div>
-													<div class="col s2"></div>
-												</div>
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-													<div class="col s3"><b>Total Retiro</b></div>
-													<div class="col s2">{{ total_retiro_dolar }}</div>
-													<div class="col s2"></div>
-												</div>
-											</div>
+														<tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Abonos</b></td>
+									            <td>{{ total_abono_dolar }}</td>
+									            <td></td>
+									          </tr>
+									          <tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Cargos</b></td>
+									            <td>{{ total_cargos_dolar }}</td>
+									            <td></td>
+									          </tr>
+									          <tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Retiro</b></td>
+									            <td>{{ total_retiro_dolar }}</td>
+									            <td></td>
+									          </tr>
+								        </tbody>
+								      </table>
 										</div>
 									</div>
 								</div>
@@ -199,53 +204,58 @@
 
 									<div class="row">
 										<div class="col s12">
-											<div class="panel__body__table">
-												<div class="row table__titles">
-													<div class="col s1">Nº</div>
-													<div class="col s2">Movimiento</div>
-													<div class="col s2">Fecha</div>
-													<div class="col s3">Descripción</div>
-													<div class="col s2">Cantidad</div>
-													<div class="col s2">Comprobante</div>
-												</div>
-												{% for movement in pesos_movements %}
-													<div class="row">
-														<div class="col s1">{{ forloop.counter }}</div>
-														<div class="col s2">{{ movement.kind_mov.name}}</div>
-														<div class="col s2">{{ movement.created_at|date:"d/M/Y" }}</div>
-														<div class="col s3">{{ movement.description }}</div>
-														<div class="col s2">{{ movement.amount }}</div>
-														<div class="col s2">
-															<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
-														</div>
-													</div>
+										<table class="responsive-table">
+								        <thead>
+								          <tr>
+								              <th data-field="number">Nº</th>
+								              <th data-field="movement">Movimiento</th>
+								              <th data-field="date">Fecha</th>
+								              <th data-field="descripción">Descripción</th>
+								              <th data-field="amount">Cantidad</th>
+								              <th data-field="detail">Detalle</th>
+								          </tr>
+								        </thead>
+
+								        <tbody>
+									        {% for movement in pesos_movements %}
+									        	<tr>
+									            <td>{{ forloop.counter }}</td>
+									            <td>{{ movement.kind_mov.name}}</td>
+									            <td>{{ movement.created_at|date:"d/M/Y" }}</td>
+									            <td>{{ movement.description }}</td>
+									            <td>{{ movement.amount }}</td>
+									            <td>
+									            	<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
+									            </td>
+									          </tr>
 												{% endfor %}
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-												 	<div class="col s3"><b>Total Abonos</b></div>
-													<div class="col s2">{{ total_abono_pesos }}</div>
-													<div class="col s2"></div>
-												</div>
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-													<div class="col s3"><b>Total Cargos</b></div>
-													<div class="col s2">{{ total_cargos_pesos }}</div>
-													<div class="col s2"></div>
-												</div>
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-													<div class="col s3"><b>Total Retiro</b></div>
-													<div class="col s2">{{ total_retiro_pesos }}</div>
-													<div class="col s2"></div>
-												</div>
-											</div>
-										</div>
+														<tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Abonos</b></td>
+									            <td>{{ total_abono_pesos }}</td>
+									            <td></td>
+									          </tr>
+									          <tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Cargos</b></td>
+									            <td>{{ total_cargos_pesos }}</td>
+									            <td></td>
+									          </tr>
+									          <tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Retiro</b></td>
+									            <td>{{ total_retiro_pesos }}</td>
+									            <td></td>
+									          </tr>
+								        </tbody>
+								      </table>
+										</div> 
 									</div>
 								</div>
 						{% endif %}

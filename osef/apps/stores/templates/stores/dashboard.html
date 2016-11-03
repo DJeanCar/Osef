@@ -95,54 +95,67 @@
 
 									<div class="row">
 										<div class="col s12">
-											<div class="panel__body__table">
-												<div class="row table__titles">
-													<div class="col s1">Nº</div>
-													<div class="col s2">Movimiento</div>
-													<div class="col s2 hidden_div">Fecha</div>
-													<div class="col s3 hidden_div">Descripción</div>
-													<div class="col s2">Cantidad</div>
-													<div class="col s2 hidden_div">Comprobante</div>
-												</div>
-												{% for movement in movements %}
-													<div class="row">
-														<div class="col s1">{{ forloop.counter }}</div>
-														<div class="col s2">{{ movement.kind_mov.name}}</div>
-														<div class="col s2 hidden_div">{{ movement.created_at|date:"d/M/Y" }}</div>
-														<div class="col s3 hidden_div">{{ movement.description }}</div>
-														<div class="col s2">{{ movement.amount }}</div>
-														<div class="col s2 hidden_div">
-															<a href="{{ movement.image.url }}" class="movement__image_link" id="photo_link">Ver</a>
-															<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
-															<label for="changed">Cambiar</label>
-														</div>
-													</div>
+											<table class="responsive-table">
+								        <thead>
+								          <tr>
+								              <th data-field="number">Nº</th>
+								              <th data-field="movement">Movimiento</th>
+								              <th data-field="date">Fecha</th>
+								              <th data-field="descripción">Descripción</th>
+								              <th data-field="amount">Cantidad</th>
+								              <th data-field="state">Estado</th>
+								              <th data-field="detail">Comprobante</th>
+								          </tr>
+								        </thead>
+
+								        <tbody>
+									        {% for movement in movements %}
+									        	<tr>
+									            <td>{{ forloop.counter }}</td>
+									            <td>{{ movement.kind_mov.name}}</td>
+									            <td>{{ movement.created_at|date:"d/M/Y" }}</td>
+									            <td>{{ movement.description }}</td>
+									            <td>{{ movement.amount }}</td>
+									            <td>
+									            	{% if movement.approved %}
+																	Aprobado
+																{% else %}
+																	Espera
+																{% endif %}
+									            </td>
+									            <td>
+									            	<a href="{{ movement.image.url }}" class="movement__image_link" id="photo_link">Ver</a>
+																<input type="file" name="file" id="changed" class="changeFile" data-id="{{ movement.id }}" />
+																<label for="changed">Cambiar</label>
+									            </td>
+									          </tr>
 												{% endfor %}
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-												 	<div class="col s3"><b>Total Abonos</b></div>
-													<div class="col s2">{{ shipment.total_abono }}</div>
-													<div class="col s2"></div>
-												</div>
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-													<div class="col s3"><b>Total Cargos</b></div>
-													<div class="col s2">{{ shipment.total_charge }}</div>
-													<div class="col s2"></div>
-												</div>
-												<div class="row">
-													<div class="col s1"></div>
-													<div class="col s2"></div>
-													<div class="col s2"></div>
-													<div class="col s3"><b>Saldo</b></div>
-													<div class="col s2">{{ shipment.saldo }}</div>
-													<div class="col s2"></div>
-												</div>
-											</div>
+														<tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Abonos</b></td>
+									            <td>{{ shipment.total_abono }}</td>
+									            <td></td>
+									          </tr>
+									          <tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Total Cargos</b></td>
+									            <td>{{ shipment.total_charge }}</td>
+									            <td></td>
+									          </tr>
+									          <tr>
+									            <td></td>
+									            <td></td>
+									            <td></td>
+									            <td><b>Saldo</b></td>
+									            <td>{{ shipment.saldo }}</td>
+									            <td></td>
+									          </tr>
+								        </tbody>
+								      </table>
 										</div>
 									</div>
 								</div>

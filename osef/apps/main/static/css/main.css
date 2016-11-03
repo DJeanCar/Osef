@@ -129,10 +129,6 @@ a {
   .profile a {
     color: white; }
 
-@media screen and (max-width: 320px) {
-  .hidden_div {
-    display: none; } }
-
 .image-profile {
   width: 2em;
   height: 2em;

@@ -24,7 +24,7 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 		for shipment in shipments:
 			abono = 0
 			charge = 0
-			movements = Movement.objects.filter(shipment = shipment, approved=True)
+			movements = Movement.objects.filter(shipment = shipment)
 			movements_by_shipment.append(movements)
 			for movement in movements:
 				if movement.kind_mov.name.lower() == 'cargo':
