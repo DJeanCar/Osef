@@ -92,7 +92,7 @@ class CreateMovForm(forms.Form):
       'placeholder' : 'Descripción',
       'class' : 'materialize-textarea'
     }))
-  amount = forms.CharField(required=False, widget=forms.TextInput(attrs={
+  amount = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
       'placeholder' : 'Cantidad',
       'type' : 'number',
       'class' : 'validate'
@@ -111,7 +111,7 @@ class CreateMovForm(forms.Form):
       'type' : 'text',
       'class' : 'validate'
     }))
-  amount_shipment = forms.CharField(required=False, widget=forms.TextInput(attrs={
+  amount_shipment = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
       'placeholder' : 'Cantidad',
       'type' : 'number',
       'class' : 'validate'

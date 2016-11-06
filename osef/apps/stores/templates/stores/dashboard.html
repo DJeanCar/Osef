@@ -16,7 +16,7 @@
 						<h4>Saldo deudor USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ saldo_deudor }}</span>
+							<span>{{ saldo_deudor|intcomma }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update">
@@ -37,7 +37,7 @@
 						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ gastos }}</span>
+							<span>{{ gastos|intcomma }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update card3_dark">
@@ -115,7 +115,7 @@
 									            <td>{{ movement.kind_mov.name}}</td>
 									            <td>{{ movement.created_at|date:"d/M/Y" }}</td>
 									            <td>{{ movement.description }}</td>
-									            <td>{{ movement.amount }}</td>
+									            <td>{{ movement.amount|intcomma }}</td>
 									            <td>
 									            	{% if movement.waiting %}
 									            		En espera
@@ -139,7 +139,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Abonos</b></td>
-									            <td>{{ shipment.total_abono }}</td>
+									            <td>{{ shipment.total_abono|intcomma }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -147,7 +147,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Cargos</b></td>
-									            <td>{{ shipment.total_charge }}</td>
+									            <td>{{ shipment.total_charge|intcomma }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -155,7 +155,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Saldo</b></td>
-									            <td>{{ shipment.saldo }}</td>
+									            <td>{{ shipment.saldo|intcomma }}</td>
 									            <td></td>
 									          </tr>
 								        </tbody>

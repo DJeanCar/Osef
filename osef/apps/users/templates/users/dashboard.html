@@ -15,7 +15,7 @@
 						<h4>Capital USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ dolar.amount }}</span><!-- DOLARES INICIAL -->
+							<span>{{ dolar.amount|intcomma }}</span><!-- DOLARES INICIAL -->
 						</div>
 					</div>
 					<div class="card_panel__update">
@@ -36,7 +36,7 @@
 						<h4>Capital MXN</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ pesos.amount }}</span> <!-- PESOS INICIAL -->
+							<span>{{ pesos.amount|intcomma }}</span> <!-- PESOS INICIAL -->
 						</div>
 					</div>
 					<div class="card_panel__update card2_dark">
@@ -56,7 +56,7 @@
 						<h4>Retiros USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ retiro_dolar }}</span>
+							<span>{{ retiro_dolar|intcomma }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update card3_dark">
@@ -76,7 +76,7 @@
 						<h4>Retiros MXN</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ retiro_pesos }}</span>
+							<span>{{ retiro_pesos|intcomma }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update card4_dark">
@@ -96,7 +96,7 @@
 						<h4>Embarques USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ embarque_total }}</span>
+							<span>{{ embarque_total|intcomma }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update card5_dark">
@@ -157,7 +157,7 @@
 									            <td>{{ movement.kind_mov.name}}</td>
 									            <td>{{ movement.created_at|date:"d/M/Y" }}</td>
 									            <td>{{ movement.description }}</td>
-									            <td>{{ movement.amount }}</td>
+									            <td>{{ movement.amount|intcomma }}</td>
 									            <td>
 									            	<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
 									            </td>
@@ -168,7 +168,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Abonos</b></td>
-									            <td>{{ total_abono_dolar }}</td>
+									            <td>{{ total_abono_dolar|intcomma }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -176,7 +176,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Cargos</b></td>
-									            <td>{{ total_cargos_dolar }}</td>
+									            <td>{{ total_cargos_dolar|intcomma }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -184,7 +184,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Retiro</b></td>
-									            <td>{{ total_retiro_dolar }}</td>
+									            <td>{{ total_retiro_dolar|intcomma }}</td>
 									            <td></td>
 									          </tr>
 								        </tbody>
@@ -223,7 +223,7 @@
 									            <td>{{ movement.kind_mov.name}}</td>
 									            <td>{{ movement.created_at|date:"d/M/Y" }}</td>
 									            <td>{{ movement.description }}</td>
-									            <td>{{ movement.amount }}</td>
+									            <td>{{ movement.amount|intcomma }}</td>
 									            <td>
 									            	<a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
 									            </td>
@@ -234,7 +234,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Abonos</b></td>
-									            <td>{{ total_abono_pesos }}</td>
+									            <td>{{ total_abono_pesos|intcomma }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -242,7 +242,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Cargos</b></td>
-									            <td>{{ total_cargos_pesos }}</td>
+									            <td>{{ total_cargos_pesos|intcomma }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -250,7 +250,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Retiro</b></td>
-									            <td>{{ total_retiro_pesos }}</td>
+									            <td>{{ total_retiro_pesos|intcomma }}</td>
 									            <td></td>
 									          </tr>
 								        </tbody>
