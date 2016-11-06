@@ -93,11 +93,12 @@
               </div>
             {% endif %}
             <br>
-            {% if not notification.store_movement.approved %}
+            {% if notification.store_movement.waiting %}
               <div class="movement">
                 <form method="POST">
                   {% csrf_token %}
-                  <button type="submit" class="waves-effect waves-light btn-large">Aprobar movimiento</button>
+                  <button type="submit" name="approved" class="waves-effect waves-light btn-large">Aprobar movimiento</button>
+                  <button type="submit" name="no_approved" class="waves-effect waves-light btn-large red">Rechazar movimiento</button>
                 </form>
               </div>
             {% endif %}
@@ -111,9 +112,13 @@
 
 {% block scripts %}
   <script>
-    var is_saved = "{{ is_saved }}";
-    if (is_saved) {
-      Materialize.toast('Movimiento aprobado', 4000, 'rounded');
+    var approved = "{{ approved }}";
+    var no_approved = "{{ no_approved }}";
+    if (approved === 'True') {
+      Materialize.toast('Movimiento ha sido aprobado', 4000, 'rounded');
+    } 
+    if (no_approved === 'True') {
+      Materialize.toast('Movimiento ha sido rechazado', 4000, 'rounded');
     }
   </script>
 {% endblock scripts %}

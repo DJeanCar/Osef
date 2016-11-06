@@ -7,13 +7,13 @@ class Shipment(models.Model):
 	name = models.CharField(max_length=50)
 	amount = models.BigIntegerField()
 	saldo = models.BigIntegerField(null=True, blank=True)
+	approved = models.BooleanField(default=True)
 
 	def __str__(self):
-		return "%s - %s USD" % (self.name, self.saldo)
+		return "%s - %s USD - %s" % (self.name, self.saldo, self.store.get_full_name())
 
 	def save(self, *args, **kw):
 		if self.pk is None:
-			print('here')
 			self.saldo = self.amount
 		super(Shipment, self).save(*args, **kw)
 

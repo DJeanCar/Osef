@@ -30,6 +30,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'embarque')
 		for movement in movements:
 			total_dolar += movement.amount
+
+		notifications_abono = Notification.objects.filter(store_movement__kind_mov__name__iexact = 'Abono', store_movement__approved=True)
+		for notification in notifications_abono:
+			total_dolar -= notification.store_movement.amount
 		return total_dolar
 
 	def _get_total_abonos_dolar(self):
@@ -181,14 +185,15 @@ class CreateMovementView(FormView):
 	def form_valid(self, form):
 		if form.cleaned_data['kind_mov'].name.lower() == 'embarque':
 			account = Account.objects.get(currency__iexact='usd')
-			Shipment.objects.create(
+			shipment = Shipment.objects.create(
 					store = form.cleaned_data['store'],
 					name = form.cleaned_data['name'],
-					amount = form.cleaned_data['amount_shipment']
+					amount = form.cleaned_data['amount_shipment'],
+					approved = False
 				)
 			movement = SocioMovement.objects.create(
 				socio = self.request.user,
-				shipment = form.cleaned_data.get('shipment'),
+				shipment = shipment,
 				kind_mov = form.cleaned_data.get('kind_mov'),
 				amount = form.cleaned_data.get('amount_shipment'),
 			)
@@ -319,9 +324,26 @@ class NotificationView(TemplateView):
 
 	def post(self, request, *args, **kwargs):
 		notification = get_object_or_404(Notification, id = kwargs['id'])
-		notification.store_movement.approved = True
+		approved = False
+		no_approved = False
+		if 'approved' in request.POST:
+			# APPROVED
+			notification.store_movement.approved = True
+			notification.store_movement.waiting = False
+			approved = True
+			if notification.user.kind == 'almacen':
+				# Verificar si quien envia la notificacion es un almance
+				# Sumar al CAPITAL USD EN SOCIOS
+				account_dolar = Account.objects.get(currency__iexact='usd')
+				account_dolar.amount += notification.store_movement.amount
+				account_dolar.save()
+				# Restar a Embarques
+		if 'no_approved' in request.POST:
+			# NO APPROVED
+			notification.store_movement.waiting = False
+			no_approved = True
 		notification.store_movement.save()
-		ctx = {'notification' : notification, 'is_saved': True}
+		ctx = {'notification' : notification, 'approved': approved, 'no_approved': no_approved}
 		return render(request, 'users/socios_notification.html', ctx)
 
 	def dispatch(self, request, *args, **kwargs):

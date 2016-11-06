@@ -117,11 +117,15 @@
 									            <td>{{ movement.description }}</td>
 									            <td>{{ movement.amount }}</td>
 									            <td>
-									            	{% if movement.approved %}
-																	Aprobado
-																{% else %}
-																	Espera
-																{% endif %}
+									            	{% if movement.waiting %}
+									            		En espera
+									            	{% else %}
+										            	{% if movement.approved %}
+																		Aprobado
+																	{% else %}
+																		Rechazado
+																	{% endif %}
+									            	{% endif %}
 									            </td>
 									            <td>
 									            	<a href="{{ movement.image.url }}" class="movement__image_link" id="photo_link">Ver</a>

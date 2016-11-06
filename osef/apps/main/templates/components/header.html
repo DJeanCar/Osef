@@ -22,7 +22,7 @@
           	{% for notification in notifications %}
             	<li class="dropdown__notification" data-id={{ notification.id }}>
 								{% if user.kind == 'socio' %}
-									<a href="{% url 'users:notifications' notification.id %}">{{ notification.description }}<span class="new badge"></span></a>
+									<a href="{% url 'users:notifications' notification.id %}">{{ notification.description }} de {{ notification.sender.get_full_name }}<span class="new badge"></span></a>
 								{% endif %}
 								{% if user.kind == 'almacen' %}
 									<a href="{% url 'stores:notifications' notification.id %}">{{ notification.description }}<span class="new badge"></span></a>

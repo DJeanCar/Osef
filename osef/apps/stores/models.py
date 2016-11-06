@@ -22,6 +22,7 @@ class Movement(TimeStamp):
 	description = models.TextField()
 	amount = models.IntegerField()
 	approved = models.BooleanField(default=False)
+	waiting = models.BooleanField(default=True)
 	image = models.ImageField(upload_to='movements')
 
 	def __str__(self):
@@ -51,6 +52,7 @@ class SocioMovement(TimeStamp):
 	amount = models.IntegerField()
 	type_change = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 	approved = models.BooleanField(default=False)
+	waiting = models.BooleanField(default=True)
 	image = models.ImageField(upload_to='movements', null=True, blank=True)
 
 	def __str__(self):

@@ -33,16 +33,16 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 					abono += movement.amount
 			setattr(shipment, 'total_abono', abono)
 			setattr(shipment, 'total_charge', charge)
-			self.saldo_deudor = shipment.saldo # suma montos embarques
+			self.saldo_deudor += shipment.saldo # suma montos embarques
 			self.gastos = self.gastos + charge
 		return zip(shipments, movements_by_shipment)
 
 	def get_context_data(self, **kwargs):
 		context = super(StoreDashboard, self).get_context_data(**kwargs)
 		if self.request.GET.get('search'):
-			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, name__icontains = self.request.GET.get('search'))
+			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, name__icontains = self.request.GET.get('search'), approved=True)
 		else:
-			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0)
+			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, approved=True)
 		shipments_with_movements = self._get_movements_by_shipment(shipments)
 		if shipments.count() == 0:
 			context['no_shipments'] = True
@@ -151,14 +151,31 @@ class NotificationView(TemplateView):
 		return context
 
 	def post(self, request, *args, **kwargs):
+		approved = False
+		no_approved = False
 		notification = get_object_or_404(Notification, id = kwargs['id'])
-		Comment.objects.create(
-			user = request.user,
-			notification = notification,
-			content = request.POST['content']
-		)
-		comments = Comment.objects.filter(notification = notification)
-		ctx = {'notification' : notification, 'comments': comments}
+		ctx = {'notification': notification}
+		if 'approved' in request.POST:
+			notification.socio_movement.approved = True
+			notification.socio_movement.waiting = False
+			notification.socio_movement.shipment.approved = True
+			approved = True
+			notification.socio_movement.save()
+			notification.socio_movement.shipment.save()
+		elif 'no_approved' in request.POST:
+			notification.socio_movement.waiting = False
+			no_approved = True
+			notification.socio_movement.save()
+		else:
+			Comment.objects.create(
+				user = request.user,
+				notification = notification,
+				content = request.POST['content']
+			)
+			comments = Comment.objects.filter(notification = notification)
+			ctx['comments'] = comments
+		ctx['approved'] = approved
+		ctx['no_approved'] = no_approved
 		return render(request, 'stores/notifications.html', ctx)
 
 	def dispatch(self, request, *args, **kwargs):
