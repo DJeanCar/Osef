@@ -1,7 +1,8 @@
 from django.db import models
 from apps.users.models import User
+from apps.main.models import TimeStamp
 
-class Shipment(models.Model):
+class Shipment(TimeStamp):
 
 	store = models.ForeignKey(User, verbose_name='Almancén')
 	name = models.CharField(max_length=50)

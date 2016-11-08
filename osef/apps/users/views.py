@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.generic import TemplateView, FormView, View
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import logout
@@ -8,6 +8,9 @@ from apps.shipments.models import Shipment
 from apps.stores.models import SocioMovement
 from .models import Account, Notification
 from .forms import EmailForm, CreateMovForm, UpdateImage
+from .admin import MovementResource
+from itertools import chain
+from datetime import datetime, timedelta
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 
@@ -89,8 +92,43 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 		context['retiro_pesos'] = retiro_pesos
 		context['embarque_total'] = self._get_sum_shipments()
 		context['no_movements'] = True if SocioMovement.objects.count() == 0 else False
-		context['dolar_movements'] = SocioMovement.objects.filter(account__currency__iexact='usd').order_by('created_at')
-		context['pesos_movements'] = SocioMovement.objects.filter(account__currency__iexact='mxn').order_by('created_at')
+		
+		if self.request.GET.get('date'):
+			# filter date
+			if self.request.GET.get('date') == 'all':
+				dolar_movements = SocioMovement.objects.filter(account__currency__iexact='usd').order_by('-created_at')
+			elif self.request.GET.get('date') == 'one_month':
+				context['one_month'] = True
+				last_month = datetime.today() - timedelta(days=30)
+				dolar_movements = SocioMovement.objects.filter(created_at__gte=last_month, account__currency__iexact='usd').order_by('-created_at')
+			else:
+				context['two_month'] = True
+				last_month = datetime.today() - timedelta(days=60)
+				dolar_movements = SocioMovement.objects.filter(created_at__gte=last_month, account__currency__iexact='usd').order_by('-created_at')
+		else:
+			dolar_movements = SocioMovement.objects.filter(account__currency__iexact='usd').order_by('-created_at')
+		context['dolar_movements'] = dolar_movements
+		
+		if self.request.GET.get('date'):
+			# filter date
+			if self.request.GET.get('date') == 'all':
+				pesos_movements = SocioMovement.objects.filter(account__currency__iexact='mxn').order_by('-created_at')
+			elif self.request.GET.get('date') == 'one_month':
+				context['one_month'] = True
+				last_month = datetime.today() - timedelta(days=30)
+				pesos_movements = SocioMovement.objects.filter(created_at__gte=last_month, account__currency__iexact='mxn').order_by('-created_at')
+			else:
+				context['two_month'] = True
+				last_month = datetime.today() - timedelta(days=60)
+				pesos_movements = SocioMovement.objects.filter(created_at__gte=last_month, account__currency__iexact='mxn').order_by('-created_at')
+		else:
+			pesos_movements = SocioMovement.objects.filter(account__currency__iexact='mxn').order_by('-created_at')
+		context['pesos_movements'] = pesos_movements
+		
+		if context['dolar_movements'].count() + context['pesos_movements'].count() == 0:
+			context['exportToCSV'] = False
+		else:
+			context['exportToCSV'] = True
 		context['last_movement_dolar'] = SocioMovement.objects.filter(account__currency__iexact='usd').last()
 		context['last_movement_pesos'] = SocioMovement.objects.filter(account__currency__iexact='mxn').last()
 		context['last_retiro_dolar'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='usd').last()
@@ -194,6 +232,8 @@ class CreateMovementView(FormView):
 			movement = SocioMovement.objects.create(
 				socio = self.request.user,
 				shipment = shipment,
+				account = account,
+				description = form.cleaned_data.get('description'),
 				kind_mov = form.cleaned_data.get('kind_mov'),
 				amount = form.cleaned_data.get('amount_shipment'),
 			)
@@ -362,3 +402,16 @@ class ViewedNotification(View):
 		notification.viewed = True
 		notification.save()
 		return JsonResponse({ 'success' : True })
+
+class SocioExportDashboard(View):
+
+	def get(self, request, *args, **kwargs):
+		dolares = SocioMovement.objects.filter(account__currency__iexact='usd').order_by('-created_at')
+		pesos = SocioMovement.objects.filter(account__currency__iexact='mxn').order_by('-created_at')
+		
+		result_list = list(chain(dolares, pesos))
+
+		dataset = MovementResource().export(result_list)
+		response = HttpResponse(dataset.csv, content_type='text/csv')
+		response['Content-Disposition'] = 'attachment; filename="movimientos.csv"'
+		return response

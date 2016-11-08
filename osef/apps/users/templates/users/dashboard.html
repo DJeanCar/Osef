@@ -116,6 +116,27 @@
 			<div class="row">
 				<div class="col s12">
 					<div class="panel">
+						<div class="panel__header panel__header__socios panel__filter grey lighten-5">
+							<div class="row no-margin-bottom valign-wrapper panel__filter__weigth">
+								<div class="col s12 valign-wrapper">
+									<form>
+										<select id="filter_date">
+											<option value="all">Todos</option>
+											{% if one_month %}
+												<option value="one_month" selected>Último mes</option>
+											{% else %}
+												<option value="one_month">Último mes</option>
+											{% endif %}
+											{% if two_month %}
+												<option value="two_months" selected>Últimos dos meses</option>
+											{% else %}
+												<option value="two_months">Últimos dos meses</option>
+											{% endif %}
+										</select>
+									</form>
+								</div>
+							</div>
+						</div>
 						{% if no_movements %}
 							<div class="panel__body">
 								<div class="row">
@@ -265,10 +286,10 @@
 							<i class="large material-icons">mode_edit</i>
 						</a>
 						<ul>
-							<!--<li>
-								<a class="btn-floating green" href="{% url 'stores:dashboard_export' %}" target='_blank' ><i class="material-icons">publish</i>
+							<li>
+								<a class="btn-floating green {% if not exportToCSV %}disabled{% endif %}" href="{% url 'users:dashboard_export' %}" target='_blank' ><i class="material-icons">publish</i>
 								</a>
-							</li>-->
+							</li>
 							<li>
 								<a class="btn-floating blue" href="{% url 'users:create_movement' %}"><i class="material-icons">add</i></a>
 							</li>
@@ -332,6 +353,10 @@
   //       }
 		// 	});
 		// }
+	});
+
+	$("#filter_date").on('change', function () {
+		window.location.replace("?date=" + $("#filter_date").val());
 	});
 </script>
 {% endblock %}

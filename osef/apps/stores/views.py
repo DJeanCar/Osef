@@ -10,6 +10,7 @@ from apps.users.models import User, Notification, Comment
 from .models import Movement, SocioMovement
 from .forms import CreateMovForm
 from .admin import MovementResource
+from datetime import datetime, timedelta
 
 class StoreDashboard(LoginRequiredMixin, TemplateView):
 
@@ -20,11 +21,22 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 	has_shipments = False
 
 	def _get_movements_by_shipment(self, shipments):
+		last_month = False
+		if self.request.GET.get('date'):
+			if self.request.GET.get('date') == 'all':
+				last_month = False
+			if self.request.GET.get('date') == 'one_month':
+				last_month = datetime.today() - timedelta(days=30)
+			else:
+				last_month = datetime.today() - timedelta(days=60)
 		movements_by_shipment = []
 		for shipment in shipments:
 			abono = 0
 			charge = 0
-			movements = Movement.objects.filter(shipment = shipment)
+			if last_month:
+				movements = Movement.objects.filter(created_at__gte=last_month, shipment = shipment).order_by('-created_at')
+			else:
+				movements = Movement.objects.filter(shipment = shipment).order_by('-created_at')
 			movements_by_shipment.append(movements)
 			for movement in movements:
 				if movement.kind_mov.name.lower() == 'cargo':
@@ -40,9 +52,21 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(StoreDashboard, self).get_context_data(**kwargs)
 		if self.request.GET.get('search'):
-			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, name__icontains = self.request.GET.get('search'), approved=True)
+			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, name__icontains = self.request.GET.get('search'), approved=True).order_by('-created_at')
+		elif self.request.GET.get('date'):
+			# filter date
+			if self.request.GET.get('date') == 'all':
+				shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')
+			elif self.request.GET.get('date') == 'one_month':
+				context['one_month'] = True
+				last_month = datetime.today() - timedelta(days=30)
+				shipments = Shipment.objects.filter(created_at__gte=last_month, store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')
+			else:
+				context['two_month'] = True
+				last_month = datetime.today() - timedelta(days=60)
+				shipments = Shipment.objects.filter(created_at__gte=last_month, store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')			
 		else:
-			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, approved=True)
+			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')
 		shipments_with_movements = self._get_movements_by_shipment(shipments)
 		if shipments.count() == 0:
 			context['no_shipments'] = True

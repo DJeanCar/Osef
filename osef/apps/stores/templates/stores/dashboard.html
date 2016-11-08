@@ -61,7 +61,21 @@
 						<div class="panel__header panel__filter grey lighten-5">
 							<div class="row no-margin-bottom valign-wrapper panel__filter__weigth">
 								<div class="col s4 m4 l8 valign-wrapper">
-									<div class="panel__header__title valign">Filtros</div>
+									<form>
+										<select id="filter_date">
+											<option value="all">Todos</option>
+											{% if one_month %}
+												<option value="one_month" selected>Último mes</option>
+											{% else %}
+												<option value="one_month">Último mes</option>
+											{% endif %}
+											{% if two_month %}
+												<option value="two_months" selected>Últimos dos meses</option>
+											{% else %}
+												<option value="two_months">Últimos dos meses</option>
+											{% endif %}
+										</select>
+									</form>
 								</div>
 								<div class="col s8 m8 l4 valign-wrapper">
 									<div class="input-field col s12">
@@ -238,6 +252,10 @@
         }
 			});
 		}
+	});
+
+	$("#filter_date").on('change', function () {
+		window.location.replace("?date=" + $("#filter_date").val());
 	});
 </script>
 {% endblock %}

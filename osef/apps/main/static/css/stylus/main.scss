@@ -1,9 +1,13 @@
 @import './_typography.scss';
 @import './_color.scss';
 
-body, h1, h2, h3, h4, li, ul, ol, img, p {
+body, h1, h2, h3, h4, li, ul, ol, img, p, input {
 	margin: 0;
 	padding: 0;
+}
+
+input.select-dropdown {
+	margin: 0 !important;
 }
 
 a {
@@ -28,6 +32,15 @@ a {
 }
 .errorlist {
 	color: #ef5350;
+}
+
+.panel__body__description {
+	margin-top: 1em;
+}
+
+.panel__header__socios {
+	padding-top: 1.5em !important;
+	padding-bottom: 1.5em !important;
 }
 
 .header__title {
