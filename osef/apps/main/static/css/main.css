@@ -8,6 +8,9 @@ input.select-dropdown {
 a {
   color: #212121; }
 
+.input__margin {
+  margin: 1em 0; }
+
 .my-container {
   max-width: 1100px;
   margin: 0 auto; }

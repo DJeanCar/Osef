@@ -11,20 +11,23 @@
       </div>
       <div class="col s9 m6 l4 profile valign-wrapper">
         <a class="dropdown-button notification {% if not has_notifications %}grey{% endif %}" href="#!" data-activates="dropdown2">{{ number_of_notifications }}<i class="mdi-navigation-arrow-drop-down right"></i></a>
-        {% if has_notifications %}
-          <ul id="dropdown2" class="dropdown-content my-dropdown">
-          	{% for notification in notifications %}
-            	<li>
-								{% if user.kind == 'socio' %}
-									<a href="{% url 'users:notifications' notification.id %}">{{ notification.description }} de {{ notification.sender.get_full_name }}<span class="new badge"></span></a>
-								{% endif %}
-								{% if user.kind == 'almacen' %}
-									<a href="{% url 'stores:notifications' notification.id %}">{{ notification.description }}<span class="new badge"></span></a>
-								{% endif %}
-            	</li>
-          	{% endfor %}
-          </ul>
-        {% endif %}
+        
+        <ul id="dropdown2" class="dropdown-content my-dropdown">
+        	{% for notification in notifications %}
+          	<li>
+							{% if user.kind == 'socio' %}
+								<a href="{% url 'users:notifications' notification.id %}">{{ notification.description }} de {{ notification.sender.get_full_name }}<span class="new badge"></span></a>
+							{% endif %}
+							{% if user.kind == 'almacen' %}
+								<a href="{% url 'stores:notifications' notification.id %}">{{ notification.description }}<span class="new badge"></span></a>
+							{% endif %}
+          	</li>
+        	{% endfor %}
+          <li>
+            <span>Otras notificaciones</span>
+          </li>
+        </ul>
+
         {% if user.photo %}
           <a href="{% url 'users:profile' %}"><img class="image-profile valign" src="{{ MEDIA_URL }}{{ user.photo }}"></a>
         {% elif user.url_photo %}

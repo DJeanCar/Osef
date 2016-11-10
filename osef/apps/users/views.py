@@ -11,6 +11,7 @@ from .forms import EmailForm, CreateMovForm, UpdateImage
 from .admin import MovementResource
 from itertools import chain
 from datetime import datetime, timedelta
+from django.contrib.humanize.templatetags.humanize import intcomma
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 

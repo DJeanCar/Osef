@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load humanize %}
+{% load filters %}
 {% block title %}
 	Almacén
 {% endblock title %}
@@ -16,7 +17,7 @@
 						<h4>Saldo deudor USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ saldo_deudor|intcomma }}</span>
+							<span>{{ saldo_deudor|money_format }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update">
@@ -37,7 +38,7 @@
 						<h4>Gastos USD</h4>
 						<div class="card-info__money">
 							<span>$</span>
-							<span>{{ gastos|intcomma }}</span>
+							<span>{{ gastos|money_format }}</span>
 						</div>
 					</div>
 					<div class="card_panel__update card3_dark">
@@ -129,7 +130,7 @@
 									            <td>{{ movement.kind_mov.name}}</td>
 									            <td>{{ movement.created_at|date:"d/M/Y" }}</td>
 									            <td>{{ movement.description }}</td>
-									            <td>{{ movement.amount|intcomma }}</td>
+									            <td>{{ movement.amount|money_format }}</td>
 									            <td>
 									            	{% if movement.waiting %}
 									            		En espera
@@ -153,7 +154,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Abonos</b></td>
-									            <td>{{ shipment.total_abono|intcomma }}</td>
+									            <td>{{ shipment.total_abono|money_format }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -161,7 +162,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Total Cargos</b></td>
-									            <td>{{ shipment.total_charge|intcomma }}</td>
+									            <td>{{ shipment.total_charge|money_format }}</td>
 									            <td></td>
 									          </tr>
 									          <tr>
@@ -169,7 +170,7 @@
 									            <td></td>
 									            <td></td>
 									            <td><b>Saldo</b></td>
-									            <td>{{ shipment.saldo|intcomma }}</td>
+									            <td>{{ shipment.saldo|money_format }}</td>
 									            <td></td>
 									          </tr>
 								        </tbody>

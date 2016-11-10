@@ -36,7 +36,8 @@ class CreateMovForm(forms.Form):
       empty_label="Tipo de movimiento",
       to_field_name="name",
       widget=forms.Select(attrs={
-        'id' : 'mov'
+        'id' : 'mov',
+        'class' : 'input__margin'
       }))
   kind_abono = forms.ModelChoiceField(
       required=False,
@@ -44,7 +45,8 @@ class CreateMovForm(forms.Form):
       empty_label="Selecciona un tipo de abono",
       to_field_name="name",
       widget=forms.Select(attrs={
-      'id' : 'kind-abono'
+      'id' : 'kind-abono',
+      'class' : 'input__margin'
     }))
   shipment = forms.ModelChoiceField(
       required=False,
@@ -52,7 +54,8 @@ class CreateMovForm(forms.Form):
       empty_label="Selecciona un embarque",
       to_field_name="name",
       widget=forms.Select(attrs={
-      'id' : 'shipment'
+      'id' : 'shipment',
+      'class' : 'input__margin'
     }))
   kind_charge = forms.ModelChoiceField(
       required=False,
@@ -60,7 +63,8 @@ class CreateMovForm(forms.Form):
       empty_label="Selecciona un tipo de cargo",
       to_field_name="name",
       widget=forms.Select(attrs={
-      'id' : 'kind-mov'
+      'id' : 'kind-mov',
+      'class' : 'input__margin'
     }))
   charge = forms.ModelChoiceField(
       required=False, 
@@ -68,7 +72,8 @@ class CreateMovForm(forms.Form):
       empty_label="Selecciona un cargo",
       to_field_name="id",
       widget=forms.Select(attrs={
-      'id' : 'kind-charge'
+      'id' : 'kind-charge',
+      'class' : 'input__margin'
     }))
   image = forms.ImageField(
       required=False,
@@ -77,7 +82,8 @@ class CreateMovForm(forms.Form):
       required=False,
       widget=forms.NumberInput(attrs={
         'id' : 'type-change',
-        'placeholder': 'Tipo de cambio: 20.4'
+        'placeholder': 'Tipo de cambio: 20.4',
+        'class' : 'input__margin'
         })
     )
   account = forms.ModelChoiceField(
@@ -86,16 +92,17 @@ class CreateMovForm(forms.Form):
       empty_label="Selecciona una Cuenta",
       to_field_name="currency",
       widget=forms.Select(attrs={
-        'id' : 'currency'
+        'id' : 'currency',
+        'class' : 'input__margin'
       }))
   description = forms.CharField(required=False, widget=forms.Textarea(attrs={
       'placeholder' : 'Descripción',
-      'class' : 'materialize-textarea'
+      'class' : 'materialize-textarea input__margin'
     }))
   amount = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
       'placeholder' : 'Cantidad',
       'type' : 'number',
-      'class' : 'validate'
+      'class' : 'validate input__margin'
     }))
 
   # shipment
@@ -104,17 +111,18 @@ class CreateMovForm(forms.Form):
       queryset=User.objects.filter(kind="almacen"),
       empty_label="Elegir Almancén",
       widget=forms.Select(attrs={
-        'id' : 'store'
+        'id' : 'store',
+        'class' : 'input__margin',
       }))
   name = forms.CharField(required=False, widget=forms.TextInput(attrs={
       'placeholder' : 'Nombre',
       'type' : 'text',
-      'class' : 'validate'
+      'class' : 'validate input__margin'
     }))
   amount_shipment = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
       'placeholder' : 'Cantidad',
       'type' : 'number',
-      'class' : 'validate'
+      'class' : 'validate input__margin'
     }))
 
   # retiro
@@ -123,7 +131,8 @@ class CreateMovForm(forms.Form):
       queryset=User.objects.filter(kind="socio"),
       empty_label="Elegir Socio",
       widget=forms.Select(attrs={
-        'id' : 'socio'
+        'id' : 'socio',
+        'class' : 'input__margin',
       }))
 
   def validateAmount(self):

@@ -25,7 +25,8 @@ class CreateMovForm(forms.Form):
 			empty_label="Tipo de movimiento",
 			to_field_name="name",
 			widget=forms.Select(attrs={
-				'id' : 'mov'
+				'id' : 'mov',
+				'class' : 'input__margin'
 			}))
 	kind_charge = forms.ModelChoiceField(
 			required=False,
@@ -33,7 +34,8 @@ class CreateMovForm(forms.Form):
 			empty_label="Selecciona un tipo de cargo",
 			to_field_name="name",
 			widget=forms.Select(attrs={
-			'id' : 'kind-mov'
+			'id' : 'kind-mov',
+			'class' : 'input__margin'
 		}))
 	charge = forms.ModelChoiceField(
 			required=False, 
@@ -41,19 +43,20 @@ class CreateMovForm(forms.Form):
 			empty_label="Selecciona un cargo",
 			to_field_name="id",
 			widget=forms.Select(attrs={
-			'id' : 'kind-charge'
+			'id' : 'kind-charge',
+			'class' : 'input__margin'
 		}))
 	image = forms.ImageField(
 			required=False,
 		)
 	description = forms.CharField(required=False, widget=forms.Textarea(attrs={
 			'placeholder' : 'Descripción',
-			'class' : 'materialize-textarea'
+			'class' : 'materialize-textarea input__margin'
 		}))
 	amount = forms.CharField(required=False, widget=forms.TextInput(attrs={
 			'placeholder' : 'Cantidad',
 			'type' : 'number',
-			'class' : 'validate'
+			'class' : 'validate input__margin'
 		}))
 
 	def validateAmount(self):
