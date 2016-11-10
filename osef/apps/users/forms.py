@@ -189,7 +189,7 @@ class CreateMovForm(forms.Form):
         if not data['amount']:
           self.add_error('amount', 'Este campo es obligatorio')
         else:
-          if not self.cleaned_data['amount'].isdigit():
+          if not str(self.cleaned_data['amount']).isdigit():
             self.add_error('amount', 'Este campo solo puede contener números')
       if self.data['kind_mov'].lower() == 'embarque':
         if not data['store']:
