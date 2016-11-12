@@ -17,6 +17,7 @@ DATABASES = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR.child('static')
+MEDIA_URL = '/media/'
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 	'fields': 'id,name,email', # needed starting from protocol v2.4
