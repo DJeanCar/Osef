@@ -70,7 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 					[orig.email],
 				)
 				msg.attach_alternative(html_content, 'text/html')
-				msg.send()
+				# msg.send()
 		super(User, self).save(*args, **kw)
 
 
