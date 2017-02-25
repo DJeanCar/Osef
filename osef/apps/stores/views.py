@@ -170,7 +170,10 @@ class NotificationView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(NotificationView, self).get_context_data(**kwargs)
-		context['notification'] = get_object_or_404(Notification, id = kwargs['id'])
+		notification = get_object_or_404(Notification, id = kwargs['id'])
+		notification.viewed = True
+		notification.save()
+		context['notification'] = notification
 		context['comments'] = Comment.objects.filter(notification = context['notification'])
 		return context
 

@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load filters %}
+{% block title %}
+  Dashboard
+{% endblock title %}
+
+{% block content %}
+  {% include "components/header.html" %}
+
+  <section class="main_info">
+    <div class="my-container">
+      <div class="row main_info__data">
+        <div class="col s12 m6 l4">
+          <div class="card-info card1">
+            <h4>Capital USD</h4>
+            <div class="card-info__money">
+              <span>$</span>
+              <span>10,000</span><!-- DOLARES INICIAL -->
+            </div>
+          </div>
+          <div class="card_panel__update">
+            <div class="valign-wrapper card-info__updated card1_dark">
+              <h5 class="valign">Último movimiento: 
+                {% if not last_movement_dolar %}
+                  Aún no tenemos movimientos
+                {% else %}
+                  {{ last_movement_dolar.created_at|naturaltime }}
+                {% endif %}
+              </h5>
+
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6 l4">
+          <div class="card-info card2">
+            <h4>Capital MXN</h4>
+            <div class="card-info__money">
+              <span>$</span>
+              <span>20,000</span> <!-- PESOS INICIAL -->
+            </div>
+          </div>
+          <div class="card_panel__update card2_dark">
+            <div class="valign-wrapper card-info__updated">
+              <h5 class="valign">Último movimiento: 
+                {% if not last_movement_pesos %}
+                  Aún no tenemos movimientos
+                {% else %}
+                  {{ last_movement_pesos.created_at|naturaltime }}
+                {% endif %}
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6 l4">
+          <div class="card-info card3">
+            <h4>Retiros USD</h4>
+            <div class="card-info__money">
+              <span>$</span>
+              <span>23,000</span>
+            </div>
+          </div>
+          <div class="card_panel__update card3_dark">
+            <div class="valign-wrapper card-info__updated">
+              <h5 class="valign">Último movimiento: 
+                {% if not last_retiro_dolar %}
+                  Aún no tenemos movimientos
+                {% else %}
+                  {{ last_retiro_dolar.created_at|naturaltime }}
+                {% endif %}
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6 l4">
+          <div class="card-info card4">
+            <h4>Retiros MXN</h4>
+            <div class="card-info__money">
+              <span>$</span>
+              <span>30,000</span>
+            </div>
+          </div>
+          <div class="card_panel__update card4_dark">
+            <div class="valign-wrapper card-info__updated">
+              <h5 class="valign">Último movimiento: 
+                {% if not last_retiro_pesos %}
+                  Aún no tenemos movimientos
+                {% else %}
+                  {{ last_retiro_pesos.created_at|naturaltime }}
+                {% endif %}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div class="panel">
+            <div class="panel__header panel__header__socios panel__filter grey lighten-5">
+              <div class="row no-margin-bottom valign-wrapper panel__filter__weigth">
+                <div class="col s12 valign-wrapper">
+                  <form>
+                    <select id="filter_date">
+                      <option value="all">Todos</option>
+                      {% if one_month %}
+                        <option value="one_month" selected>Último mes</option>
+                      {% else %}
+                        <option value="one_month">Último mes</option>
+                      {% endif %}
+                      {% if two_month %}
+                        <option value="two_months" selected>Últimos dos meses</option>
+                      {% else %}
+                        <option value="two_months">Últimos dos meses</option>
+                      {% endif %}
+                    </select>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% if no_movements %}
+              <div class="panel__body">
+                <div class="row">
+                  <div class="col s12">
+                    <div class="panel__body__description">
+                      No se encontraron movimientos
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% else %}
+                <div class="panel__body">
+                  <div class="row">
+                    <div class="col s12">
+                      <div class="panel__body__description">
+                        Movimientos en Dolares
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col s12">
+                      <table class="responsive-table">
+                        <thead>
+                          <tr>
+                              <th data-field="number">Nº</th>
+                              <th data-field="movement">Movimiento</th>
+                              <th data-field="date">Fecha</th>
+                              <th data-field="descripción">Descripción</th>
+                              <th data-field="amount">Cantidad</th>
+                              <th data-field="detail">Detalle</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {% for movement in dolar_movements %}
+                            <tr>
+                              <td>{{ forloop.counter }}</td>
+                              <td>{{ movement.kind_mov.name}}</td>
+                              <td>{{ movement.created_at|date:"d/M/Y" }}</td>
+                              <td>{{ movement.description }}</td>
+                              <td>{{ movement.amount|money_format }}</td>
+                              <td>
+                                <a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
+                              </td>
+                            </tr>
+                        {% endfor %}
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td><b>Total Abonos</b></td>
+                              <td>10,000</td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td><b>Total Cargos</b></td>
+                              <td>20,000</td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td><b>Total Retiro</b></td>
+                              <td>30,000</td>
+                              <td></td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel__body">
+                  <div class="row">
+                    <div class="col s12">
+                      <div class="panel__body__description">
+                        Movimientos en Pesos
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col s12">
+                    <table class="responsive-table">
+                        <thead>
+                          <tr>
+                              <th data-field="number">Nº</th>
+                              <th data-field="movement">Movimiento</th>
+                              <th data-field="date">Fecha</th>
+                              <th data-field="descripción">Descripción</th>
+                              <th data-field="amount">Cantidad</th>
+                              <th data-field="detail">Detalle</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {% for movement in pesos_movements %}
+                            <tr>
+                              <td>{{ forloop.counter }}</td>
+                              <td>{{ movement.kind_mov.name}}</td>
+                              <td>{{ movement.created_at|date:"d/M/Y" }}</td>
+                              <td>{{ movement.description }}</td>
+                              <td>{{ movement.amount|money_format }}</td>
+                              <td>
+                                <a href="{% url 'users:movement_detail' movement.id %}" class="movement__image_link" id="photo_link">Ver detalle</a>
+                              </td>
+                            </tr>
+                        {% endfor %}
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td><b>Total Abonos</b></td>
+                              <td>10,000</td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td><b>Total Cargos</b></td>
+                              <td>10,000</td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td><b>Total Retiro</b></td>
+                              <td>20,000</td>
+                              <td></td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div> 
+                  </div>
+                </div>
+            {% endif %}
+          </div>
+          <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large red">
+              <i class="large material-icons">mode_edit</i>
+            </a>
+            <ul>
+              <li>
+                <a class="btn-floating green {% if not exportToCSV %}disabled{% endif %}" href="{% url 'users:dashboard_export' %}" target='_blank' ><i class="material-icons">publish</i>
+                </a>
+              </li>
+              <li>
+                <a class="btn-floating blue" href="{% url 'users:create_movement' %}"><i class="material-icons">add</i></a>
+              </li>
+            </ul>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  // using jQuery
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+
+  function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+      }
+  });
+
+  var formdata = new FormData(); 
+  $('.inputfile').on('change', function() {
+    console.log(this);
+    var id = this.dataset.id;
+    console.log(id);
+    // var file = this.files[0];
+    // if (formdata) {
+    //  formdata.append("image", file);
+    //  $.ajax({
+    //    url: '/movimiento/agregar-imagen/' + id + '/',
+    //    type: "POST",
+    //    data: formdata,
+    //    processData: false,
+  //       contentType: false,
+  //       success: function (data) {
+  //        location.reload();
+  //       }
+    //  });
+    // }
+  });
+
+  $("#filter_date").on('change', function () {
+    window.location.replace("?date=" + $("#filter_date").val());
+  });
+</script>
+{% endblock %}

@@ -82,7 +82,7 @@ class AccountAdmin(admin.ModelAdmin):
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
-	list_display = ('user', 'description', 'sender')
+	list_display = ('user', 'description', 'sender', 'viewed')
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

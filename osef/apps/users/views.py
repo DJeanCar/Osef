@@ -13,6 +13,11 @@ from itertools import chain
 from datetime import datetime, timedelta
 from django.contrib.humanize.templatetags.humanize import intcomma
 
+class MeDashboardView(LoginRequiredMixin, TemplateView):
+
+	template_name = 'users/me.html'
+	login_url = '/'
+
 class DashboardView(LoginRequiredMixin, TemplateView):
 
 	template_name = 'users/dashboard.html'
@@ -360,7 +365,11 @@ class NotificationView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(NotificationView, self).get_context_data(**kwargs)
-		context['notification'] = get_object_or_404(Notification, id = kwargs['id'])
+		notification = get_object_or_404(Notification, id = kwargs['id'])
+		notification.viewed = True
+		notification.save()
+		print(notification)
+		context['notification'] = notification
 		return context
 
 	def post(self, request, *args, **kwargs):

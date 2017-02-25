@@ -2,7 +2,8 @@ from django.conf.urls import url
 from .views import (
             DashboardView, NoPermissionView, GetEmailView,
             UserProfileView, CreateMovementView, DetailMovementView,
-            NotificationView, ViewedNotification, SocioExportDashboard )
+            NotificationView, ViewedNotification, SocioExportDashboard,
+            MeDashboardView )
 from . import views
 
 urlpatterns = [
@@ -16,5 +17,6 @@ urlpatterns = [
 	url(r'^perfil/$', UserProfileView.as_view(), name='profile'),
 	url(r'^salir/$', views.LogOut, name='logout'),
   url(r'^socios/exportar/$', SocioExportDashboard.as_view(), name='dashboard_export'),
+  url(r'^me/dashboard/$', MeDashboardView.as_view(), name='me_dashboard'),
 
 ]

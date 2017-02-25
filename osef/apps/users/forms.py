@@ -215,7 +215,7 @@ class CreateMovForm(forms.Form):
           if int(data['account'].amount < int(data['amount'])):
             self.add_error('amount', 'No tiene saldo sufiencie en su cuenta')
           if data.get('amount'):
-            if not data.get('amount').isdigit():
+            if not str(data.get('amount')).isdigit():
               self.add_error('amount', 'Este campo solo puede contener números')
 
 
