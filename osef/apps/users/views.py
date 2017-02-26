@@ -12,11 +12,106 @@ from .admin import MovementResource
 from itertools import chain
 from datetime import datetime, timedelta
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.db.models import Q
 
 class MeDashboardView(LoginRequiredMixin, TemplateView):
 
 	template_name = 'users/me.html'
 	login_url = '/'
+
+	def get(self, request, *args, **kwargs):
+		if request.user.kind == 'socio':
+			return super(MeDashboardView, self).get(request, *args, **kwargs)
+		else:
+			return redirect(reverse('main:home'))
+
+	def _get_total_abonos_dolar(self):
+		total_abono_dolar = 0;
+		movements = SocioMovement.objects.filter(
+			socio = self.request.user,
+			kind_mov__name__iexact = 'abono', 
+			account__currency__iexact='usd'
+		)
+		for movement in movements:
+			total_abono_dolar += movement.amount
+		return total_abono_dolar
+
+	def _get_total_abonos_pesos(self):
+		total_abono_pesos = 0;
+		movements = SocioMovement.objects.filter(
+			socio = self.request.user,
+			kind_mov__name__iexact = 'abono', 
+			account__currency__iexact='mxn'
+		)
+		for movement in movements:
+			total_abono_pesos += movement.amount
+		return total_abono_pesos
+
+	def _get_total_retiro_dolar(self):
+		total_retiro_dolar = 0
+		movements = SocioMovement.objects.filter(
+			socio = self.request.user,
+			kind_mov__name__iexact = 'retiro', 
+			account__currency__iexact='usd'
+		)
+		for movement in movements:
+			total_retiro_dolar += movement.amount
+		return total_retiro_dolar
+
+	def _get_total_retiro_pesos(self):
+		total_retiro_pesos = 0
+		movements = SocioMovement.objects.filter(
+			socio = self.request.user,
+			kind_mov__name__iexact = 'retiro', 
+			account__currency__iexact = 'mxn'
+		)
+		for movement in movements:
+			total_retiro_pesos += movement.amount
+		return total_retiro_pesos
+
+	def get_context_data(self, **kwargs):
+		context = super(MeDashboardView, self).get_context_data(**kwargs)
+		if self.request.GET.get('date'):
+			# filter date
+			if self.request.GET.get('date') == 'all':
+				dolar_movements = SocioMovement.objects.filter(Q(account__currency__iexact='usd') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+			elif self.request.GET.get('date') == 'one_month':
+				context['one_month'] = True
+				last_month = datetime.today() - timedelta(days=30)
+				dolar_movements = SocioMovement.objects.filter(Q(created_at__gte=last_month) & Q(account__currency__iexact='usd') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+			else:
+				context['two_month'] = True
+				last_month = datetime.today() - timedelta(days=60)
+				dolar_movements = SocioMovement.objects.filter(Q(created_at__gte=last_month) & Q(account__currency__iexact='usd') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+		else:
+			dolar_movements = SocioMovement.objects.filter(Q(account__currency__iexact='usd') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+		context['dolar_movements'] = dolar_movements
+		
+		if self.request.GET.get('date'):
+			# filter date
+			if self.request.GET.get('date') == 'all':
+				pesos_movements = SocioMovement.objects.filter(Q(account__currency__iexact='mxn') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+			elif self.request.GET.get('date') == 'one_month':
+				context['one_month'] = True
+				last_month = datetime.today() - timedelta(days=30)
+				pesos_movements = SocioMovement.objects.filter(Q(created_at__gte=last_month) & Q(account__currency__iexact='mxn') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+			else:
+				context['two_month'] = True
+				last_month = datetime.today() - timedelta(days=60)
+				pesos_movements = SocioMovement.objects.filter(Q(created_at__gte=last_month) & Q(account__currency__iexact='mxn') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+		else:
+			pesos_movements = SocioMovement.objects.filter(Q(account__currency__iexact='mxn') & Q(kind_mov__name__iexact = 'retiro') | Q(kind_mov__name__iexact = 'abono')).order_by('-created_at')
+		context['pesos_movements'] = pesos_movements
+
+		context['total_abono_dolar'] = self._get_total_abonos_dolar()
+		context['total_abono_pesos'] = self._get_total_abonos_pesos()
+		context['total_retiro_dolar'] = self._get_total_retiro_dolar()
+		context['total_retiro_pesos'] = self._get_total_retiro_pesos()
+		context['last_retiro_dolar'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='usd').last()
+		context['last_retiro_pesos'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'retiro', account__currency__iexact='mxn').last()
+		context['last_ingreso_dolar'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'abono', account__currency__iexact='usd').last()
+		context['last_ingreso_pesos'] = SocioMovement.objects.filter(kind_mov__name__iexact = 'abono', account__currency__iexact='mxn').last()
+		return context
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 
