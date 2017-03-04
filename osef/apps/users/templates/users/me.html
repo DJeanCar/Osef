@@ -16,7 +16,7 @@
             <h4>Ingresos USD</h4>
             <div class="card-info__money">
               <span>$</span>
-              <span>{{ total_abono_dolar|money_format }}</span><!-- DOLARES INICIAL -->
+              <span>{{ abono_dolar|money_format }}</span><!-- DOLARES INICIAL -->
             </div>
           </div>
           <div class="card_panel__update">
@@ -37,7 +37,7 @@
             <h4>Ingresos MXN</h4>
             <div class="card-info__money">
               <span>$</span>
-              <span>{{ total_abono_pesos|money_format }}</span> <!-- PESOS INICIAL -->
+              <span>{{ abono_pesos|money_format }}</span> <!-- PESOS INICIAL -->
             </div>
           </div>
           <div class="card_panel__update card2_dark">
@@ -57,7 +57,7 @@
             <h4>Retiros USD</h4>
             <div class="card-info__money">
               <span>$</span>
-              <span>{{ total_retiro_dolar|money_format }}</span>
+              <span>{{ retiro_dolar|money_format }}</span>
             </div>
           </div>
           <div class="card_panel__update card3_dark">
@@ -77,7 +77,7 @@
             <h4>Retiros MXN</h4>
             <div class="card-info__money">
               <span>$</span>
-              <span>{{ total_retiro_pesos|money_format }}</span>
+              <span>{{ retiro_pesos|money_format }}</span>
             </div>
           </div>
           <div class="card_panel__update card4_dark">
@@ -170,15 +170,7 @@
                               <td></td>
                               <td></td>
                               <td><b>Total Abonos</b></td>
-                              <td>10,000</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td><b>Total Cargos</b></td>
-                              <td>20,000</td>
+                              <td>{{ total_abono_dolar|money_format }}</td>
                               <td></td>
                             </tr>
                             <tr>
@@ -186,7 +178,7 @@
                               <td></td>
                               <td></td>
                               <td><b>Total Retiro</b></td>
-                              <td>30,000</td>
+                              <td>{{ total_retiro_dolar|money_format }}</td>
                               <td></td>
                             </tr>
                         </tbody>
@@ -236,15 +228,7 @@
                               <td></td>
                               <td></td>
                               <td><b>Total Abonos</b></td>
-                              <td>10,000</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td><b>Total Cargos</b></td>
-                              <td>10,000</td>
+                              <td>{{ total_abono_pesos|money_format }}</td>
                               <td></td>
                             </tr>
                             <tr>
@@ -252,7 +236,7 @@
                               <td></td>
                               <td></td>
                               <td><b>Total Retiro</b></td>
-                              <td>20,000</td>
+                              <td>{{ total_retiro_pesos|money_format }}</td>
                               <td></td>
                             </tr>
                         </tbody>
