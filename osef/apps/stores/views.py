@@ -111,26 +111,72 @@ class CreateStore(FormView):
 			self.request.session['is_saved'] = False
 		return context
 
+	def _get_shipments_indirect_charge(self, amount):
+		shipments = []
+		not_found_shipments_with_saldo = True
+		shipments_before_div = Shipment.objects.filter(store = self.request.user).count()
+		while(not_found_shipments_with_saldo):
+			amount_each_shipment = int(amount) / shipments_before_div
+			shipments_after_div = Shipment.objects.filter(
+				store = self.request.user,
+				saldo__gt = amount_each_shipment
+			).count()
+			if shipments_before_div == shipments_after_div:
+				not_found_shipments_with_saldo = False
+				shipments = Shipment.objects.filter(
+					store = self.request.user,
+					saldo__gt = amount_each_shipment
+				)
+			else:
+				shipments_before_div -= 1
+		return {'shipments' : shipments, 'amount' : amount_each_shipment}
+
+
 	def form_valid(self, form):
-		movement = Movement.objects.create(
-			store = self.request.user,
-			kind_mov = form.cleaned_data.get('kind_mov'),
-			kind_charge = form.cleaned_data.get('kind_charge'),
-			charge = form.cleaned_data['charge'],
-			shipment = form.cleaned_data.get('shipment'),
-			description = form.cleaned_data.get('description'),
-			amount = form.cleaned_data.get('amount'),
-			image = form.cleaned_data.get('image')
-		)
-		self.request.session['is_saved'] = True
-		socios = User.objects.filter(kind = "socio")
-		for socio in socios:
-			Notification.objects.create(
-				user = self.request.user,
-				sender = socio,
-				store_movement = movement,
-				description = "Nuevo movimiento del almacen"
+		amount = form.cleaned_data.get('amount')
+		if form.cleaned_data.get('kind_charge').name.lower() == 'indirecto':
+			shipments_and_amount = self._get_shipments_indirect_charge(amount)
+			shipments = shipments_and_amount['shipments']
+			amount = shipments_and_amount['amount']
+			for shipment in shipments:
+				movement = Movement.objects.create(
+					store = self.request.user,
+					kind_mov = form.cleaned_data.get('kind_mov'),
+					kind_charge = form.cleaned_data.get('kind_charge'),
+					charge = form.cleaned_data['charge'],
+					shipment = shipment,
+					description = form.cleaned_data.get('description'),
+					amount = amount,
+					image = form.cleaned_data.get('image')
+				)
+				socios = User.objects.filter(kind = "socio")
+				for socio in socios:
+					Notification.objects.create(
+						user = self.request.user,
+						sender = socio,
+						store_movement = movement,
+						description = "Nuevo movimiento del almacen"
+					)
+		else:	
+			movement = Movement.objects.create(
+				store = self.request.user,
+				kind_mov = form.cleaned_data.get('kind_mov'),
+				kind_charge = form.cleaned_data.get('kind_charge'),
+				charge = form.cleaned_data['charge'],
+				shipment = form.cleaned_data.get('shipment'),
+				description = form.cleaned_data.get('description'),
+				amount = amount,
+				image = form.cleaned_data.get('image')
 			)
+			self.request.session['is_saved'] = True
+			socios = User.objects.filter(kind = "socio")
+			for socio in socios:
+				Notification.objects.create(
+					user = self.request.user,
+					sender = socio,
+					store_movement = movement,
+					description = "Nuevo movimiento del almacen"
+				)
 		return super(CreateStore, self).form_valid(form)
 
 	def get_form(self, form_class=None):

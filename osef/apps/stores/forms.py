@@ -60,12 +60,15 @@ class CreateMovForm(forms.Form):
 		}))
 
 	def validateAmount(self):
-		if not self.cleaned_data['amount'].isdigit():
-			self.add_error('amount', 'Este campo solo puede contener números')
+		if self.cleaned_data.get('amount'):	
+			if not self.cleaned_data['amount'].isdigit():
+				self.add_error('amount', 'Este campo solo puede contener números')
+			else:
+				if self.cleaned_data['shipment']:
+					if self.cleaned_data['shipment'].saldo < int(self.cleaned_data['amount']):
+						self.add_error('amount', 'El embarque no tiene suficiente saldo')
 		else:
-			if self.cleaned_data['shipment']:
-				if self.cleaned_data['shipment'].saldo < int(self.cleaned_data['amount']):
-					self.add_error('amount', 'El embarque no tiene suficiente saldo')
+			self.add_error('amount', 'Este campo es obligatorio')
 
 	def clean(self):
 		data = self.cleaned_data
@@ -81,8 +84,6 @@ class CreateMovForm(forms.Form):
 							self.add_error('shipment', 'Este campo es obligatorio')
 						if not data['description']:
 							self.add_error('description', 'Este campo es obligatorio')
-						if not data['amount']:
-							self.add_error('amount', 'Este campo es obligatorio')
 						if not data.get('charge'):
 							self.add_error('charge', 'Este campo es obligatorio')
 						if not data['image']:
@@ -90,8 +91,6 @@ class CreateMovForm(forms.Form):
 					if data['kind_charge'].name.lower() == 'indirecto':
 						if not data['description']:
 							self.add_error('description', 'Este campo es obligatorio')
-						if not data['amount']:
-							self.add_error('amount', 'Este campo es obligatorio')
 						if not data.get('charge'):
 							self.add_error('charge', 'Este campo es obligatorio')
 						else:
