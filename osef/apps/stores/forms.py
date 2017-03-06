@@ -9,7 +9,7 @@ class CreateMovForm(forms.Form):
 		super(CreateMovForm, self).__init__(*args, **kwargs)
 		self.fields['shipment'] = forms.ModelChoiceField(
 			required = False,
-			queryset = Shipment.objects.filter(store = self.user, amount__gt = 0),
+			queryset = Shipment.objects.filter(store = self.user, saldo__gt = 0),
 			empty_label="Selecciona un embarque"
 		)
 

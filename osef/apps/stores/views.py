@@ -52,21 +52,21 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(StoreDashboard, self).get_context_data(**kwargs)
 		if self.request.GET.get('search'):
-			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, name__icontains = self.request.GET.get('search'), approved=True).order_by('-created_at')
+			shipments = Shipment.objects.filter(store=self.request.user, saldo__gt = 0, name__icontains = self.request.GET.get('search'), approved=True).order_by('-created_at')
 		elif self.request.GET.get('date'):
 			# filter date
 			if self.request.GET.get('date') == 'all':
-				shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')
+				shipments = Shipment.objects.filter(store=self.request.user, saldo__gt = 0, approved=True).order_by('-created_at')
 			elif self.request.GET.get('date') == 'one_month':
 				context['one_month'] = True
 				last_month = datetime.today() - timedelta(days=30)
-				shipments = Shipment.objects.filter(created_at__gte=last_month, store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')
+				shipments = Shipment.objects.filter(created_at__gte=last_month, store=self.request.user, saldo__gt = 0, approved=True).order_by('-created_at')
 			else:
 				context['two_month'] = True
 				last_month = datetime.today() - timedelta(days=60)
-				shipments = Shipment.objects.filter(created_at__gte=last_month, store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')			
+				shipments = Shipment.objects.filter(created_at__gte=last_month, store=self.request.user, saldo__gt = 0, approved=True).order_by('-created_at')			
 		else:
-			shipments = Shipment.objects.filter(store=self.request.user, amount__gt = 0, approved=True).order_by('-created_at')
+			shipments = Shipment.objects.filter(store=self.request.user, saldo__gt = 0, approved=True).order_by('-created_at')
 		shipments_with_movements = self._get_movements_by_shipment(shipments)
 		if shipments.count() == 0:
 			context['no_shipments'] = True
@@ -134,7 +134,7 @@ class CreateStore(FormView):
 
 	def form_valid(self, form):
 		amount = form.cleaned_data.get('amount')
-		if form.cleaned_data.get('kind_charge').name.lower() == 'indirecto':
+		if form.cleaned_data.get('kind_charge') and form.cleaned_data.get('kind_charge').name.lower() == 'indirecto':
 			shipments_and_amount = self._get_shipments_indirect_charge(amount)
 			shipments = shipments_and_amount['shipments']
 			amount = shipments_and_amount['amount']
