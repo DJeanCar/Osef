@@ -13,6 +13,7 @@ var create_store = (function (){
   var $div_kind_abono = $('#div-kind-abono');
   var $div_type_change = $('#div-type-change');
   var $div_account = $('#div-account');
+  var $embarque_description = $('#embarque-description');
 
   // bind events
   $select_mov.on('change', movSelected);
@@ -38,6 +39,7 @@ var create_store = (function (){
   }
 
   function retiroSelected() {
+    console.log('retiro');
     $div_kind_mov.hide();
     $div_rest_input.hide();
     $common_fields.show();
@@ -53,6 +55,7 @@ var create_store = (function (){
     $div_kind_mov.hide();
     $div_rest_input.hide();
     $common_fields.hide();
+    $embarque_description.show();
     $div_account.hide();
     $div_shipment.hide();
     $div_create_shipment.show();

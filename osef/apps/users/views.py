@@ -200,6 +200,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 		return [retiro_dolar, retiro_pesos]
 
 	def _get_sum_shipments(self):
+		'''
+			SUMA DE LOS SALDOS DE TODOS LOS EMBARQUES QUE ESTAN DENTRO DE TODOS LOS ALMACENES
+		'''
 		total_dolar = 0
 		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'embarque')
 		for movement in movements:
