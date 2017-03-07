@@ -39,11 +39,11 @@ var create_store = (function (){
   }
 
   function retiroSelected() {
-    console.log('retiro');
     $div_kind_mov.hide();
     $div_rest_input.hide();
     $common_fields.show();
     $div_account.show();
+    $embarque_description.hide();
     $div_shipment.hide();
     $div_create_shipment.hide();
     $div_socio.show();
@@ -68,6 +68,7 @@ var create_store = (function (){
     $div_kind_abono.show();
     $div_kind_mov.hide();
     $div_rest_input.hide();
+    $embarque_description.hide();
     $common_fields.show();
     $div_account.show();
     $div_shipment.hide();
