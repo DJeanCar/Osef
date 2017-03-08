@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.shipments.models import Shipment
 from apps.stores.models import SocioMovement
-from .models import Account, Notification
+from .models import Account, Notification, User
 from .forms import EmailForm, CreateMovForm, UpdateImage
 from .admin import MovementResource
 from itertools import chain
@@ -204,14 +204,21 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 			SUMA DE LOS SALDOS DE TODOS LOS EMBARQUES QUE ESTAN DENTRO DE TODOS LOS ALMACENES
 		'''
 		total_dolar = 0
-		movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'embarque')
-		for movement in movements:
-			total_dolar += movement.amount
-
-		notifications_abono = Notification.objects.filter(store_movement__kind_mov__name__iexact = 'Abono', store_movement__approved=True)
-		for notification in notifications_abono:
-			total_dolar -= notification.store_movement.amount
+		stores = User.objects.filter(kind__iexact = 'almacen')
+		for store in stores:
+			shipments = Shipment.objects.filter(store = store, saldo__gt = 0)
+			for shipment in shipments:
+				total_dolar += shipment.saldo
 		return total_dolar
+		# total_dolar = 0
+		# movements = SocioMovement.objects.filter(kind_mov__name__iexact = 'embarque')
+		# for movement in movements:
+		# 	total_dolar += movement.amount
+
+		# notifications_abono = Notification.objects.filter(store_movement__kind_mov__name__iexact = 'Abono', store_movement__approved=True)
+		# for notification in notifications_abono:
+		# 	total_dolar -= notification.store_movement.amount
+		# return total_dolar
 
 	def _get_total_abonos_dolar(self):
 		total_abono_dolar = 0;
