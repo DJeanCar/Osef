@@ -34,9 +34,9 @@ class StoreDashboard(LoginRequiredMixin, TemplateView):
 			abono = 0
 			charge = 0
 			if last_month:
-				movements = Movement.objects.filter(created_at__gte=last_month, shipment = shipment).order_by('-created_at')
+				movements = Movement.objects.filter(created_at__gte=last_month, shipment = shipment, approved=True).order_by('-created_at')
 			else:
-				movements = Movement.objects.filter(shipment = shipment).order_by('-created_at')
+				movements = Movement.objects.filter(shipment = shipment, approved=True).order_by('-created_at')
 			movements_by_shipment.append(movements)
 			for movement in movements:
 				if movement.kind_mov.name.lower() == 'cargo':
