@@ -50,7 +50,7 @@ class CreateMovForm(forms.Form):
     }))
   shipment = forms.ModelChoiceField(
       required=False,
-      queryset=Shipment.objects.filter(amount__gt = 0),
+      queryset=Shipment.objects.filter(saldo__gt = 0),
       empty_label="Selecciona un embarque",
       to_field_name="name",
       widget=forms.Select(attrs={
@@ -96,6 +96,10 @@ class CreateMovForm(forms.Form):
         'class' : 'input__margin'
       }))
   description = forms.CharField(required=False, widget=forms.Textarea(attrs={
+      'placeholder' : 'Descripción',
+      'class' : 'materialize-textarea input__margin'
+    }))
+  description_retiro = forms.CharField(required=False, widget=forms.Textarea(attrs={
       'placeholder' : 'Descripción',
       'class' : 'materialize-textarea input__margin'
     }))
@@ -161,7 +165,7 @@ class CreateMovForm(forms.Form):
             if not data['amount']:
               self.add_error('amount', 'Este campo es obligatorio')
             else:
-              if not data['amount'].isdigit():
+              if not str(data['amount']).isdigit():
                 self.add_error('amount', 'Este campo solo puede contener números')
           if data['kind_charge'].name.lower() == 'indirecto':
             if not data['description']:
