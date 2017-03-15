@@ -12,7 +12,7 @@
   <section class="main_info">
     <div class="my-container">
       <div class="row main_info__data form-width">
-        <form method="POST" enctype="multipart/form-data">
+        <form onsubmit="return validateForm()" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="input-field col s12">
             <h4>Crear Movimiento</h4>
@@ -47,6 +47,9 @@
             <div id="div-type-change" class="hidden">
               {{ form.type_change }}
               {{ form.type_change.errors }}
+              <ul id="type_change_error" class="errorlist hidden">
+                <li>Este campo es obligatorio</li>
+              </ul>
             </div>
             <div id="common-fields" class="hidden">
               {{ form.description }}
@@ -92,6 +95,12 @@
         $('#div-kind-mov').show();
         $('#div-kind-abono').hide();
         create_store.currencyChange();
+        if ($('#currency').val() == "mxn") {
+          $('#div-type-change').show(); 
+          $('#type-change').show(); 
+          console.log('tmr');
+          $('#div-type-change').removeClass('hidden');
+        }
       }
       // if ($('#currency').val() == 'mxn') {
       //   console.log('tmr');
@@ -125,6 +134,15 @@
     var is_saved = "{{ is_saved }}";
     if (is_saved) {
       Materialize.toast('Se creo el movimiento con éxito', 4000, 'rounded');
+    }
+
+    function validateForm() {
+      if ($('#currency').val() == "mxn") {
+        if ($('#type_change').val() == '') {
+          $('#type_change_error').show();
+          return false;
+        }
+      }
     }
   </script>
 {% endblock scripts %}

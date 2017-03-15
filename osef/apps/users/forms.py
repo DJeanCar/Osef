@@ -81,7 +81,7 @@ class CreateMovForm(forms.Form):
   type_change = forms.DecimalField(
       required=False,
       widget=forms.NumberInput(attrs={
-        'id' : 'type-change',
+        'id' : 'type_change',
         'placeholder': 'Tipo de cambio: 20.4',
         'class' : 'input__margin'
         })
@@ -140,7 +140,7 @@ class CreateMovForm(forms.Form):
       }))
 
   def validateAmount(self):
-    if not self.cleaned_data['amount'].isdigit():
+    if not str(self.cleaned_data['amount']).isdigit():
       self.add_error('amount', 'Este campo solo puede contener números')
     else:
       if self.cleaned_data['shipment'].saldo < int(self.cleaned_data['amount']):
@@ -175,7 +175,7 @@ class CreateMovForm(forms.Form):
             if not data['amount']:
               self.add_error('amount', 'Este campo es obligatorio')
             else:
-              if not data['amount'].isdigit():
+              if not str(data['amount']).isdigit():
                 self.add_error('amount', 'Este campo solo puede contener números')
           if not data['account']:
             self.add_error('account', 'Este campo es obligatorio')
