@@ -438,9 +438,10 @@ class CreateMovementView(FormView):
 				charge = form.cleaned_data['charge'],
 				description = form.cleaned_data.get('description'),
 				amount = form.cleaned_data.get('amount'),
+				precio_costo = form.cleaned_data.get('precio_costo'),
 				image = form.cleaned_data.get('image'),
 			)
-			account.amount -= int(form.cleaned_data.get('amount'))
+			account.amount -= int(form.cleaned_data.get('precio_costo'))
 			account.save()
 			self.request.session['is_saved'] = True
 		if form.cleaned_data['kind_mov'].name.lower() == 'abono':
@@ -452,9 +453,10 @@ class CreateMovementView(FormView):
 				kind_abono = form.cleaned_data.get('kind_abono'),
 				description = form.cleaned_data.get('description'),
 				amount = form.cleaned_data.get('amount'),
+				precio_costo = form.cleaned_data.get('precio_costo'),
 				image = form.cleaned_data.get('image'),
 			)
-			account.amount += int(form.cleaned_data.get('amount'))
+			account.amount += int(form.cleaned_data.get('precio_costo'))
 			account.save()
 			self.request.session['is_saved'] = True
 		if form.cleaned_data['kind_mov'].name.lower() == 'cargo':
@@ -469,11 +471,12 @@ class CreateMovementView(FormView):
 				charge = form.cleaned_data['charge'],
 				description = form.cleaned_data.get('description'),
 				amount = form.cleaned_data.get('amount'),
+				precio_costo = form.cleaned_data.get('precio_costo'),
 				type_change = form.cleaned_data.get('type_change'),
 				image = form.cleaned_data.get('image'),
 			)
 			if form.cleaned_data.get('account').currency == 'mxn':
-				dolar_amount = int(form.cleaned_data.get('amount')) / form.cleaned_data.get('type_change')
+				dolar_amount = int(form.cleaned_data.get('precio_costo')) / form.cleaned_data.get('type_change')
 				dolar_amount = "%.2f" % dolar_amount
 				if shipment:
 					# cargo directo
@@ -489,16 +492,16 @@ class CreateMovementView(FormView):
 			if form.cleaned_data.get('account').currency == 'usd':
 				if shipment:
 					# cargo directo
-					shipment.saldo += int(form.cleaned_data.get('amount'))
+					shipment.saldo += int(form.cleaned_data.get('precio_costo'))
 					shipment.save()
 				else:
 					# cargo indirecto
 					shipments = Shipment.objects.filter(saldo__gt = 0)
-					amount_for_each_shipment = int(form.cleaned_data.get('amount')) / shipments.count()
+					amount_for_each_shipment = int(form.cleaned_data.get('precio_costo')) / shipments.count()
 					for shipment in shipments:
 						shipment.saldo += amount_for_each_shipment
 						shipment.save()
-			account.amount -= int(form.cleaned_data.get('amount'))
+			account.amount -= int(form.cleaned_data.get('precio_costo'))
 			account.save()
 			self.request.session['is_saved'] = True
 		return super(CreateMovementView, self).form_valid(form)
@@ -543,7 +546,6 @@ class NotificationView(TemplateView):
 		notification = get_object_or_404(Notification, id = kwargs['id'])
 		notification.viewed = True
 		notification.save()
-		print(notification)
 		context['notification'] = notification
 		return context
 

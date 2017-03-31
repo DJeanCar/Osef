@@ -86,20 +86,13 @@ class CreateMovForm(forms.Form):
 							self.add_error('description', 'Este campo es obligatorio')
 						if not data.get('charge'):
 							self.add_error('charge', 'Este campo es obligatorio')
-						if not data['image']:
-							self.add_error('image', 'Este campo es obligatorio')
 					if data['kind_charge'].name.lower() == 'indirecto':
 						if not data['description']:
 							self.add_error('description', 'Este campo es obligatorio')
 						if not data.get('charge'):
 							self.add_error('charge', 'Este campo es obligatorio')
-						else:
-							if not data.get('image'):
-								self.add_error('image', 'Este campo es obligatorio')
 					self.validateAmount()
 			if self.data['kind_mov'].lower() == 'abono':
-				if not data['image']:
-					self.add_error('image', 'Este campo es obligatorio')
 				if not data['shipment']:
 					self.add_error('shipment', 'Este campo es obligatorio')
 				elif not data['description']:

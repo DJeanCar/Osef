@@ -90,13 +90,11 @@ var create_store = (function (){
   }
 
   function currencyChange() {
-    if ($select_mov.val().toLowerCase() === 'cargo') {
-      if ($select_currency.val().toLowerCase() === 'mxn') {
-        $div_type_change.show();
-      }
-      if ($select_currency.val().toLowerCase() === 'usd') {
-        $div_type_change.hide();
-      }
+    if ($select_currency.val().toLowerCase() === 'mxn') {
+      $div_type_change.show();
+    }
+    if ($select_currency.val().toLowerCase() === 'usd') {
+      $div_type_change.hide();
     }
   }
 
