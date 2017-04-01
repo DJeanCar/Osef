@@ -104,12 +104,7 @@ class CreateMovForm(forms.Form):
       'class' : 'materialize-textarea input__margin'
     }))
   amount = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
-      'placeholder' : 'Precio de venta',
-      'type' : 'number',
-      'class' : 'validate input__margin'
-    }))
-  precio_costo = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
-      'placeholder' : 'Precio de costo',
+      'placeholder' : 'Monto',
       'type' : 'number',
       'class' : 'validate input__margin'
     }))
@@ -129,7 +124,12 @@ class CreateMovForm(forms.Form):
       'class' : 'validate input__margin'
     }))
   amount_shipment = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
-      'placeholder' : 'Cantidad',
+      'placeholder' : 'Precio Venta',
+      'type' : 'number',
+      'class' : 'validate input__margin'
+    }))
+  precio_costo_shipment = forms.IntegerField(required=False, widget=forms.TextInput(attrs={
+      'placeholder' : 'Precio Costo',
       'type' : 'number',
       'class' : 'validate input__margin'
     }))
@@ -143,20 +143,6 @@ class CreateMovForm(forms.Form):
         'id' : 'socio',
         'class' : 'input__margin',
       }))
-
-  def validateAmount(self):
-    if not str(self.cleaned_data['amount']).isdigit():
-      self.add_error('amount', 'Este campo solo puede contener números')
-    else:
-      if self.cleaned_data['shipment'].saldo < int(self.cleaned_data['amount']):
-        self.add_error('amount', 'El embarque no tiene suficiente saldo')
-
-  def validatePrecioCosto(self):
-    if not str(self.cleaned_data['precio_costo']).isdigit():
-      self.add_error('precio_costo', 'Este campo solo puede contener números')
-    # else:
-    #   if self.cleaned_data['shipment'].saldo < int(self.cleaned_data['precio_costo']):
-    #     self.add_error('precio_costo', 'El embarque no tiene suficiente saldo')
 
   def clean(self):
     data = self.cleaned_data
@@ -179,11 +165,6 @@ class CreateMovForm(forms.Form):
             else:
               if not str(data['amount']).isdigit():
                 self.add_error('amount', 'Este campo solo puede contener números')
-            if not data['precio_costo']:
-              self.add_error('precio_costo', 'Este campo es obligatorio')
-            else:
-              if not str(data['precio_costo']).isdigit():
-                self.add_error('precio_costo', 'Este campo solo puede contener números')
           if data['kind_charge'].name.lower() == 'indirecto':
             if not data['description']:
               self.add_error('description', 'Este campo es obligatorio')
@@ -194,11 +175,6 @@ class CreateMovForm(forms.Form):
             else:
               if not str(data['amount']).isdigit():
                 self.add_error('amount', 'Este campo solo puede contener números')
-            if not data['precio_costo']:
-              self.add_error('precio_costo', 'Este campo es obligatorio')
-            else:
-              if not str(data['precio_costo']).isdigit():
-                self.add_error('precio_costo', 'Este campo solo puede contener números')
           if not data['account']:
             self.add_error('account', 'Este campo es obligatorio')
           else:
@@ -217,11 +193,6 @@ class CreateMovForm(forms.Form):
         else:
           if not str(self.cleaned_data['amount']).isdigit():
             self.add_error('amount', 'Este campo solo puede contener números')
-        if not data['precio_costo']:
-          self.add_error('precio_costo', 'Este campo es obligatorio')
-        else:
-          if not str(self.cleaned_data['precio_costo']).isdigit():
-            self.add_error('precio_costo', 'Este campo solo puede contener números')
       if self.data['kind_mov'].lower() == 'embarque':
         if not data['store']:
           self.add_error('store', 'Este campo es obligatorio')
@@ -233,6 +204,12 @@ class CreateMovForm(forms.Form):
           account = Account.objects.get(currency="usd")
           if account.amount < int(data['amount_shipment']):
             self.add_error('amount_shipment', 'No tiene saldo sufiencie en su cuenta')
+        if not data['precio_costo_shipment']:
+          self.add_error('precio_costo_shipment', 'Este campo es obligatorio')
+        else:
+          account = Account.objects.get(currency="usd")
+          if account.amount < int(data['precio_costo_shipment']):
+            self.add_error('precio_costo_shipment', 'No tiene saldo sufiencie en su cuenta')
       if self.data['kind_mov'].lower() == 'retiro':
         if not data['socio']:
           self.add_error('socio', 'Este campo es obligatorio')
@@ -248,12 +225,6 @@ class CreateMovForm(forms.Form):
           if data.get('amount'):
             if not str(data.get('amount')).isdigit():
               self.add_error('amount', 'Este campo solo puede contener números')
-        if not data['precio_costo']:
-          self.add_error('precio_costo', 'Este campo es obligatorio')
-        else:
-          if data.get('precio_costo'):
-            if not str(data.get('precio_costo')).isdigit():
-              self.add_error('precio_costo', 'Este campo solo puede contener números')
 
 
 
